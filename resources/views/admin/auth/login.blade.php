@@ -24,7 +24,7 @@
         <div class="d-flex flex-column flex-lg-row-fluid py-10">
         <div class="d-flex flex-center flex-column flex-column-fluid">
 						<div class="w-lg-550px p-10 p-lg-15 mx-auto">
-                        <form action="{{ route('auth.submitLogin') }}" method="POST" class="mt-4 mb-5" id="admin_login_form">
+                        <form action="{{ route('admin.login.form') }}" method="POST" class="mt-4 mb-5" id="admin_login_form">
                         @csrf
 								<div class="text-center mb-10">
 									<h1 class="text-dark mb-3">Sign In to E-Office</h1>
@@ -44,7 +44,7 @@
                                             @if ($errors->has('password'))
                                                 <span class="text-danger">{{ $errors->first('password') }}</span>
                                             @endif
-										</div>										
+										</div>
 									</div>
 								</div>
                                 <div class="form-group mt-4 mb-4">
@@ -91,7 +91,7 @@ jQuery('#admin_login_form').validate({
         email: {
             required: true,
             email:true
-        },        
+        },
         password: {
             required: true
         },

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
         // \App\Models\User::factory(10)->create();
+        $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(AdminSeeder::class);
     }
 }

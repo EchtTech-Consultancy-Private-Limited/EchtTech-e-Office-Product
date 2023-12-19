@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Silber\Bouncer\Bouncer;
 
 class UserSeeder extends Seeder
 {
@@ -14,31 +15,29 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        Model::unguard();
-        $userArray = [
+        $admin = User::create(
             [
-                'full_name' => 'Admin',
-                'user_name' => 'adminOffice',
+                'name' => 'Admin',
                 'email' => 'admin@gmail.com',
-                'mobile_number' => '9876543211',
+                'mobile' => '9876543211',
                 'email_verified_at' => '2022-05-23 00:00:00',
-                'password' => Hash::make('admin@123'),
-                'role' => 'admin',
-                'status' => 'active',
-            ],
-            [
-                'full_name' => 'Employee',
-                'user_name' => 'employeeOffice',
+                'password' => Hash::make('password'),
+                'is_active' => 1,
+            ]);
+
+       $admin->assign('admin');
+
+        $employee = User::create(
+        [
+                'name' => 'Employee',
                 'email' => 'employee@gmail.com',
-                'mobile_number' => '9876543212',
+                'mobile' => '9876543212',
                 'email_verified_at' => '2022-05-23 00:00:00',
-                'password' => Hash::make('employee@123'),
-                'role' => 'employee',
-                'status' => 'active',
-            ],
-        ];
-        User::insert(
-            $userArray
-        );
+                'password' => Hash::make('password'),
+                'is_active' => 1,
+            ]);
+
+        $employee->assign('employee');
+
     }
 }

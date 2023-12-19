@@ -94,7 +94,7 @@ $(document).ready(function() {
 $('#candidate_login_form').on('keypress', function(e) {
     return e.which !== 13;
 });
-    
+
 $(document).on('click', '#login_with_otp', function() {
     let login_with_otp = $('#login_with_otp').val();
     const formData = new FormData(candidate_login_form);
@@ -114,7 +114,7 @@ $(document).on('click', '#login_with_otp', function() {
         };
         $.ajax({
         type: "POST",
-        url: "{{ route('auth.loginUser') }}",
+        url: "{{ route('auth.login') }}",
         data: data,
         success: function(response) {
           $("#pageloader").fadeOut();
@@ -160,7 +160,7 @@ $(document).on('click', '#login_with_otp', function() {
                 return;
                 }
                 $('.resend_sms').removeClass('disabled');
-                $(".otp_timer_expired").text("OTP expired !");                
+                $(".otp_timer_expired").text("OTP expired !");
             }
             timer(120);
             }
@@ -193,7 +193,7 @@ jQuery(document).on('click', ".verify_otp_btn", function() {
       var data = new FormData(verify_otp);
       $.ajax({
         type: "POST",
-        url: "{{ route('auth.verifyOtp') }}",
+        url: "{{ route('auth.verify-otp') }}",
         data: data,
         processData: false,
         contentType: false,
@@ -237,12 +237,12 @@ jQuery(document).on('click', ".verify_password_btn", function() {
         // $(".verify_password_btn").attr("disabled", true);
         $.ajax({
         type: "POST",
-        url: "{{ route('auth.loginPassworsUser') }}",
+        url: "{{ route('auth.login-password-user') }}",
         data: formData,
         processData: false,
         contentType: false,
         success: function(response) {
-            $(".verify_password_btn").attr("disabled", false);            
+            $(".verify_password_btn").attr("disabled", false);
             if (response.status == 200) {
               Swal.fire({
                 text: "You have successfully logged in!",
@@ -277,7 +277,7 @@ jQuery(document).on('click', ".verify_password_btn", function() {
     $('.resend_sms').addClass('disabled');
     jQuery.ajax({
       type: 'post',
-      url: '{{ route("auth.resendOtp") }}',
+      url: '{{ route("auth.resend-otp") }}',
       data: {
         "_token": "{{ csrf_token() }}",
         "action": "resend_sms",
@@ -341,7 +341,7 @@ jQuery('#reset_password_form').validate({
         password: {
             required: true,
             minlength: 8
-        },        
+        },
         password_confirm: {
             required: true,
             minlength: 8,
