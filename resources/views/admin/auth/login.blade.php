@@ -70,7 +70,7 @@
 					</div>
             <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
                 <div class="d-flex flex-center fw-bold fs-6">
-                    <a href="#" class="text-muted text-hover-primary px-2" target="_blank">© 2023 E-Office, All rights reserved.</a>
+                    <a href="#" class="text-muted text-hover-primary px-2" target="_blank">© 2024 E-Office, All rights reserved.</a>
                 </div>
             </div>
         </div>

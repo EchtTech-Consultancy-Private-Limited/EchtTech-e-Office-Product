@@ -2,23 +2,22 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Silber\Bouncer\Bouncer;
-
 class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
-    public function run(Bouncer $bouncer): void
+    public function run(): void
     {
-        $bouncer->role()->firstOrCreate([
+
+        Role::create([
             'name' => 'admin',
             'title' => 'Administrator',
         ]);
 
-        $bouncer->role()->firstOrCreate([
+        Role::create([
             'name' => 'employee',
             'title' => 'Employee',
         ]);

@@ -22,6 +22,7 @@
             </div>
         </div>
         <!--end::Aside mobile toggle-->
+
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="" class="d-lg-none">
@@ -30,6 +31,7 @@
             </a>
         </div>
         <!--end::Mobile logo-->
+
         <!--begin::Wrapper-->
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
             <!--begin::Navbar-->
@@ -67,6 +69,7 @@
 													<span class="menu-title">Apps</span>
 													<span class="menu-arrow d-lg-none"></span>
 												</span>
+
                             {{--                            <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown menu-rounded-0 py-lg-4 w-lg-225px">--}}
                             {{--                                <div data-kt-menu-trigger="{default:'click', lg: 'hover'}" data-kt-menu-placement="right-start" class="menu-item menu-lg-down-accordion">--}}
                             {{--														<span class="menu-link py-3">--}}
@@ -2398,6 +2401,7 @@
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::User menu-->
+
                 <!--begin::Header menu toggle-->
                 <div class="d-flex align-items-center d-lg-none ms-2 me-n3" title="Show header menu">
                     <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px"
@@ -2418,6 +2422,7 @@
                     </div>
                 </div>
                 <!--end::Header menu toggle-->
+
             </div>
             <!--end::Toolbar wrapper-->
         </div>

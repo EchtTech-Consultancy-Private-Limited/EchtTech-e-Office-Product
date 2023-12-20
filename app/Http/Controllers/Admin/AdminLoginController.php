@@ -24,7 +24,7 @@ class AdminLoginController extends Controller
             'captcha.captcha'=>"Kindly check the captcha code you have entered."
         ]);
 
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if(Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])){
             return redirect()->route('admin.dashboard')->with('success','Login successfully !');
         }else{
             return redirect()->back()->with('error', 'Invalid credentials. Please try again.');

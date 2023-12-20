@@ -18,24 +18,22 @@ class AdminSeeder extends Seeder
         Model::unguard();
         $userArray = [
             [
-                'full_name' => 'Superadmin',
-                'user_name' => 'superAdminOffice',
-                'email' => 'superadmin@gmail.com',
-                'mobile_number' => '9876543210',
+                'name' => 'Superadmin',
+                'username' => 'superAdminOffice',
+                'email' => 'superadmin@yopmail.com',
+                'mobile' => '9876543210',
                 'email_verified_at' => '2022-05-23 00:00:00',
-                'password' => Hash::make('superadmin@123'),
-                'role' => 'superadmin',
-                'status' => 'active',
+                'password' => Hash::make('password'),
+                'is_active' => 1,
             ],
             [
-                'full_name' => 'Admin',
-                'user_name' => 'adminOffice',
-                'email' => 'admin@gmail.com',
-                'mobile_number' => '9876543211',
+                'name' => 'Admin',
+                'username' => 'adminOffice',
+                'email' => 'admin@yopmail.com',
+                'mobile' => '9876543211',
                 'email_verified_at' => '2022-05-23 00:00:00',
-                'password' => Hash::make('admin@123'),
-                'role' => 'admin',
-                'status' => 'active',
+                'password' => Hash::make('password'),
+                'is_active' => 1,
             ],
         ];
         Admin::insert(

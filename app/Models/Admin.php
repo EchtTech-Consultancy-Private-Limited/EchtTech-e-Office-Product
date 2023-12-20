@@ -24,12 +24,12 @@ class Admin extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'full_name',
-        'user_name',
+        'name',
+        'username',
         'email',
         'password',
-        'mobile_number',
-        'role',
+        'mobile',
+        'is_active',
     ];
 
     /**
