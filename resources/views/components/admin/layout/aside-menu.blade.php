@@ -135,7 +135,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="xyz.php">
+                            <a class="menu-link" href="{{ route('admin.companies.create') }}">
                 <span class="menu-bullet">
                     <span class="bullet bullet-dot"></span>
                 </span>
