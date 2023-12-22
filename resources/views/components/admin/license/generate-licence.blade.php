@@ -1,9 +1,18 @@
 <div class="container mt-5">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title mb-4">Generate License Key</h4>
-            <div class="mb-3">
-                <button id="generateLicense" class="btn btn-primary btn-lg w-100">Generate License</button>
+    <div>
+        <div>
+            <div id="licenseGeneratorSection">
+                <h4 class="card-title mb-4">Generate License Key</h4>
+                <div class="mb-3">
+                    <button id="generateLicense" class="btn btn-primary btn-lg w-100">
+                        <span class="indicator-label">
+        Generate License
+    </span>
+                        <span class="indicator-progress">
+        Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+    </span>
+                    </button>
+                </div>
             </div>
             <div class="mb-3">
                 <input type="hidden" id="duration">

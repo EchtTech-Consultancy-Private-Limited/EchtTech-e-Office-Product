@@ -10,9 +10,14 @@
             <div class="stepper stepper-links d-flex flex-column" id="kt_create_account_stepper">
                 <div class="stepper-nav">
                     <div class="stepper-item current" data-kt-stepper-element="nav">
+                        <h3 class="stepper-title">Basic Configuration</h3>
+                    </div>
+                    <div class="stepper-item" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Basic Details</h3>
                     </div>
-
+                    <div class="stepper-item" data-kt-stepper-element="nav">
+                        <h3 class="stepper-title">Business Details</h3>
+                    </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Contact Details</h3>
                     </div>
@@ -31,47 +36,244 @@
                 </div>
                 <hr/>
                 <form class="mt-7" novalidate="novalidate" id="kt_create_account_form">
-
                     {{-- Step 1 --}}
                     <div class="current" data-kt-stepper-element="content">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="row w-100">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="exampleFormControlInput1" class="required form-label">Company
-                                        Name</label>
-                                    <input type="text" class="form-control form-control-solid"
-                                           placeholder="Enter company name"/>
+                                    <label for="app_name" class="required form-label">App Name</label>
+                                    <input type="text" name="app_name" id="app_name" class="form-control form-control-solid"
+                                           placeholder=""/>
+                                    <span id="app_name_error" class="text-danger"></span>
                                 </div>
                             </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="db_name" class="required form-label">Database Name</label>
+                                    <input type="text" name="db_name" id="db_name" class="form-control form-control-solid"
+                                           placeholder=""/>
+                                    <span id="db_name_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="logo" class="required form-label">Logo</label>
+                                    <input type="file" name="logo" id="logo" class="form-control form-control-solid"/>
+                                    <span class="text-danger" id="logo_error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Step 2 --}}
+                    <div data-kt-stepper-element="content">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="company_name" class="required form-label">Company
+                                        Name</label>
+                                    <input type="text" name="company_name" id="company_name" class="form-control form-control-solid"
+                                           placeholder="Enter company name"/>
+                                    <span id="company_name_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="gov_tax_number_ein" class="required form-label">Government Tax Number/EIN</label>
+                                    <input type="text" name="gov_tax_number_ein" id="gov_tax_number_ein" class="form-control form-control-solid"
+                                           placeholder="Enter Government Tax Number/EIN"/>
+                                    <span id="gov_tax_number_ein_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="legal_trading_name" class="required form-label">Legal/Trading Name</label>
+                                    <input type="text" name="legal_trading_name" id="legal_trading_name" class="form-control form-control-solid"
+                                           placeholder="Enter Legal/Trading Name"/>
+                                    <span id="legal_trading_name_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="registration_number" class="required form-label">Registration Number</label>
+                                    <input type="text" name="registration_number" id="registration_number" class="form-control form-control-solid"
+                                           placeholder="Enter Registration Number"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <x-common.country/>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <x-common.state/>
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <x-common.city/>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <label for="pin_code" class="required form-label">Zip Code/Postal Code</label>
+                                <input type="text" name="pin_code" id="pin_code" class="form-control form-control-solid">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="fv-row mt-10">
-                                    <label for="full_address" class="required fw-semibold fs-6 mb-2">Full
-                                        Address</label>
-                                    <textarea name="full_address" id="full_address"
-                                              class="form-control form-control-solid"></textarea>
+                                    <label for="address_line_1" class="required form-label">Address Line 1</label>
+                                    <textarea name="address_line_1" id="address_line_1"
+                                              class="form-control form-control-solid" placeholder="Enter address line 1"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="fv-row mt-10">
+                                    <label for="address_line_2" class="required form-label">Address Line 2</label>
+                                    <textarea name="address_line_2" id="address_line_2"
+                                              class="form-control form-control-solid" placeholder="Enter address line 2"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="fv-row mt-10">
-                                    <label for="description" class="required fw-semibold fs-6 mb-2">Description</label>
+                                    <label for="description" class="required form-label">Description</label>
                                     <textarea name="description" id="description"
-                                              class="form-control form-control-solid"></textarea>
+                                              class="form-control form-control-solid" placeholder="Enter company description..."></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Step 2 --}}
+                    {{-- Step 3 --}}
+                    <div data-kt-stepper-element="content">
+                        <div class="row w-100">
+                            <!-- PANCARD -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="pancard" class="required form-label">PANCARD</label>
+                                    <input type="text" name="pancard" id="pancard" class="form-control form-control-solid" placeholder="Enter PANCARD"/>
+                                </div>
+                            </div>
+
+                            <!-- GST Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="gst_number" class="required form-label">GST Number</label>
+                                    <input type="text" name="gst_number" id="gst_number" class="form-control form-control-solid" placeholder="Enter GST Number"/>
+                                </div>
+                            </div>
+
+                            <!-- LIN Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="lin_number" class="required form-label">LIN Number</label>
+                                    <input type="text" name="lin_number" id="lin_number" class="form-control form-control-solid" placeholder="Enter LIN Number"/>
+                                </div>
+                            </div>
+
+                            <!-- CIN Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="cin_number" class="required form-label">CIN Number</label>
+                                    <input type="text" name="cin_number" id="cin_number" class="form-control form-control-solid" placeholder="Enter CIN Number"/>
+                                </div>
+                            </div>
+
+                            <!-- TAN Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="tan_number" class="required form-label">TAN Number</label>
+                                    <input type="text" name="tan_number" id="tan_number" class="form-control form-control-solid" placeholder="Enter TAN Number"/>
+                                </div>
+                            </div>
+
+                            <!-- ESIC Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="esic_number" class="required form-label">ESIC Number</label>
+                                    <input type="text" name="esic_number" id="esic_number" class="form-control form-control-solid" placeholder="Enter ESIC Number"/>
+                                </div>
+                            </div>
+
+                            <!-- EPF Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="epf_number" class="required form-label">EPF Number</label>
+                                    <input type="text" name="epf_number" id="epf_number" class="form-control form-control-solid" placeholder="Enter EPF Number"/>
+                                </div>
+                            </div>
+
+                            <!-- MSE/AADHAR UDHYAM -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="aadhar_udhyam" class="required form-label">MSE/AADHAR UDHYAM</label>
+                                    <input type="text" name="aadhar_udhyam" id="aadhar_udhyam" class="form-control form-control-solid" placeholder="Enter MSE/AADHAR UDHYAM"/>
+                                </div>
+                            </div>
+
+                            <!-- DIPT Certificate Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="dipt_certificate_number" class="required form-label">DIPT Certificate Number</label>
+                                    <input type="text" name="dipt_certificate_number" id="dipt_certificate_number" class="form-control form-control-solid" placeholder="Enter DIPT Certificate Number"/>
+                                </div>
+                            </div>
+
+                            <!-- CMMI Level -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="cmmi_level" class="required form-label">CMMI Level</label>
+                                    <input type="text" name="cmmi_level" id="cmmi_level" class="form-control form-control-solid" placeholder="Enter CMMI Level"/>
+                                </div>
+                            </div>
+
+                            <!-- ISO Certification (Yes/No) -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="iso_certification" class="form-label">ISO Certification</label>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="iso_certification" id="iso_yes" class="form-check-input" value="yes" onchange="toggleFileInput()"/>
+                                        <label for="iso_yes" class="form-check-label">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" name="iso_certification" id="iso_no" class="form-check-input" value="no" onchange="toggleFileInput()"/>
+                                        <label for="iso_no" class="form-check-label">No</label>
+                                    </div>
+                                    <!-- File Upload Input for ISO Certification -->
+                                    <input type="file" name="iso_certification_file" id="iso_certification_file" class="form-control form-control-solid" style="display: none;"/>
+                                </div>
+                            </div>
+
+                            <!-- Ministry Name -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="ministry_name" class="required form-label">Ministry Name</label>
+                                    <input type="text" name="ministry_name" id="ministry_name" class="form-control form-control-solid" placeholder="Enter Ministry Name"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="row w-100">
+                                    <!-- Registered Address -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="mb-10">
+                                            <label for="registered_address" class="required form-label">Registered Address</label>
+                                            <textarea name="registered_address" id="registered_address" class="form-control form-control-solid" placeholder="Enter Registered Address"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Correspondence/Corporate Office Address -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="mb-10">
+                                            <label for="corporate_office_address" class="required form-label">Correspondence/Corporate Office Address</label>
+                                            <textarea name="corporate_office_address" id="corporate_office_address" class="form-control form-control-solid" placeholder="Enter Correspondence/Corporate Office Address"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Billing Address -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="mb-10">
+                                            <label for="billing_address" class="required form-label">Billing Address</label>
+                                            <textarea name="billing_address" id="billing_address" class="form-control form-control-solid" placeholder="Enter Billing Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Step 4 --}}
                     <div data-kt-stepper-element="content">
                         <div class="row w-100">
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -123,14 +325,14 @@
                         </div>
                     </div>
 
-                    {{-- Step 3 --}}
+                    {{-- Step 5 --}}
                     <div data-kt-stepper-element="content">
                         <div>
                             <x-admin.common.module-component/>
                         </div>
                     </div>
 
-                    {{-- Step 4 --}}
+                    {{-- Step 6 --}}
                     <div data-kt-stepper-element="content">
                         <div class="d-flex w-100 justify-content-center">
                             <x-admin.license.generate-licence/>

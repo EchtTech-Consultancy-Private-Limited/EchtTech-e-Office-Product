@@ -17,9 +17,14 @@ return new class extends Migration
             $table->foreignId('state_id');
             $table->foreignId('city_id');
             $table->string('company_name');
+            $table->string('gov_tax_number_ein')->nullable();
+            $table->string('legal_trading_name')->nullable();
+            $table->string('registration_number')->unique();
             $table->text('description')->nullable();
             $table->string('website')->nullable();
             $table->string('phone')->nullable();
+            $table->string('address_line_1')->nullable();
+            $table->string('address_line_2')->nullable();
             $table->string('full_address')->nullable();
             $table->string('pincode')->nullable();
             $table->timestamps();
