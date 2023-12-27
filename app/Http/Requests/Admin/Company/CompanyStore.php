@@ -22,8 +22,20 @@ class CompanyStore extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            ''
+            'app_name' => 'required',
+            'company_name' => 'required',
+            'govt_tax_ein_number' => 'required',
+            'legal_trading_name' => 'required',
+            'registration_number' => 'required|unique:companies,registration_number',
+            'country' => 'required',
+            'state' => 'required',
+            'city' => 'required',
+            'pin_code' => 'required',
+            'address_line_1' => 'required',
+            'address_line_2' => 'nullable',
+            'description' => 'nullable',
+            'logo' => 'required|image|mimes:jpeg,png,jpg|max:1024',
+            'database' => 'required|exists:company_databases,id',
         ];
     }
 }

@@ -22,5 +22,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         // License routes
         Route::post('generate-license',[LicenseController::class,"generate"]);
+        Route::post('generate-username',[CompanyController::class,"generateUsername"]);
+        Route::post('save_db_details',[CompanyController::class,"saveDatabase"]);
+        Route::post('save_companies_basic_details',[CompanyController::class,"saveBasicDetails"]);
+        Route::post('save-business-details',[CompanyController::class,"saveBusinessDetails"]);
     });
 });

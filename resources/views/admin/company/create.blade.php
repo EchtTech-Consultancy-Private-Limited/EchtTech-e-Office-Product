@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <hr/>
-                <form class="mt-7" novalidate="novalidate" id="kt_create_account_form">
+                <form class="mt-7" novalidate="novalidate" id="kt_create_account_form" method="post">
                     {{-- Step 1 --}}
                     <div class="current" data-kt-stepper-element="content">
                         <div class="row w-100">
@@ -97,6 +97,7 @@
                                     <label for="registration_number" class="required form-label">Registration Number</label>
                                     <input type="text" name="registration_number" id="registration_number" class="form-control form-control-solid"
                                            placeholder="Enter Registration Number"/>
+                                    <span id="registration_number_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3">
@@ -111,24 +112,26 @@
                             <div class="col-lg-3 col-md-3 col-sm-3">
                                 <label for="pin_code" class="required form-label">Zip Code/Postal Code</label>
                                 <input type="text" name="pin_code" id="pin_code" class="form-control form-control-solid">
+                                <span id="pin_code_error" class="text-danger"></span>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="fv-row mt-10">
                                     <label for="address_line_1" class="required form-label">Address Line 1</label>
                                     <textarea name="address_line_1" id="address_line_1"
                                               class="form-control form-control-solid" placeholder="Enter address line 1"></textarea>
+                                    <span id="address_line_1_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="fv-row mt-10">
-                                    <label for="address_line_2" class="required form-label">Address Line 2</label>
+                                    <label for="address_line_2" class="form-label">Address Line 2</label>
                                     <textarea name="address_line_2" id="address_line_2"
                                               class="form-control form-control-solid" placeholder="Enter address line 2"></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="fv-row mt-10">
-                                    <label for="description" class="required form-label">Description</label>
+                                    <label for="description" class="form-label">Description</label>
                                     <textarea name="description" id="description"
                                               class="form-control form-control-solid" placeholder="Enter company description..."></textarea>
                                 </div>
@@ -144,6 +147,7 @@
                                 <div class="mb-10">
                                     <label for="pancard" class="required form-label">PANCARD</label>
                                     <input type="text" name="pancard" id="pancard" class="form-control form-control-solid" placeholder="Enter PANCARD"/>
+                                    <span id="pancard_error" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -152,22 +156,7 @@
                                 <div class="mb-10">
                                     <label for="gst_number" class="required form-label">GST Number</label>
                                     <input type="text" name="gst_number" id="gst_number" class="form-control form-control-solid" placeholder="Enter GST Number"/>
-                                </div>
-                            </div>
-
-                            <!-- LIN Number -->
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="lin_number" class="required form-label">LIN Number</label>
-                                    <input type="text" name="lin_number" id="lin_number" class="form-control form-control-solid" placeholder="Enter LIN Number"/>
-                                </div>
-                            </div>
-
-                            <!-- CIN Number -->
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="cin_number" class="required form-label">CIN Number</label>
-                                    <input type="text" name="cin_number" id="cin_number" class="form-control form-control-solid" placeholder="Enter CIN Number"/>
+                                    <span id="gst_number_error" class="text-danger"></span>
                                 </div>
                             </div>
 
@@ -176,13 +165,23 @@
                                 <div class="mb-10">
                                     <label for="tan_number" class="required form-label">TAN Number</label>
                                     <input type="text" name="tan_number" id="tan_number" class="form-control form-control-solid" placeholder="Enter TAN Number"/>
+                                    <span id="tan_number_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- CIN Number -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="cin_number" class="required form-label">CIN Number</label>
+                                    <input type="text" name="cin_number" id="cin_number" class="form-control form-control-solid" placeholder="Enter CIN Number"/>
+                                    <span id="cin_number_error" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <!-- ESIC Number -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="esic_number" class="required form-label">ESIC Number</label>
+                                    <label for="esic_number" class="form-label">ESIC Number</label>
                                     <input type="text" name="esic_number" id="esic_number" class="form-control form-control-solid" placeholder="Enter ESIC Number"/>
                                 </div>
                             </div>
@@ -190,57 +189,59 @@
                             <!-- EPF Number -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="epf_number" class="required form-label">EPF Number</label>
+                                    <label for="epf_number" class="form-label">EPF Number</label>
                                     <input type="text" name="epf_number" id="epf_number" class="form-control form-control-solid" placeholder="Enter EPF Number"/>
                                 </div>
                             </div>
 
-                            <!-- MSE/AADHAR UDHYAM -->
+                            <!-- LIN Number -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="aadhar_udhyam" class="required form-label">MSE/AADHAR UDHYAM</label>
+                                    <label for="lin_number" class="form-label">LIN Number</label>
+                                    <input type="text" name="lin_number" id="lin_number" class="form-control form-control-solid" placeholder="Enter LIN Number"/>
+                                </div>
+                            </div>
+
+                            <!-- MSE/AADHAR UDHYAM -->
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="aadhar_udhyam" class="form-label">MSE/AADHAR UDHYAM</label>
                                     <input type="text" name="aadhar_udhyam" id="aadhar_udhyam" class="form-control form-control-solid" placeholder="Enter MSE/AADHAR UDHYAM"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="aadhar_udhyam_type" class="form-label">MSE/AADHAR UDHYAM TYPE</label>
+                                    <select id="aadhar_udhyam_type" class="form-control form-control-solid">
+                                        <option value="" selected>Select Type</option>
+                                        <option value="micro">Micro</option>
+                                        <option value="service">Service</option>
+                                    </select>
+                                    <span class="text-danger" id="aadhar_udhyam_error"></span>
                                 </div>
                             </div>
 
                             <!-- DIPT Certificate Number -->
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="mb-10">
-                                    <label for="dipt_certificate_number" class="required form-label">DIPT Certificate Number</label>
-                                    <input type="text" name="dipt_certificate_number" id="dipt_certificate_number" class="form-control form-control-solid" placeholder="Enter DIPT Certificate Number"/>
+                                    <label for="dpiit_certificate_number" class="form-label">DPIIT Certificate Number</label>
+                                    <input type="text" name="dpiit_certificate_number" id="dpiit_certificate_number" class="form-control form-control-solid" placeholder="Enter DIPT Certificate Number"/>
                                 </div>
                             </div>
 
                             <!-- CMMI Level -->
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="mb-10">
-                                    <label for="cmmi_level" class="required form-label">CMMI Level</label>
+                                    <label for="cmmi_level" class="form-label">CMMI Level</label>
                                     <input type="text" name="cmmi_level" id="cmmi_level" class="form-control form-control-solid" placeholder="Enter CMMI Level"/>
                                 </div>
                             </div>
-
-                            <!-- ISO Certification (Yes/No) -->
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="iso_certification" class="form-label">ISO Certification</label>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" name="iso_certification" id="iso_yes" class="form-check-input" value="yes" onchange="toggleFileInput()"/>
-                                        <label for="iso_yes" class="form-check-label">Yes</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" name="iso_certification" id="iso_no" class="form-check-input" value="no" onchange="toggleFileInput()"/>
-                                        <label for="iso_no" class="form-check-label">No</label>
-                                    </div>
-                                    <!-- File Upload Input for ISO Certification -->
-                                    <input type="file" name="iso_certification_file" id="iso_certification_file" class="form-control form-control-solid" style="display: none;"/>
-                                </div>
-                            </div>
-
                             <!-- Ministry Name -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
                                     <label for="ministry_name" class="required form-label">Ministry Name</label>
                                     <input type="text" name="ministry_name" id="ministry_name" class="form-control form-control-solid" placeholder="Enter Ministry Name"/>
+                                    <span id="ministry_name_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -250,6 +251,7 @@
                                         <div class="mb-10">
                                             <label for="registered_address" class="required form-label">Registered Address</label>
                                             <textarea name="registered_address" id="registered_address" class="form-control form-control-solid" placeholder="Enter Registered Address"></textarea>
+                                            <span id="registered_address_error" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -258,6 +260,7 @@
                                         <div class="mb-10">
                                             <label for="corporate_office_address" class="required form-label">Correspondence/Corporate Office Address</label>
                                             <textarea name="corporate_office_address" id="corporate_office_address" class="form-control form-control-solid" placeholder="Enter Correspondence/Corporate Office Address"></textarea>
+                                            <span id="corporate_office_address_error" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -266,6 +269,34 @@
                                         <div class="mb-10">
                                             <label for="billing_address" class="required form-label">Billing Address</label>
                                             <textarea name="billing_address" id="billing_address" class="form-control form-control-solid" placeholder="Enter Billing Address"></textarea>
+                                            <span id="billing_address_error" class="text-danger"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- ISO Certification (Yes/No) -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6">
+                                        <div class="mb-10">
+                                            <label for="iso_certification" class="form-label">ISO Certification</label>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" name="iso_certification" id="iso_yes" class="form-check-input" value="yes" onchange="toggleFileInput()"/>
+                                                <label for="iso_yes" class="form-check-label">Yes</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" name="iso_certification" id="iso_no" class="form-check-input" value="no" onchange="toggleFileInput()"/>
+                                                <label for="iso_no" class="form-check-label">No</label>
+                                            </div>
+                                            <div id="iso_certification_file_section">
+                                                <div class="d-flex flex-stack w-100" id="originalFields">
+                                                    <div>
+                                                        <!-- File Upload Input for ISO Certification -->
+                                                        <input type="file" name="iso_certification_file[]" class="form-control form-control-solid" style="display: none;"/>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" class="btn btn-primary remove_iso_field_btn" id="add_more_iso_certificate_btn" onclick="addFileInput()">Add More</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="duplicateFieldsSection"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -281,6 +312,7 @@
                                     <label for="phone" class="required form-label">Phone</label>
                                     <input type="text" name="phone" id="phone" class="form-control form-control-solid"
                                            placeholder="Enter phone number"/>
+                                    <span id="phone_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -336,6 +368,38 @@
                     <div data-kt-stepper-element="content">
                         <div class="d-flex w-100 justify-content-center">
                             <x-admin.license.generate-licence/>
+                        </div>
+                    </div>
+
+                    {{-- Step 7 --}}
+                    <div data-kt-stepper-element="content">
+                        <div class="row w-100" id="lastStepContent">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="email" class="required form-label">Email</label>
+                                    <input type="text" name="email" id="email" class="form-control form-control-solid"
+                                           placeholder="Enter email address"/>
+                                    <span id="email_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="username" class="required form-label">Username</label>
+                                    <input type="text" name="username" id="username" class="form-control form-control-solid"
+                                           placeholder="" readonly/>
+                                    <span id="username_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="d-flex justify-content-end w-100">
+                                    <button type="button" id="createAccountSaveAllDataBtn" class="btn btn-primary">Create Account</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="lastStepSavedContentAndProgressSection">
+                            <div id="db_saved_success"></div>
+                            <div id="basic_data_saved_success"></div>
+                            <div id="business_details_saved_success"></div>
                         </div>
                     </div>
                 </form>

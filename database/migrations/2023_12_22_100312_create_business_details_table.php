@@ -20,13 +20,14 @@ return new class extends Migration
             $table->string('esic_number')->nullable();
             $table->string('epf_number')->nullable();
             $table->string('aadhar_udhyam')->nullable();
-            $table->string('dipt_certificate_number')->nullable();
+            $table->string('aadhar_udhyam_type')->nullable();
+            $table->string('dpiit_certificate_number')->nullable();
             $table->string('cmmi_level')->nullable();
-            $table->string('iso_certification_file')->nullable();
             $table->string('ministry_name')->nullable();
             $table->string('registered_address')->nullable();
             $table->string('corporate_office_address')->nullable();
             $table->string('billing_address')->nullable();
+            $table->boolean('iso_certification_file')->default(false);
             $table->timestamps();
         });
     }
