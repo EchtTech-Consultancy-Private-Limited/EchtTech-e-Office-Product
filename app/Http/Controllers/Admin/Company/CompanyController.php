@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Company\CompanyStore;
 use App\Models\BusinessDetail;
 use App\Models\Company;
 use App\Models\CompanyDatabase;
+use App\Models\ContactDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -164,5 +165,21 @@ class CompanyController extends Controller
         if ($businessDetail){
             return response()->json(['success' => true, 'businessDetail' => $businessDetail]);
         }
+    }
+
+    public function saveContactDetails(Request $request){
+        $contactDetails = ContactDetail::create([
+            'company_id' => $request->company_id,
+            'phone' => $request->phone,
+            'fax' => $request->fax,
+            'website' => $request->website,
+            'facebook' => $request->facebook,
+            'twitter' => $request->twitter,
+            'linkedin' => $request->linkedin,
+        ]);
+        if ($contactDetails){
+            return response()->json(['success' => true,'data' => $contactDetails]);
+        }
+        return response()->json(['success'=>false,"message"=>'contact details not saved. something went wrong!']);
     }
 }

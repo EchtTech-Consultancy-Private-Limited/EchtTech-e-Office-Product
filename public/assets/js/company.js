@@ -276,6 +276,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         }
     }
     stepper.goNext(); // go next step
+
 });
 
 // Handle previous step
@@ -483,16 +484,96 @@ $(document).ready(function () {
     }
 
     function handleSaveBusinessDetailsSuccess(response) {
-        console.log(response);
 
         // Display success message with fade animation, strong text, and green color
         $("#business_details_saved_success")
             .html("<strong>3. Business Details Saved Successfully</strong>")
             .fadeIn(3000)
             .css({ 'color': 'green', 'display': 'block' });
-
+            saveContactDetails(response)
             // .delay(3000)
             // .fadeOut(1000);
     }
 
+    function saveContactDetails(companyDetails){
+        const company_id = companyDetails.businessDetail.company_id;
+        const phone = $("#phone").val();
+        const fax = $("#fax").val();
+        const website = $("#website").val();
+        const facebook = $("#facebook").val();
+        const twitter = $("#twitter").val();
+        const linkedin = $("#linkedin").val();
+
+        const formData = new FormData();
+        formData.append('company_id', company_id);
+        formData.append('phone', phone);
+        formData.append('fax', fax);
+        formData.append('website', website);
+        formData.append('facebook', facebook);
+        formData.append('twitter', twitter);
+        formData.append('linkedin', linkedin);
+
+        $.ajax({
+            url: '/admin/save-company-contact-details',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success === true) {
+                    $("#contact_details_saved_success")
+                        .html("<strong>4. Contact details saved successfully!</strong>")
+                        .fadeIn(3000)
+                        .css({ 'color': 'green', 'display': 'block' });
+
+                    assignLicense(response);
+                }
+            },
+            error: function(error) {
+                // Handle the error response
+                console.error('Error saving data:', error);
+            }
+        });
+    }
+
+    function assignLicense(companyDetail) {
+        const company_id = companyDetail.data.company_id;
+        const license_key = $("#license_key").val();
+        const duration = $("#duration").val();
+        const started_at = $("#validFromDate").val();
+        const expired_at = $("#validToDate").val();
+
+        const formData = new FormData();
+        formData.append('company_id', company_id);
+        formData.append('license_key', license_key);
+        formData.append('duration', duration);
+        formData.append('started_at', started_at);
+        formData.append('expired_at', expired_at);
+
+        $.ajax({
+            url: '/admin/license-assign',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success === true) {
+                    $("#license_assigned_success")
+                        .html("<strong>5. License assigned successfully!</strong>")
+                        .fadeIn(3000)
+                        .css({ 'color': 'green', 'display': 'block' });
+                }
+            },
+            error: function(error) {
+                // Handle the error response
+                console.error('Error assigning license:', error);
+            }
+        });
+    }
 });

@@ -400,6 +400,8 @@
                             <div id="db_saved_success"></div>
                             <div id="basic_data_saved_success"></div>
                             <div id="business_details_saved_success"></div>
+                            <div id="contact_details_saved_success"></div>
+                            <div id="license_assigned_success"></div>
                         </div>
                     </div>
                 </form>

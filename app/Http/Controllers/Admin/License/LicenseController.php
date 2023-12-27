@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\License;
 
 use App\Http\Controllers\Controller;
+use App\Models\CompanyLicense;
 use App\Models\License;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,5 +32,20 @@ class LicenseController extends Controller
         }
 
         return $licenseKey;
+    }
+
+    public function assignLicense(Request $request){
+        $license = License::create(['key'=>$request->license_key,'created_by' => auth()->guard('admin')->id()]);
+        $assigned = CompanyLicense::create([
+            'company_id' => $request->company_id,
+            'license_id' => $license->id,
+            'license_key' => $license->key,
+            'started_at' => $request->started_at,
+            'expired_at' => $request->expired_at,
+            'status' => 'Valid',
+            'is_expired' => false,
+        ]);
+
+        return response()->json(['success'=>true,'data'=>$assigned]);
     }
 }
