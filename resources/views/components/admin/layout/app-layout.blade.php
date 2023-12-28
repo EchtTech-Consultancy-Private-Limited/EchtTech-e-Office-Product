@@ -20,6 +20,7 @@
     <link href="{{ asset('assets/css/common-style.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+<x-admin.common.flash-message/>
 <div class="d-flex flex-column flex-root">
     <div class="page d-flex flex-row flex-column-fluid">
         <x-admin.include.side-bar/>

@@ -6,7 +6,7 @@ var stepper = new KTStepper(element);
 
 // Handle next step
 stepper.on("kt.stepper.next", function (stepper) {
-    // company setup form validations
+// company setup form validations
 
     const app_name = $('#app_name').val();
     const app_name_error = $('#app_name_error');
@@ -80,6 +80,25 @@ stepper.on("kt.stepper.next", function (stepper) {
             company_name_error.text('');
         }
 
+        const company_email = $("#company_email").val();
+        const company_email_error = $("#company_email_error");
+        if (company_email === ""){
+            company_email_error.text("Please enter company email");
+            return;
+        }else{
+            company_email_error.text('');
+        }
+
+        const registration_number = $('#registration_number').val();
+        const registration_number_error = $('#registration_number_error');
+
+        if (registration_number === ""){
+            registration_number_error.text("Please enter registration number");
+            return;
+        }else{
+            registration_number_error.text('');
+        }
+
         const govt_tax_ein_number = $('#gov_tax_number_ein').val();
         const govt_tax_ein_number_error = $('#gov_tax_number_ein_error');
 
@@ -98,16 +117,6 @@ stepper.on("kt.stepper.next", function (stepper) {
             return;
         }else{
             legal_trading_name_error.text('');
-        }
-
-        const registration_number = $('#registration_number').val();
-        const registration_number_error = $('#registration_number_error');
-
-        if (registration_number === ""){
-            registration_number_error.text("Please enter registration number");
-            return;
-        }else{
-            registration_number_error.text('');
         }
 
         const country = $('#country').val();
@@ -252,7 +261,37 @@ stepper.on("kt.stepper.next", function (stepper) {
 
     }
 
+    if (stepper.currentStepIndex === 5){
+        var checkboxes = document.querySelectorAll('input[name="module[]"]:checked');
+        if (checkboxes.length === 0) {
+            Swal.fire({
+                position: "middle",
+                icon: "warning",
+                title: "Please select at least one module.",
+                showConfirmButton: false,
+                timer: 3000
+            });
+            $("#module_error").text("Please select at least one module.");
+            return;
+        }
+    }
+
     if (stepper.currentStepIndex === 6) {
+        const license_key = $("#license_key").val();
+        const license_key_error = $("#license_key_error");
+        if (license_key === "") {
+            Swal.fire({
+                position: "middle",
+                icon: "warning",
+                title: "Please generate a license key before proceeding.",
+                showConfirmButton: false,
+                timer: 3000
+            });
+            license_key_error.text("Please generate a license key before proceeding.");
+            return;
+        }
+
+        // generate username
         const companyName = $("#company_name").val();
         if (companyName) {
             $.ajax({
@@ -340,6 +379,19 @@ $(document).ready(function () {
     $("#createAccountSaveAllDataBtn").click(function (e) {
         e.preventDefault();
 
+        const email = $("#email").val();
+        const emailError = $("#email_error");
+
+        if (email === "") {
+            emailError.text("Please enter your email address.");
+            return;
+        } else if (!isValidEmail(email)) {
+            emailError.text("Please enter a valid email address.");
+            return;
+        }
+
+        checkEmailAndUserNameDuplicate();
+
         // Database Details
         const dbName = $("#db_name").val();
 
@@ -355,8 +407,9 @@ $(document).ready(function () {
                 },
                 success: function (response) {
                     if (response.success === true) {
+
                         $('#lastStepContent').slideUp('slow');
-                        $("#db_saved_success").html("1. Database <strong>" + response.database.name + "</strong> created successfully").fadeIn(1000).css('color', 'green');
+                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> "+response.database.name+" </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
                         saveBasicDetail(response.database.id);
                     } else {
                         console.error('Error saving database details:', response.error);
@@ -364,6 +417,9 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, status, error) {
+                    // Hide loading spinner on error
+                    $("#loadingSpinner").hide();
+
                     console.error('Error saving database details:', error);
                     // Handle error, display error message, etc.
                 }
@@ -371,9 +427,15 @@ $(document).ready(function () {
         }
     });
 
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     function saveBasicDetail(databaseId) {
         const app_name = $('#app_name').val();
         const company_name = $('#company_name').val();
+        const company_email = $('#company_email').val();
         const govt_tax_ein_number = $('#gov_tax_number_ein').val();
         const legal_trading_name = $('#legal_trading_name').val();
         const registration_number = $('#registration_number').val();
@@ -389,6 +451,7 @@ $(document).ready(function () {
         const formData = new FormData();
         formData.append('app_name', app_name);
         formData.append('company_name', company_name);
+        formData.append('company_email', company_email);
         formData.append('govt_tax_ein_number', govt_tax_ein_number);
         formData.append('legal_trading_name', legal_trading_name);
         formData.append('registration_number', registration_number);
@@ -529,12 +592,52 @@ $(document).ready(function () {
                         .fadeIn(3000)
                         .css({ 'color': 'green', 'display': 'block' });
 
+                    assignModules(response);
                     assignLicense(response);
                 }
             },
             error: function(error) {
                 // Handle the error response
                 console.error('Error saving data:', error);
+            }
+        });
+    }
+
+    function assignModules(companyDetail){
+        const company_id = companyDetail.data.company_id;
+        var selectedModules = $("input[name='module[]']:checked").map(function(){
+            return $(this).val();
+        }).get();
+
+        if (selectedModules.length === 0) {
+            $("#module_error").text("Please select at least one module.");
+            return;
+        }
+
+        // Ajax request to save selected modules
+        $.ajax({
+            type: 'POST',
+            url: '/admin/save_selected_modules',
+            data: {
+                modules: selectedModules,
+                company_id:company_id
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                if (response.success === true) {
+                    $("#modules_assigned_success")
+                        .html("<strong>5. Modules assigned successfully</strong>")
+                        .fadeIn(1000);
+                } else {
+                    // Handle error, display error message, etc.
+                    console.error('Error saving modules:', response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle error, display error message, etc.
+                console.error('Error saving modules:', error);
             }
         });
     }
@@ -565,9 +668,11 @@ $(document).ready(function () {
             success: function(response) {
                 if (response.success === true) {
                     $("#license_assigned_success")
-                        .html("<strong>5. License assigned successfully!</strong>")
+                        .html("<strong>6. License assigned successfully!</strong>")
                         .fadeIn(3000)
                         .css({ 'color': 'green', 'display': 'block' });
+
+                    saveUserDetails(companyDetail);
                 }
             },
             error: function(error) {
@@ -576,4 +681,125 @@ $(document).ready(function () {
             }
         });
     }
+
+    function saveUserDetails(companyDetail){
+        $("#user_details_saved_success").html("<p>Please wait..</p> <svg style='height: 50px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+        const company_id = companyDetail.data.company_id;
+        const name = $("#name").val();
+        const email = $("#email").val();
+        const username = $("#username").val();
+        const mobile = $("#mobile").val();
+
+        const formData = new FormData();
+        formData.append('company_id', company_id);
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('username', username);
+        formData.append('mobile', mobile);
+
+        $.ajax({
+            url: '/admin/bind_user_with_company',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success === true) {
+                    $("#user_details_saved_success").empty();
+                    $("#user_details_saved_success")
+                        .html("<strong>7. User details saved successfully!</strong>")
+                        .fadeIn(3000)
+                        .css({ 'color': 'green', 'display': 'block' });
+
+                    setTimeout(function () {
+                        showConfirmationPopup();
+                    }, 2000);
+                }
+            },
+            error: function(error) {
+                console.error('Error saving user details:', error);
+                // Handle the error response, display error message, etc.
+                const errors = error.responseJSON.errors;
+                for (const key in errors){
+                    if (key === 'email') {
+                        $("#email_error").text(errors[key][0]);
+                    }
+                    if (key === 'username') {
+                        $("#username_error").text(errors[key][0]);
+                    }
+                }
+            }
+        });
+    }
+
+    function showConfirmationPopup() {
+        Swal.fire({
+            icon: 'success',
+            title: 'Operations Completed',
+            html: '<table style="text-align: left; width: 100%;">' +
+                '<tr><td><strong>Database:</strong></td><td>Created</td></tr>' +
+                '<tr><td><strong>Basic Details:</strong></td><td>Saved</td></tr>' +
+                '<tr><td><strong>Business Details:</strong></td><td>Saved</td></tr>' +
+                '<tr><td><strong>Contact Details:</strong></td><td>Saved</td></tr>' +
+                '<tr><td><strong>Modules:</strong></td><td>Assigned</td></tr>' +
+                '<tr><td><strong>License:</strong></td><td>Assigned</td></tr>' +
+                '<tr><td><strong>User Details:</strong></td><td>Saved</td></tr>' +
+                '<tr><td><strong>Welcome mail:</strong></td><td>Sent</td></tr>' +
+                '</table>',
+            confirmButtonColor: '#28a745', // Green color
+            confirmButtonText: 'Confirm',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect to admin/dashboard
+                window.location.href = '/admin/companies';
+            }
+        });
+    }
+
+    function checkEmailAndUserNameDuplicate() {
+        const email = $("#email").val();
+        const username = $("#username").val();
+
+        const formData = new FormData();
+        formData.append('email', email);
+        formData.append('username', username);
+
+        $.ajax({
+            url: '/admin/check_email_and_user_name',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.success === true) {
+                    // No duplicates found, continue with your logic or form submission
+                    console.log('No duplicates found.');
+                    // You might want to enable form submission or display a success message
+                } else {
+                    // Duplicates found, handle accordingly
+                    console.log('Duplicates found.');
+                    // You might want to disable form submission or display an error message
+                }
+            },
+            error: function(error) {
+                console.error('Error checking duplicates:', error.responseJSON.errors);
+                // Handle the error, display an error message, etc.
+                const errorData = error.responseJSON.errors;
+                for (const key in errorData) {
+                    if (key === 'email') {
+                        $("#email_error").text(errorData[key][0]);
+                    } else if (key === 'username') {
+                        $("#username_error").text(errorData[key][0]);
+                    }
+                }
+            }
+        });
+    }
+
 });

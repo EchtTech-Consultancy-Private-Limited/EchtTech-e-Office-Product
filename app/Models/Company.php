@@ -18,6 +18,7 @@ class Company extends Model
         'city_id',
         'company_database_id',
         'company_name',
+        'company_email',
         'app_name',
         'logo',
         'logo_path',
@@ -50,5 +51,10 @@ class Company extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function contactDetails(): HasOne
+    {
+        return $this->hasOne(ContactDetail::class);
     }
 }

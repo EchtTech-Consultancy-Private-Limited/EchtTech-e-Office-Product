@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('city_id');
             $table->foreignId('company_database_id')->constrained('company_databases');
             $table->string('company_name');
+            $table->string('company_email');
             $table->string('app_name');
             $table->string('logo')->nullable();
             $table->string('logo_path')->nullable();

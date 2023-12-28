@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\Admin\Company;
 
+use App\Helpers\EmailHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Company\CompanyStore;
 use App\Models\BusinessDetail;
 use App\Models\Company;
 use App\Models\CompanyDatabase;
 use App\Models\ContactDetail;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserCompany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
@@ -21,7 +26,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        return view('admin.company.index');
+        $companies = Company::all();
+        return view('admin.company.index',compact('companies'));
     }
 
     /**
@@ -127,6 +133,7 @@ class CompanyController extends Controller
             'city_id' => $request->city,
             'company_database_id' => $request->database,
             'company_name' => $request->company_name,
+            'company_email' => $request->company_email,
             'app_name' => $request->app_name,
             'logo' => $logoFileName,
             'logo_path' => $fullPath,
@@ -181,5 +188,55 @@ class CompanyController extends Controller
             return response()->json(['success' => true,'data' => $contactDetails]);
         }
         return response()->json(['success'=>false,"message"=>'contact details not saved. something went wrong!']);
+    }
+
+    public function assignCompanyToUser(Request $request) {
+        try {
+            // Check if the email or username is already used
+            $this->validate($request, [
+                'email' => 'required|email|unique:users,email',
+                'username' => 'required|unique:users,username',
+            ]);
+
+            $role = Role::where('name', 'admin')->first()->id;
+
+            // Create a new user
+            $user = User::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make(Str::random(10)), // Hash the password
+                'mobile' => $request->mobile,
+                'role_id' => $role
+            ]);
+
+            // Create a record in the UserCompany table
+            $companyUser = UserCompany::create([
+                'company_id' => $request->company_id,
+                'user_id' => $user->id
+            ]);
+
+            $this->__sendWelcomeMail($user);
+
+            return response()->json(['success' => true, 'message' => 'User assigned to company successfully.']);
+        } catch (ValidationException $e) {
+            // Validation error, return the error messages
+            return response()->json(['success' => false, 'message' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            // Log the error for debugging purposes
+            \Log::error('Error assigning user to company: ' . $e->getMessage());
+
+            return response()->json(['success' => false, 'message' => 'Internal server error.'], 500);
+        }
+    }
+
+    private function __sendWelcomeMail($user){
+
+        $userCompany = $user->companyDetails;
+        $emailData = [
+            'email' => $user->email,
+            'company_name' => $userCompany->company->company_name ?? 'not found!',
+        ];
+        $sent = EmailHelper::sendWelcomeEmail($emailData);
     }
 }

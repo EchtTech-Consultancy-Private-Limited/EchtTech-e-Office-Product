@@ -76,6 +76,23 @@
                                     <span id="company_name_error" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="company_email" class="required form-label">Company
+                                        Email</label>
+                                    <input type="text" name="company_email" id="company_email" class="form-control form-control-solid"
+                                           placeholder="Enter company email"/>
+                                    <span id="company_email_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="registration_number" class="required form-label">Registration Number</label>
+                                    <input type="text" name="registration_number" id="registration_number" class="form-control form-control-solid"
+                                           placeholder="Enter Registration Number"/>
+                                    <span id="registration_number_error" class="text-danger"></span>
+                                </div>
+                            </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
                                     <label for="gov_tax_number_ein" class="required form-label">Government Tax Number/EIN</label>
@@ -90,14 +107,6 @@
                                     <input type="text" name="legal_trading_name" id="legal_trading_name" class="form-control form-control-solid"
                                            placeholder="Enter Legal/Trading Name"/>
                                     <span id="legal_trading_name_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="registration_number" class="required form-label">Registration Number</label>
-                                    <input type="text" name="registration_number" id="registration_number" class="form-control form-control-solid"
-                                           placeholder="Enter Registration Number"/>
-                                    <span id="registration_number_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-3">
@@ -374,6 +383,25 @@
                     {{-- Step 7 --}}
                     <div data-kt-stepper-element="content">
                         <div class="row w-100" id="lastStepContent">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="text-center"><h3>Setup Admin Account</h3></div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="name" class="required form-label">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control form-control-solid"
+                                           placeholder="Enter admin name"/>
+                                    <span id="name_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="mobile" class="required form-label">Mobile</label>
+                                    <input type="text" name="mobile" id="mobile" class="form-control form-control-solid"
+                                           placeholder="Enter mobile number"/>
+                                    <span id="mobile_error" class="text-danger"></span>
+                                </div>
+                            </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
                                     <label for="email" class="required form-label">Email</label>
@@ -401,7 +429,9 @@
                             <div id="basic_data_saved_success"></div>
                             <div id="business_details_saved_success"></div>
                             <div id="contact_details_saved_success"></div>
+                            <div id="modules_assigned_success"></div>
                             <div id="license_assigned_success"></div>
+                            <div id="user_details_saved_success"></div>
                         </div>
                     </div>
                 </form>

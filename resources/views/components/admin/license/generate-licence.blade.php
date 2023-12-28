@@ -20,6 +20,7 @@
                 <input type="hidden" id="validToDate">
                 <label for="license_key" class="form-label">License Key:</label>
                 <input type="text" class="form-control form-control-lg form-control-solid" name="license_key" id="license_key" readonly>
+                <span class="text-danger" id="license_key_error"></span>
             </div>
             <div id="licenseKeyData">
                 <div class="mb-3">

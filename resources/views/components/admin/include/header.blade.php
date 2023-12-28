@@ -2379,7 +2379,10 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="" class="menu-link px-5">Sign Out</a>
+                            <form action="{{ route('admin.logout') }}" method="post">
+                                @csrf
+                                <button type="submit" class="border-0 menu-link px-5 bg-danger text-white">Sign Out</button>
+                            </form>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu separator-->

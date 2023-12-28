@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,11 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Department::create([
+            'name' => 'HR',
+            'title' => 'Human Resources',
+            'description' => '',
+            'is_active' => true,
+        ]);
     }
 }
