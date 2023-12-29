@@ -75,7 +75,8 @@ $(document).ready(function () {
         var startSerial = (currentPage - 1) * perPage + 1; // Calculate starting serial number
 
         data.forEach(function (company, index) {
-
+            var createdAt = new Date(company.created_at);
+            var formattedDate = createdAt.toLocaleDateString('en-GB');
 
             var row = '<tr>' +
                 '<td>' + (startSerial + index) + '</td>' + // Updated serial number calculation
@@ -83,6 +84,7 @@ $(document).ready(function () {
                 '<td>' + company.company_name + '</td>' +
                 '<td>' + company.company_email + '</td>' +
                 '<td>' + company.contact_details.phone + '</td>' +
+                '<td>' + formattedDate + '</td>' +
                 '</tr>';
 
 

@@ -273,7 +273,7 @@ class CompanyController extends Controller
             $query->where('company_name', 'like', '%' . $search . '%');
         }
 
-
+        $query = $query->with('contactDetails');
 
         $departments = $query->paginate($perPage, ['*'], 'page', $page);
 
