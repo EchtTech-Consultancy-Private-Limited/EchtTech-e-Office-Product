@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -230,13 +231,52 @@ class CompanyController extends Controller
         }
     }
 
-    private function __sendWelcomeMail($user){
+    private function __sendWelcomeMail($user)
+    {
+        try {
+            $userCompany = $user->companyDetails;
+            $emailData = [
+                'email' => $user->email,
+                'company_name' => $userCompany->company->company_name ?? 'not found!',
+            ];
 
-        $userCompany = $user->companyDetails;
-        $emailData = [
-            'email' => $user->email,
-            'company_name' => $userCompany->company->company_name ?? 'not found!',
-        ];
-        $sent = EmailHelper::sendWelcomeEmail($emailData);
+            // Assuming EmailHelper::sendWelcomeEmail() returns a boolean indicating success
+            $sent = EmailHelper::sendWelcomeEmail($emailData);
+
+            if ($sent) {
+                // Additional logic after successfully sending the email
+                // For example, update the user's welcome email sent status in the database
+                $user->update(['welcome_email_sent' => true]);
+            } else {
+                // Handle the case where the email wasn't sent successfully
+                // Log an error or perform other error-handling actions
+                Log::error('Failed to send welcome email to ' . $user->email);
+            }
+        } catch (\Exception $e) {
+            // Log or handle the exception
+            Log::error('Exception in __sendWelcomeMail: ' . $e->getMessage());
+            // Optionally, you can throw the exception again if you want it to propagate
+            // throw $e;
+        }
+    }
+
+    public function companiesList(Request $request)
+    {
+        $perPage = $request->input('perPage', 10);
+        $page = $request->input('page', 1);
+        $search = $request->input('search', ''); // Get the search parameter from the request
+
+        $query = Company::query();
+
+        // Add the search condition if a search term is provided
+        if (!empty($search)) {
+            $query->where('company_name', 'like', '%' . $search . '%');
+        }
+
+
+
+        $departments = $query->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($departments);
     }
 }

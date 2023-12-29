@@ -37,6 +37,8 @@ class DepartmentController extends Controller
             'is_active' => 'boolean'
         ]);
 
+        $validatedData['is_active'] = $request->is_active ?? 0;
+
         $department = Department::create($validatedData);
 
         return Redirect::route('admin.departments.index')->with('success', 'Department created successfully');

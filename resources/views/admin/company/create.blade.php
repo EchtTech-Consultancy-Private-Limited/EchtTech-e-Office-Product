@@ -6,11 +6,14 @@
         <x-slot name="title">
             Add New Company
         </x-slot>
+        <x-slot name="headerButton">
+            <a href="{{ route('admin.companies.index') }}" class="btn btn-light-primary">Companies</a>
+        </x-slot>
         <x-slot name="body">
             <div class="stepper stepper-links d-flex flex-column" id="kt_create_account_stepper">
                 <div class="stepper-nav">
                     <div class="stepper-item current" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Basic Configuration</h3>
+                        <h3 class="stepper-title">Database Configuration</h3>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Basic Details</h3>
@@ -382,57 +385,62 @@
 
                     {{-- Step 7 --}}
                     <div data-kt-stepper-element="content">
-                        <div class="row w-100" id="lastStepContent">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="text-center"><h3>Setup Admin Account</h3></div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="name" class="required form-label">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control form-control-solid"
-                                           placeholder="Enter admin name"/>
-                                    <span id="name_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="mobile" class="required form-label">Mobile</label>
-                                    <input type="text" name="mobile" id="mobile" class="form-control form-control-solid"
-                                           placeholder="Enter mobile number"/>
-                                    <span id="mobile_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="email" class="required form-label">Email</label>
-                                    <input type="text" name="email" id="email" class="form-control form-control-solid"
-                                           placeholder="Enter email address"/>
-                                    <span id="email_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="username" class="required form-label">Username</label>
-                                    <input type="text" name="username" id="username" class="form-control form-control-solid"
-                                           placeholder="" readonly/>
-                                    <span id="username_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="d-flex justify-content-end w-100">
-                                    <button type="button" id="createAccountSaveAllDataBtn" class="btn btn-primary">Create Account</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="lastStepSavedContentAndProgressSection">
-                            <div id="db_saved_success"></div>
-                            <div id="basic_data_saved_success"></div>
-                            <div id="business_details_saved_success"></div>
-                            <div id="contact_details_saved_success"></div>
-                            <div id="modules_assigned_success"></div>
-                            <div id="license_assigned_success"></div>
-                            <div id="user_details_saved_success"></div>
-                        </div>
+                       <div style="display: block;">
+                           <div class="row w-100" id="lastStepContent">
+                               <div class="col-lg-12 col-md-12 col-sm-12">
+                                   <div class="text-center"><h3>Setup Admin Account</h3></div>
+                               </div>
+                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                   <div class="mb-10">
+                                       <label for="name" class="required form-label">Name</label>
+                                       <input type="text" name="name" id="name" class="form-control form-control-solid"
+                                              placeholder="Enter admin name"/>
+                                       <span id="name_error" class="text-danger"></span>
+                                   </div>
+                               </div>
+                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                   <div class="mb-10">
+                                       <label for="mobile" class="required form-label">Mobile</label>
+                                       <input type="text" name="mobile" id="mobile" class="form-control form-control-solid"
+                                              placeholder="Enter mobile number"/>
+                                       <span id="mobile_error" class="text-danger"></span>
+                                   </div>
+                               </div>
+                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                   <div class="mb-10">
+                                       <label for="email" class="required form-label">Email</label>
+                                       <input type="text" name="email" id="email" class="form-control form-control-solid"
+                                              placeholder="Enter email address"/>
+                                       <span id="email_error" class="text-danger"></span>
+                                   </div>
+                               </div>
+                               <div class="col-lg-6 col-md-6 col-sm-6">
+                                   <div class="mb-10">
+                                       <label for="username" class="required form-label">Username</label>
+                                       <input type="text" name="username" id="username" class="form-control form-control-solid"
+                                              placeholder="" readonly/>
+                                       <span id="username_error" class="text-danger"></span>
+                                   </div>
+                               </div>
+                               <div class="col-lg-12 col-md-12 col-sm-12">
+                                   <div class="d-flex justify-content-end w-100">
+                                       <button type="button" id="createAccountSaveAllDataBtn" class="btn btn-primary">Create Account</button>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="row w-100">
+                               <div class="col-lg-12 col-md-12 col-sm-12" id="lastStepSavedContentAndProgressSection">
+                                   <div id="db_saved_success"></div>
+                                   <div id="basic_data_saved_success"></div>
+                                   <div id="business_details_saved_success"></div>
+                                   <div id="contact_details_saved_success"></div>
+                                   <div id="modules_assigned_success"></div>
+                                   <div id="license_assigned_success"></div>
+                                   <div id="user_details_saved_success"></div>
+                               </div>
+                           </div>
+                       </div>
                     </div>
                 </form>
 

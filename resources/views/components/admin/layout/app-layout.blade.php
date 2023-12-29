@@ -20,6 +20,10 @@
     <link href="{{ asset('assets/css/common-style.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+<div class="page-loader flex-column">
+    <span class="spinner-border text-primary" role="status"></span>
+    <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+</div>
 <x-admin.common.flash-message/>
 <div class="d-flex flex-column flex-root">
     <div class="page d-flex flex-row flex-column-fluid">
@@ -85,6 +89,7 @@
 <script src="{{ asset('assets/js/custom/modals/create-app.js') }}"></script>
 <script src="{{ asset('assets/js/custom/modals/users-search.js') }}"></script>
 <script src="{{ asset('assets/js/apis/country-state-city.js') }}"></script>
+<script src="{{ asset('assets/js/custom-script.js') }}"></script>
 {{ $script ?? '' }}
 </body>
 </html>

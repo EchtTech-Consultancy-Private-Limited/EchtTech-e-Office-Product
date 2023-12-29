@@ -23,7 +23,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('dashboard',[AdminDashboardController::class,"index"])->name('dashboard');
         Route::resource('roles', RoleController::class);
         Route::get('get-roles',[RoleController::class,"getRoles"])->name('get-roles');
+
+        // Company routes
         Route::resource('companies', CompanyController::class);
+        Route::get('companies-list',[CompanyController::class,"companiesList"]);
 
         // License routes
         Route::post('generate-license',[LicenseController::class,"generate"]);
@@ -49,6 +52,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         //Designation routes
         Route::resource('designations', DesignationController::class);
+        Route::get('designation-list', [DesignationController::class,"designationList"]);
 
         // admin logout route
         Route::post('/logout', [LogOutController::class, 'logout'])->name('logout');

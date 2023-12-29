@@ -6,6 +6,7 @@ var stepper = new KTStepper(element);
 
 // Handle next step
 stepper.on("kt.stepper.next", function (stepper) {
+
 // company setup form validations
 
     const app_name = $('#app_name').val();
@@ -378,7 +379,7 @@ function addFileInput() {
 $(document).ready(function () {
     $("#createAccountSaveAllDataBtn").click(function (e) {
         e.preventDefault();
-
+        $("#db_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const email = $("#email").val();
         const emailError = $("#email_error");
 
@@ -395,6 +396,7 @@ $(document).ready(function () {
         // Database Details
         const dbName = $("#db_name").val();
 
+
         if (dbName) {
             $.ajax({
                 type: 'POST',
@@ -410,7 +412,9 @@ $(document).ready(function () {
 
                         $('#lastStepContent').slideUp('slow');
                         $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> "+response.database.name+" </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
-                        saveBasicDetail(response.database.id);
+                        setTimeout(function () {
+                            saveBasicDetail(response.database.id);
+                        },1000);
                     } else {
                         console.error('Error saving database details:', response.error);
                         // Handle error, display error message, etc.
@@ -433,6 +437,8 @@ $(document).ready(function () {
     }
 
     function saveBasicDetail(databaseId) {
+        $("#basic_data_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+
         const app_name = $('#app_name').val();
         const company_name = $('#company_name').val();
         const company_email = $('#company_email').val();
@@ -488,13 +494,15 @@ $(document).ready(function () {
             .html("<strong>2. Basic Data Saved Successfully</strong>")
             .fadeIn(2000)
             .css({ 'color': 'green', 'display': 'block' });
+        setTimeout(() => {
+            saveBusinessDetails(response.data.id);
+        }, 1000);
 
-            // .delay(3000)
-            // .fadeOut(1000);
-        saveBusinessDetails(response.data.id);
     }
 
     function saveBusinessDetails(companyId){
+        $("#business_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+
         const pancard = $('#pancard').val();
         const gst_number = $('#gst_number').val();
         const tan_number = $('#tan_number').val();
@@ -549,16 +557,20 @@ $(document).ready(function () {
     function handleSaveBusinessDetailsSuccess(response) {
 
         // Display success message with fade animation, strong text, and green color
+
         $("#business_details_saved_success")
             .html("<strong>3. Business Details Saved Successfully</strong>")
             .fadeIn(3000)
             .css({ 'color': 'green', 'display': 'block' });
+        setTimeout(()=>{
             saveContactDetails(response)
-            // .delay(3000)
-            // .fadeOut(1000);
+        },1000)
+
     }
 
     function saveContactDetails(companyDetails){
+        $("#contact_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+
         const company_id = companyDetails.businessDetail.company_id;
         const phone = $("#phone").val();
         const fax = $("#fax").val();
@@ -592,8 +604,12 @@ $(document).ready(function () {
                         .fadeIn(3000)
                         .css({ 'color': 'green', 'display': 'block' });
 
-                    assignModules(response);
-                    assignLicense(response);
+                    setTimeout(()=>{
+                        assignModules(response);
+                    },1000)
+                   setTimeout(()=>{
+                       assignLicense(response);
+                   },1000)
                 }
             },
             error: function(error) {
@@ -604,6 +620,8 @@ $(document).ready(function () {
     }
 
     function assignModules(companyDetail){
+        $("#modules_assigned_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+
         const company_id = companyDetail.data.company_id;
         var selectedModules = $("input[name='module[]']:checked").map(function(){
             return $(this).val();
@@ -629,7 +647,8 @@ $(document).ready(function () {
                 if (response.success === true) {
                     $("#modules_assigned_success")
                         .html("<strong>5. Modules assigned successfully</strong>")
-                        .fadeIn(1000);
+                        .fadeIn(3000)
+                        .css({ 'color': 'green', 'display': 'block' });
                 } else {
                     // Handle error, display error message, etc.
                     console.error('Error saving modules:', response.error);
@@ -643,6 +662,7 @@ $(document).ready(function () {
     }
 
     function assignLicense(companyDetail) {
+        $("#license_assigned_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const company_id = companyDetail.data.company_id;
         const license_key = $("#license_key").val();
         const duration = $("#duration").val();
@@ -672,7 +692,9 @@ $(document).ready(function () {
                         .fadeIn(3000)
                         .css({ 'color': 'green', 'display': 'block' });
 
-                    saveUserDetails(companyDetail);
+                    setTimeout(()=>{
+                        saveUserDetails(companyDetail);
+                    },1000)
                 }
             },
             error: function(error) {
@@ -683,7 +705,7 @@ $(document).ready(function () {
     }
 
     function saveUserDetails(companyDetail){
-        $("#user_details_saved_success").html("<p>Please wait..</p> <svg style='height: 50px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+        $("#user_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const company_id = companyDetail.data.company_id;
         const name = $("#name").val();
         const email = $("#email").val();
@@ -708,15 +730,13 @@ $(document).ready(function () {
             processData: false,
             success: function(response) {
                 if (response.success === true) {
-                    $("#user_details_saved_success").empty();
                     $("#user_details_saved_success")
-                        .html("<strong>7. User details saved successfully!</strong>")
+                        .empty()
+                        .html(`<strong>7. User details saved successfully!</strong>`)
                         .fadeIn(3000)
                         .css({ 'color': 'green', 'display': 'block' });
 
-                    setTimeout(function () {
-                        showConfirmationPopup();
-                    }, 2000);
+                    setTimeout(showConfirmationPopup, 2000);
                 }
             },
             error: function(error) {
@@ -740,14 +760,14 @@ $(document).ready(function () {
             icon: 'success',
             title: 'Operations Completed',
             html: '<table style="text-align: left; width: 100%;">' +
-                '<tr><td><strong>Database:</strong></td><td>Created</td></tr>' +
-                '<tr><td><strong>Basic Details:</strong></td><td>Saved</td></tr>' +
-                '<tr><td><strong>Business Details:</strong></td><td>Saved</td></tr>' +
-                '<tr><td><strong>Contact Details:</strong></td><td>Saved</td></tr>' +
-                '<tr><td><strong>Modules:</strong></td><td>Assigned</td></tr>' +
-                '<tr><td><strong>License:</strong></td><td>Assigned</td></tr>' +
-                '<tr><td><strong>User Details:</strong></td><td>Saved</td></tr>' +
-                '<tr><td><strong>Welcome mail:</strong></td><td>Sent</td></tr>' +
+                '<tr><td><strong>Database:</strong></td><td class="text-success">Created</td></tr>' +
+                '<tr><td><strong>Basic Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Business Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Contact Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Modules:</strong></td><td class="text-success">Assigned</td></tr>' +
+                '<tr><td><strong>License:</strong></td><td class="text-success">Assigned</td></tr>' +
+                '<tr><td><strong>User Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Welcome mail:</strong></td><td class="text-success">Sent</td></tr>' +
                 '</table>',
             confirmButtonColor: '#28a745', // Green color
             confirmButtonText: 'Confirm',

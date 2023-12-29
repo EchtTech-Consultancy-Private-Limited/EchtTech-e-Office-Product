@@ -1,18 +1,16 @@
 <x-admin.layout.app-layout>
-    <x-slot name="title">
-        Departments
-    </x-slot>
+    <x-slot name="title">Designations Listing</x-slot>
     <x-common.card>
         <x-slot name="title">
-            Departments Listing
+            Designations Listing
         </x-slot>
         <x-slot name="headerButton">
-            <a href="{{ route('admin.departments.create') }}" class="btn btn-light-primary">Add New</a>
+            <a href="{{ route('admin.designations.create') }}" class="btn btn-light-primary">Add New</a>
         </x-slot>
         <x-slot name="body">
             <div class="d-flex">
                 <div class="m-2">
-                    <input class="form-control form-control-solid" id="searchDepartmentInput" placeholder="Search department...">
+                    <input class="form-control form-control-solid" id="searchDesignationInput" placeholder="Search designation...">
                 </div>
                 <div class="m-2">
                     <div class="dataTables_length" id="displayRangeContainer">
@@ -33,7 +31,7 @@
                         <th>Status</th>
                     </tr>
                     </thead>
-                    <tbody id="departmentTableBody">
+                    <tbody id="designationsTableBody">
 
                     </tbody>
                 </table>
@@ -44,6 +42,6 @@
         </x-slot>
     </x-common.card>
     <x-slot name="script">
-        <script src="{{ asset('assets/js/departments-table.js') }}"></script>
+        <script src="{{ asset('assets/js/designations-table.js') }}"></script>
     </x-slot>
 </x-admin.layout.app-layout>
