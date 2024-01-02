@@ -39,14 +39,14 @@
         <div class="d-flex flex-column flex-lg-row-fluid py-10">
             <div class="d-flex flex-center flex-column flex-column-fluid">
                 <div class="w-lg-500px p-10 p-lg-15 mx-auto">
-                <form action="{{ route('auth.checkForgotPassword') }}" method="POST" class="mt-4 mb-5" id="forgot_password_form">
-                        @csrf                       
+                <form action="{{ route('auth.forget-password') }}" method="POST" class="mt-4 mb-5" id="forgot_password_form">
+                        @csrf
                         <div class="text-center mb-10">
                             <h1 class="text-dark mb-3">Forgot Password ?</h1>
                             <div class="text-gray-400 fw-bold fs-4">Enter your email and we'll send you a link to to get back into your account</div>
                             <p class="error-msg"></p>
                         </div>
-                        @if(empty($user))                       
+                        @if(empty($user))
                         <div class="fv-row mb-10">
                             <label class="form-label fw-bolder text-gray-900 fs-6">Enter Email or Phone<em class="text-danger">*</em></label></label>
                             <input type="text" name="email_or_phone" id="email" value="{{ old('email_or_phone') }}" class="form-control form-control form-control-solid" data-parsley-type="text" placeholder="email or phone" data-parsley-error-message="Please enter email or phone" data-parsley-trigger="keyup" required>
@@ -74,7 +74,7 @@
                             @endif
                         </div>
                         <div class="d-flex flex-wrap justify-content-center pb-lg-0">
-                            <button type="submit" class="btn btn-primary btn-sm" id="send">Send</button>                         
+                            <button type="submit" class="btn btn-primary btn-sm" id="send">Send</button>
                         </div>
                         @else
                                 <div class="text-blue-400 fw-bold fs-4 text-center bg-primary text-white p-2">Choose From Below Option</div>
@@ -131,7 +131,7 @@
                                 @endif
                                 <div class="row">
 
-                                    <form action="{{ route('auth.verifyOtp') }}" method="POST" class="mt-4 input_formate_otp" id="verify_forgot_otp">
+                                    <form action="{{ route('auth.verify-otp') }}" method="POST" class="mt-4 input_formate_otp" id="verify_forgot_otp">
                                         @csrf
                                         <div class="otp-event text-center verification-code">
                                             <span class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Sent a verification code to verify <br>your mobile number </span><br>
@@ -228,7 +228,7 @@ $(document).on('click', '.reset_password_email', function() {
         };
         $.ajax({
             type: "POST",
-            url: "{{ route('auth.submitForgetPassword') }}",
+            url: "{{ route('auth.submit-forget-password') }}",
             data: data,
             success: function(response) {
                 $("#pageloader").fadeOut();
@@ -252,7 +252,7 @@ $(document).on('click', '.reset_password_email', function() {
         };
         $.ajax({
             type: "POST",
-            url: "{{ route('auth.submitForgetPassword') }}",
+            url: "{{ route('auth.submit-forget-password') }}",
             data: data,
             success: function(response) {
                 $("#pageloader").fadeOut();
@@ -278,7 +278,7 @@ $(document).on('click', '.reset_password_email', function() {
         };
         $.ajax({
             type: "POST",
-            url: "{{ route('auth.submitForgetPassword') }}",
+            url: "{{ route('auth.submit-forget-password') }}",
             data: data,
             success: function(response) {
                 $("#pageloader").fadeOut();
@@ -341,7 +341,7 @@ $(document).on('click', '.reset_password_email', function() {
         let otp_type = $('#otp_type').val();
         jQuery.ajax({
             type: 'post',
-            url: '{{ route("auth.resendOtp") }}',
+            url: '{{ route("auth.resend-otp") }}',
             data: {
                 "_token": "{{ csrf_token() }}",
                 "action": "resend_sms",
@@ -386,7 +386,7 @@ $(document).on('click', '.reset_password_email', function() {
         });
     });
 
-    // Verify OTP 
+    // Verify OTP
     jQuery(document).on('click', ".verify_forgot_otp_btn", function() {
         $("#resend").text('');
         $("#pageloader").fadeIn();
@@ -406,7 +406,7 @@ $(document).on('click', '.reset_password_email', function() {
             var otp_type = 'forgot_password';
             $.ajax({
                 type: "POST",
-                url: "{{ route('auth.verifyOtp') }}",
+                url: "{{ route('auth.verify-otp') }}",
                 data: data,
                 processData: false,
                 contentType: false,

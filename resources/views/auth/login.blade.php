@@ -28,7 +28,7 @@
 		<div class="d-flex flex-column flex-lg-row-fluid py-10">
 			<div class="d-flex flex-center flex-column flex-column-fluid">
 				<div class="w-lg-500px p-10 p-lg-15 mx-auto" id="login_user_name">
-        <form action="{{ route('auth.loginUser') }}" method="post" class="mt-4" id="candidate_login_form">
+        <form action="{{ route('auth.login') }}" method="post" class="mt-4" id="candidate_login_form">
         @csrf
 						<div class="text-center mb-10">
 							<h1 class="text-dark mb-3">Sign In to E-Office</h1>
@@ -36,7 +36,7 @@
 						<div class="fv-row mb-10">
 							<label class="form-label fw-bolder text-dark fs-6 mb-0">Enter User Name<em class="text-danger">*</em></label>
               <input class="form-control form-control-solid h-auto py-6 px-6 rounded-lg" type="text" name="username" placeholder="Enter User name" autocomplete="off"/>
-              
+
               <span class="error-msg" id="login_username"></span>
 						</div>
           <div class="form-group mt-4 mb-4">
@@ -56,7 +56,7 @@
 							<button type="button" value="login_with_otp" id="login_with_otp" class="btn btn-lg btn-primary w-40 mb-5">
 								<span class="indicator-label">Sign In</span>
 							</button>
-              <a href="{{ route('auth.forgetPassword') }}" role="tab" class="fs-6 px-2 fw-bolder link-primary">Forgot Password</a>
+              <a href="{{ route('auth.forget-password') }}" role="tab" class="fs-6 px-2 fw-bolder link-primary">Forgot Password</a>
 						</div>
 					</form>
 				</div>
@@ -73,7 +73,7 @@
             <div class="fw-bolder text-dark fs-3" id="hidden_mobile_num"></div>
             <div class="fw-bolder text-dark fs-3" id="hidden_email_num"></div>
           </div>
-          <form action="{{ route('auth.verifyOtp') }}" method="POST" class="mt-4" id="verify_otp">
+          <form action="{{ route('auth.verify-otp') }}" method="POST" class="mt-4" id="verify_otp">
           @csrf
             <input type="hidden" name="email" id="email" value="">
             <input type="hidden" name="mobile_number" id="mob_number" value="">
@@ -85,7 +85,7 @@
               <input type="tel" name="verify_otp[]" id="otp-number-input-1" class="otp-number-input" maxlength="1" autocomplete="off">
               <input type="tel" name="verify_otp[]" id="otp-number-input-2" class="otp-number-input" maxlength="1" autocomplete="off">
               <input type="tel" name="verify_otp[]" id="otp-number-input-3" class="otp-number-input" maxlength="1" autocomplete="off">
-              <input type="tel" name="verify_otp[]" id="otp-number-input-4" class="otp-number-input" maxlength="1" autocomplete="off">            
+              <input type="tel" name="verify_otp[]" id="otp-number-input-4" class="otp-number-input" maxlength="1" autocomplete="off">
             </div>
             <div class="text-center mb-10">
               <h6 class="mb-0 pb-0 mt-3">expery: <b class="orange-clr" id="timer"></b>
@@ -111,11 +111,11 @@
         </div>
       </div>
     <!-- End OTP Verification HTML -->
-                
+
     <!-- Enter Password section -->
-    <div class="d-flex flex-center flex-column flex-column-fluid">        
+    <div class="d-flex flex-center flex-column flex-column-fluid">
 				<div class="w-lg-500px p-10 p-lg-15 mx-auto" id="user_password">
-        <form action="{{ route('auth.loginPassworsUser') }}" method="post" id="login_with_pass">
+        <form action="{{ route('auth.login-password-user') }}" method="post" id="login_with_pass">
         @csrf
             <div class="text-center pb-13 pt-lg-0 pt-5">
                 <h3 class="font-weight-bolder text-dark font-size-h4 font-size-h1-lg">Enter your password to login your account</h3>
@@ -146,7 +146,7 @@
             </div> -->
             <div class="form-group d-flex flex-wrap pb-lg-0 align-items-center">
                 <button type="button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4 verify_password_btn">Login</button>
-                <a href="{{ route('auth.forgetPassword') }}" role="tab" class="fs-6 px-2 fw-bolder link-primary">Forgot Password</a>
+                <a href="{{ route('auth.forget-password') }}" role="tab" class="fs-6 px-2 fw-bolder link-primary">Forgot Password</a>
             </div>
         </form>
 				</div>
