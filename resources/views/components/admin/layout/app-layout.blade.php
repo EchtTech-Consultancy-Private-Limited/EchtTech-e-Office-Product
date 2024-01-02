@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <base href="">
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LeQsUIpAAAAABAO4Y0KNyyaPciNiOWloTe9_6va"></script>
     <title>{{ $title ? $title : config('app.name', 'Laravel') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8" />

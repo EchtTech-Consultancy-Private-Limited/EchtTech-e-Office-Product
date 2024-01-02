@@ -2,6 +2,7 @@
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <meta charset="utf-8" />
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- CSS Global Compulsory (Do not remove)-->

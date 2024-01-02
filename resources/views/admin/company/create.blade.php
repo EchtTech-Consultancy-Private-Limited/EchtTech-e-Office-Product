@@ -16,17 +16,17 @@
                         <h3 class="stepper-title">Database Configuration</h3>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Basic Details</h3>
+                        <h3 class="stepper-title">Company Details</h3>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Business Details</h3>
+                        <h3 class="stepper-title">Certifications Details</h3>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Contact Details</h3>
                     </div>
 
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Modules</h3>
+                        <h3 class="stepper-title">Features</h3>
                     </div>
 
                     <div class="stepper-item" data-kt-stepper-element="nav">
@@ -44,7 +44,7 @@
                         <div class="row w-100">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="app_name" class="required form-label">App Name</label>
+                                    <label for="app_name" class="required form-label">Application Name</label>
                                     <input type="text" name="app_name" id="app_name" class="form-control form-control-solid"
                                            placeholder=""/>
                                     <span id="app_name_error" class="text-danger"></span>
@@ -79,7 +79,7 @@
                                     <span id="company_name_error" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-3">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
                                     <label for="company_email" class="required form-label">Company
                                         Email</label>
@@ -88,30 +88,7 @@
                                     <span id="company_email_error" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-md-3 col-sm-3">
-                                <div class="mb-10">
-                                    <label for="registration_number" class="required form-label">Registration Number</label>
-                                    <input type="text" name="registration_number" id="registration_number" class="form-control form-control-solid"
-                                           placeholder="Enter Registration Number"/>
-                                    <span id="registration_number_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="gov_tax_number_ein" class="required form-label">Government Tax Number/EIN</label>
-                                    <input type="text" name="gov_tax_number_ein" id="gov_tax_number_ein" class="form-control form-control-solid"
-                                           placeholder="Enter Government Tax Number/EIN"/>
-                                    <span id="gov_tax_number_ein_error" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="mb-10">
-                                    <label for="legal_trading_name" class="required form-label">Legal/Trading Name</label>
-                                    <input type="text" name="legal_trading_name" id="legal_trading_name" class="form-control form-control-solid"
-                                           placeholder="Enter Legal/Trading Name"/>
-                                    <span id="legal_trading_name_error" class="text-danger"></span>
-                                </div>
-                            </div>
+
                             <div class="col-lg-3 col-md-3 col-sm-3">
                                 <x-common.country/>
                             </div>
@@ -127,7 +104,7 @@
                                 <span id="pin_code_error" class="text-danger"></span>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="fv-row mt-10">
+                                <div class="fv-row mt-10 mb-10">
                                     <label for="address_line_1" class="required form-label">Address Line 1</label>
                                     <textarea name="address_line_1" id="address_line_1"
                                               class="form-control form-control-solid" placeholder="Enter address line 1"></textarea>
@@ -135,15 +112,41 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="fv-row mt-10">
+                                <div class="fv-row mt-10 mb-10">
                                     <label for="address_line_2" class="form-label">Address Line 2</label>
                                     <textarea name="address_line_2" id="address_line_2"
                                               class="form-control form-control-solid" placeholder="Enter address line 2"></textarea>
                                 </div>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="fv-row mt-10">
-                                    <label for="description" class="form-label">Description</label>
+                            <!-- Registered Address -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="registered_address" class="required form-label">Registered Address</label>
+                                    <textarea name="registered_address" id="registered_address" class="form-control form-control-solid" placeholder="Enter Registered Address"></textarea>
+                                    <span id="registered_address_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Correspondence/Corporate Office Address -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="corporate_office_address" class="required form-label">Correspondence/Corporate Office Address</label>
+                                    <textarea name="corporate_office_address" id="corporate_office_address" class="form-control form-control-solid" placeholder="Enter Correspondence/Corporate Office Address"></textarea>
+                                    <span id="corporate_office_address_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <!-- Billing Address -->
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="billing_address" class="required form-label">Billing Address</label>
+                                    <textarea name="billing_address" id="billing_address" class="form-control form-control-solid" placeholder="Enter Billing Address"></textarea>
+                                    <span id="billing_address_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="description" class="form-label">About Company</label>
                                     <textarea name="description" id="description"
                                               class="form-control form-control-solid" placeholder="Enter company description..."></textarea>
                                 </div>
@@ -251,40 +254,13 @@
                             <!-- Ministry Name -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="ministry_name" class="required form-label">Ministry Name</label>
+                                    <label for="ministry_name" class="form-label">Ministry Name</label>
                                     <input type="text" name="ministry_name" id="ministry_name" class="form-control form-control-solid" placeholder="Enter Ministry Name"/>
                                     <span id="ministry_name_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="row w-100">
-                                    <!-- Registered Address -->
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <div class="mb-10">
-                                            <label for="registered_address" class="required form-label">Registered Address</label>
-                                            <textarea name="registered_address" id="registered_address" class="form-control form-control-solid" placeholder="Enter Registered Address"></textarea>
-                                            <span id="registered_address_error" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Correspondence/Corporate Office Address -->
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <div class="mb-10">
-                                            <label for="corporate_office_address" class="required form-label">Correspondence/Corporate Office Address</label>
-                                            <textarea name="corporate_office_address" id="corporate_office_address" class="form-control form-control-solid" placeholder="Enter Correspondence/Corporate Office Address"></textarea>
-                                            <span id="corporate_office_address_error" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Billing Address -->
-                                    <div class="col-lg-6 col-md-6 col-sm-6">
-                                        <div class="mb-10">
-                                            <label for="billing_address" class="required form-label">Billing Address</label>
-                                            <textarea name="billing_address" id="billing_address" class="form-control form-control-solid" placeholder="Enter Billing Address"></textarea>
-                                            <span id="billing_address_error" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
                                     <!-- ISO Certification (Yes/No) -->
                                     <div class="col-lg-6 col-md-6 col-sm-6">
                                         <div class="mb-10">

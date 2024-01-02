@@ -24,8 +24,8 @@
         <div class="d-flex flex-column flex-lg-row-fluid py-10">
         <div class="d-flex flex-center flex-column flex-column-fluid">
 						<div class="w-lg-550px p-10 p-lg-15 mx-auto">
-                        <form action="{{ route('admin.login.form') }}" method="POST" class="mt-4 mb-5" id="admin_login_form">
-                        @csrf
+                            <form action="{{ route('admin.login.form') }}" method="POST" class="mt-4 mb-5" id="admin_login_form">
+                                @csrf
 								<div class="text-center mb-10">
 									<h1 class="text-dark mb-3">Sign In to E-Office</h1>
 								</div>
@@ -47,23 +47,16 @@
 										</div>
 									</div>
 								</div>
-                                <div class="form-group mt-4 mb-4">
-                                    <div class="captcha">
-                                        <span>{!! captcha_img('math') !!}</span>
-                                        <button type="button" class="btn btn-danger reload" id="password_reload">
-                                            ↻
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-4">
-                                    <input id="reset_password_captcha" type="text" class="form-control captcha" placeholder="Enter Captcha" name="captcha">
-                                    @if ($errors->has('captcha'))
-                                    <span class="text-danger">{{ $errors->first('captcha') }}</span>
-                                    @endif
-                                </div>
+                            <div class="mt-4 mb-4">
+                                @if ($errors->has('g-recaptcha-response'))
+                                    <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                                @endif
+                            </div>
 								<div class="text-center">
-                                    <button type="submit" class="btn btn-primary btn-sm" id="send">Login</button>
+                                    <button class="g-recaptcha btn btn-primary"
+                                            data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                                            data-callback='onSubmit'
+                                            data-action='login' id="send">Login</button>
 								</div>
 							</form>
 						</div>
@@ -95,16 +88,18 @@ jQuery('#admin_login_form').validate({
         password: {
             required: true
         },
-        captcha:{
-            required:true
-        },
     },
     messages: {
         email: "Email field is required",
         password: "Password field is required",
-        captcha:  "Captcha is required",
     }
 });
+</script>
+
+<script>
+    function onSubmit(token) {
+        document.getElementById("admin_login_form").submit();
+    }
 </script>
 @endsection
 <!-- End Custom script only starts here -->
