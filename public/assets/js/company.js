@@ -1,3 +1,101 @@
+// Debounce function to limit the frequency of function calls
+function debounce(func, delay) {
+    let timer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
+// Function to handle the input and apply transformations and validations
+function handleInput() {
+    const db_name_input = $('#db_name');
+    const db_name_error = $('#db_name_error');
+
+    let db_name = db_name_input.val();
+
+    // Convert to lowercase, remove spaces, and remove special characters except underscores
+    db_name = db_name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
+
+    // Remove consecutive underscores
+    db_name = db_name.replace(/_+/g, '_');
+
+    // Remove underscore at the beginning
+    db_name = db_name.replace(/^_/, '');
+
+    db_name_input.val(db_name); // Update the input value
+
+    const db_name_pattern = /^[a-z_][a-z0-9_]*$/;
+
+    if (db_name.length < 6 || db_name.length > 20) {
+        db_name_error.text("Database name must be between 5 and 10 characters.");
+        return;
+    }
+
+    if (!db_name.match(db_name_pattern)) {
+        db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
+        return;
+    }
+
+    db_name_error.text('');
+}
+
+function handleCommonInputs(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let value = input.val();
+
+        // Capitalize the input and ensure only alpha characters are accepted
+        value = value.replace(/[^a-zA-Z ]/g, '').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+        input.val(value); // Update the input value
+
+        if (value.length < 4) {
+            error.text("Minimum length is 4 characters.");
+            return;
+        }
+
+        error.text('');
+    };
+}
+
+function handleEmailInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let email = input.val().trim();
+
+        // Basic email format validation using a regular expression
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            error.text("Please enter a valid email address.");
+            return;
+        }
+
+        input.val(email); // Update the input value
+
+        error.text('');
+    };
+}
+
+$(document).ready(function () {
+    const db_name_input = $('#db_name');
+
+    // Attach the debounced handleInput function to the onkeyup event
+    db_name_input.on('keyup', debounce(handleInput, 300));
+    $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
+    $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
+    $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
+});
+
 // Stepper lement
 var element = document.querySelector("#kt_create_account_stepper");
 
@@ -17,6 +115,7 @@ stepper.on("kt.stepper.next", function (stepper) {
 
     const logo = $('#log');
     const logo_error = $('#log_error');
+
 
     //Step 1 validation
     if (stepper.currentStepIndex === 1){
@@ -87,7 +186,14 @@ stepper.on("kt.stepper.next", function (stepper) {
             company_email_error.text("Please enter company email");
             return;
         }else{
-            company_email_error.text('');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailPattern.test(email)) {
+                error.text("Please enter a valid email address.");
+                return;
+            }else{
+                
+            }
         }
 
         const registration_number = $('#registration_number').val();
