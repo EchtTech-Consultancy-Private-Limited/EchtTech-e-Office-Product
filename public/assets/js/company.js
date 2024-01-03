@@ -192,7 +192,7 @@ stepper.on("kt.stepper.next", function (stepper) {
                 error.text("Please enter a valid email address.");
                 return;
             }else{
-                
+
             }
         }
 
