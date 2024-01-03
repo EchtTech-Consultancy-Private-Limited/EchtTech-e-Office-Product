@@ -86,6 +86,32 @@ function handleEmailInput(inputId, errorId) {
     };
 }
 
+function handlePincodeInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let pincode = input.val().trim();
+
+        // Remove non-numeric characters
+        pincode = pincode.replace(/\D/g, '');
+
+        // Basic pincode validation for 6-digit numeric values
+        const pincodePattern = /^\d{6}$/;
+
+        if (!pincodePattern.test(pincode)) {
+            error.text("Please enter a valid 6-digit numeric pincode.");
+            return;
+        }
+
+        input.val(pincode); // Update the input value
+
+        error.text('');
+    };
+}
+
+
+
 $(document).ready(function () {
     const db_name_input = $('#db_name');
 
@@ -94,6 +120,7 @@ $(document).ready(function () {
     $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
     $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
     $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
+    $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
 });
 
 // Stepper lement
@@ -188,8 +215,8 @@ stepper.on("kt.stepper.next", function (stepper) {
         }else{
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!emailPattern.test(email)) {
-                error.text("Please enter a valid email address.");
+            if (!emailPattern.test(company_email)) {
+                company_email_error.text("Please enter a valid email address.");
                 return;
             }else{
 
@@ -261,8 +288,10 @@ stepper.on("kt.stepper.next", function (stepper) {
 
         if (pin_code === "") {
             pin_code_error.text("Please enter a pin code");
+            return;
         } else if (!/^\d{6}$/.test(pin_code)) {
-            pin_code_error.text("Invalid pin code. Pin code must be a 6-digit number.");
+            pin_code_error.text("Please enter a valid 6-digit numeric pin code.");
+            return;
         } else {
             // Proceed with further processing or clear any previous error messages
             pin_code_error.text("");
@@ -276,6 +305,36 @@ stepper.on("kt.stepper.next", function (stepper) {
             return;
         }else{
             address_line_1_error.text('');
+        }
+
+        const registered_address = $('#registered_address').val();
+        const registered_address_error = $('#registered_address_error');
+
+        if (registered_address === ""){
+            registered_address_error.text("Please enter registered address");
+            return;
+        }else{
+            registered_address_error.text('');
+        }
+
+        const corporate_office_address = $('#corporate_office_address').val();
+        const corporate_office_address_error = $('#corporate_office_address_error');
+
+        if (corporate_office_address === ""){
+            corporate_office_address_error.text("Please enter corporate address");
+            return;
+        }else{
+            corporate_office_address_error.text('');
+        }
+
+        const billing_address = $('#billing_address').val();
+        const billing_address_error = $('#billing_address_error');
+
+        if (billing_address === ""){
+            billing_address_error.text("Please enter corporate address");
+            return;
+        }else{
+            billing_address_error.text('');
         }
     }
 
@@ -309,46 +368,6 @@ stepper.on("kt.stepper.next", function (stepper) {
             return;
         }else{
             tan_number_error.text('');
-        }
-
-        const ministry_name = $('#ministry_name').val();
-        const ministry_name_error = $('#ministry_name_error');
-
-        if (ministry_name === ""){
-            ministry_name_error.text("Please enter ministry name");
-            return;
-        }else{
-            ministry_name_error.text('');
-        }
-
-        const registered_address = $('#registered_address').val();
-        const registered_address_error = $('#registered_address_error');
-
-        if (registered_address === ""){
-            registered_address_error.text("Please enter registered address");
-            return;
-        }else{
-            registered_address_error.text('');
-        }
-
-        const corporate_office_address = $('#corporate_office_address').val();
-        const corporate_office_address_error = $('#corporate_office_address_error');
-
-        if (corporate_office_address === ""){
-            corporate_office_address_error.text("Please enter corporate address");
-            return;
-        }else{
-            corporate_office_address_error.text('');
-        }
-
-        const billing_address = $('#billing_address').val();
-        const billing_address_error = $('#billing_address_error');
-
-        if (billing_address === ""){
-            billing_address_error.text("Please enter corporate address");
-            return;
-        }else{
-            billing_address_error.text('');
         }
     }
 
