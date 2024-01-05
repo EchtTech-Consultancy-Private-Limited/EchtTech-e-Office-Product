@@ -96,6 +96,9 @@ function handlePincodeInput(inputId, errorId) {
         // Remove non-numeric characters
         pincode = pincode.replace(/\D/g, '');
 
+        // Limit to 6 digits
+        pincode = pincode.slice(0, 6);
+
         // Basic pincode validation for 6-digit numeric values
         const pincodePattern = /^\d{6}$/;
 
@@ -110,6 +113,42 @@ function handlePincodeInput(inputId, errorId) {
     };
 }
 
+function handleAddressInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let address = input.val().trim();
+
+        // Basic validation for address length
+        if (address.length < 5) {
+            error.text("Address must be at least 5 characters long.");
+            return;
+        }
+
+        // You can add additional address validation rules here based on your requirements.
+
+        input.val(address); // Update the input value
+
+        error.text('');
+    };
+}
+
+
+function handleLocationSelection(inputId, errorId, errorMessage) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        // Check if a value is selected
+        if (input.val() === '') {
+            error.text(errorMessage);
+            return;
+        }
+
+        error.text('');
+    };
+}
 
 
 $(document).ready(function () {
@@ -121,6 +160,18 @@ $(document).ready(function () {
     $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
     $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
     $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
+
+    const countryErrorMessage = "Please select a country.";
+    const stateErrorMessage = "Please select a state.";
+    const cityErrorMessage = "Please select a city.";
+
+    $('#country').on('change', debounce(handleLocationSelection('country', 'country_error', countryErrorMessage),300));
+    $('#state').on('change', debounce(handleLocationSelection('state', 'state_error', stateErrorMessage),300));
+    $('#city').on('change', debounce(handleLocationSelection('city', 'city_error', cityErrorMessage),300));
+    $('#address_line_1').on('keyup', debounce(handleAddressInput('address_line_1', 'address_line_1_error'),300));
+    $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'),300));
+    $('#billing_address').on('keyup',debounce( handleAddressInput('billing_address', 'billing_address_error'),300));
+    $('#corporate_office_address').on('keyup',debounce( handleAddressInput('corporate_office_address', 'corporate_office_address_error'),300));
 });
 
 // Stepper lement
@@ -286,44 +337,44 @@ stepper.on("kt.stepper.next", function (stepper) {
         const address_line_1 = $('#address_line_1').val();
         const address_line_1_error = $('#address_line_1_error');
 
-        if (address_line_1 === ""){
+        if (address_line_1 === "") {
             address_line_1_error.text("Please enter address");
             validationErrorsStep2.address_line_1 = "Please enter address";
 
-        }else{
+        } else {
             address_line_1_error.text('');
         }
 
         const registered_address = $('#registered_address').val();
         const registered_address_error = $('#registered_address_error');
 
-        if (registered_address === ""){
+        if (registered_address === "") {
             registered_address_error.text("Please enter registered address");
             validationErrorsStep2.registered_address = "Please enter registered address";
 
-        }else{
+        } else {
             registered_address_error.text('');
         }
 
         const corporate_office_address = $('#corporate_office_address').val();
         const corporate_office_address_error = $('#corporate_office_address_error');
 
-        if (corporate_office_address === ""){
+        if (corporate_office_address === "") {
             corporate_office_address_error.text("Please enter corporate address");
             validationErrorsStep2.corporate_office_address = "Please enter corporate address";
 
-        }else{
+        } else {
             corporate_office_address_error.text('');
         }
 
         const billing_address = $('#billing_address').val();
         const billing_address_error = $('#billing_address_error');
 
-        if (billing_address === ""){
+        if (billing_address === "") {
             billing_address_error.text("Please enter billing address");
             validationErrorsStep2.billing_address = "Please enter billing address";
 
-        }else{
+        } else {
             billing_address_error.text('');
         }
 
@@ -336,39 +387,49 @@ stepper.on("kt.stepper.next", function (stepper) {
     }
 
     //Step 3
-    if (stepper.currentStepIndex === 3){
+    if (stepper.currentStepIndex === 3) {
+        const validationErrorsStep3 = {};
+
+        // Pan Card validation
         const pancard = $('#pancard').val();
         const pancard_error = $('#pancard_error');
-
-        if (pancard === ""){
+        if (pancard === "") {
             pancard_error.text("Please enter pan number");
-            return;
-        }else{
+            validationErrorsStep3.pancard = "Please enter pan number";
+        } else {
             pancard_error.text('');
         }
 
+        // GST Number validation
         const gst_number = $('#gst_number').val();
         const gst_number_error = $('#gst_number_error');
-
-        if (gst_number === ""){
+        if (gst_number === "") {
             gst_number_error.text("Please enter gst number");
-            return;
-        }else{
+            validationErrorsStep3.gst_number = "Please enter gst number";
+        } else {
             gst_number_error.text('');
         }
 
+        // TAN Number validation
         const tan_number = $('#tan_number').val();
         const tan_number_error = $('#tan_number_error');
-
-        if (tan_number === ""){
+        if (tan_number === "") {
             tan_number_error.text("Please enter tan number");
-            return;
-        }else{
+            validationErrorsStep3.tan_number = "Please enter tan number";
+        } else {
             tan_number_error.text('');
         }
+
+        // Display all errors for Step 3
+        if (Object.keys(validationErrorsStep3).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep3)[0]).focus();
+            return;
+        }
+
     }
 
-    if (stepper.currentStepIndex === 4){
+    if (stepper.currentStepIndex === 4) {
         const phone = $('#phone').val();
         const phone_error = $('#phone_error');
 
@@ -384,7 +445,7 @@ stepper.on("kt.stepper.next", function (stepper) {
 
     }
 
-    if (stepper.currentStepIndex === 5){
+    if (stepper.currentStepIndex === 5) {
         var checkboxes = document.querySelectorAll('input[name="module[]"]:checked');
         if (checkboxes.length === 0) {
             Swal.fire({
@@ -533,10 +594,10 @@ $(document).ready(function () {
                     if (response.success === true) {
 
                         $('#lastStepContent').slideUp('slow');
-                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> "+response.database.name+" </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
+                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> " + response.database.name + " </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
                         setTimeout(function () {
                             saveBasicDetail(response.database.id);
-                        },1000);
+                        }, 1000);
                     } else {
                         console.error('Error saving database details:', response.error);
                         // Handle error, display error message, etc.
@@ -615,14 +676,14 @@ $(document).ready(function () {
         $("#basic_data_saved_success")
             .html("<strong>2. Basic Data Saved Successfully</strong>")
             .fadeIn(2000)
-            .css({ 'color': 'green', 'display': 'block' });
+            .css({'color': 'green', 'display': 'block'});
         setTimeout(() => {
             saveBusinessDetails(response.data.id);
         }, 1000);
 
     }
 
-    function saveBusinessDetails(companyId){
+    function saveBusinessDetails(companyId) {
         $("#business_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const pancard = $('#pancard').val();
@@ -683,14 +744,14 @@ $(document).ready(function () {
         $("#business_details_saved_success")
             .html("<strong>3. Business Details Saved Successfully</strong>")
             .fadeIn(3000)
-            .css({ 'color': 'green', 'display': 'block' });
-        setTimeout(()=>{
+            .css({'color': 'green', 'display': 'block'});
+        setTimeout(() => {
             saveContactDetails(response)
-        },1000)
+        }, 1000)
 
     }
 
-    function saveContactDetails(companyDetails){
+    function saveContactDetails(companyDetails) {
         $("#contact_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const company_id = companyDetails.businessDetail.company_id;
@@ -719,33 +780,33 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#contact_details_saved_success")
                         .html("<strong>4. Contact details saved successfully!</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         assignModules(response);
-                    },1000)
-                   setTimeout(()=>{
-                       assignLicense(response);
-                   },1000)
+                    }, 1000)
+                    setTimeout(() => {
+                        assignLicense(response);
+                    }, 1000)
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle the error response
                 console.error('Error saving data:', error);
             }
         });
     }
 
-    function assignModules(companyDetail){
+    function assignModules(companyDetail) {
         $("#modules_assigned_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const company_id = companyDetail.data.company_id;
-        var selectedModules = $("input[name='module[]']:checked").map(function(){
+        var selectedModules = $("input[name='module[]']:checked").map(function () {
             return $(this).val();
         }).get();
 
@@ -760,7 +821,7 @@ $(document).ready(function () {
             url: '/admin/save_selected_modules',
             data: {
                 modules: selectedModules,
-                company_id:company_id
+                company_id: company_id
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -770,7 +831,7 @@ $(document).ready(function () {
                     $("#modules_assigned_success")
                         .html("<strong>5. Modules assigned successfully</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
                 } else {
                     // Handle error, display error message, etc.
                     console.error('Error saving modules:', response.error);
@@ -807,26 +868,26 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#license_assigned_success")
                         .html("<strong>6. License assigned successfully!</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         saveUserDetails(companyDetail);
-                    },1000)
+                    }, 1000)
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle the error response
                 console.error('Error assigning license:', error);
             }
         });
     }
 
-    function saveUserDetails(companyDetail){
+    function saveUserDetails(companyDetail) {
         $("#user_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const company_id = companyDetail.data.company_id;
         const name = $("#name").val();
@@ -850,22 +911,22 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#user_details_saved_success")
                         .empty()
                         .html(`<strong>7. User details saved successfully!</strong>`)
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
                     setTimeout(showConfirmationPopup, 2000);
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error saving user details:', error);
                 // Handle the error response, display error message, etc.
                 const errors = error.responseJSON.errors;
-                for (const key in errors){
+                for (const key in errors) {
                     if (key === 'email') {
                         $("#email_error").text(errors[key][0]);
                     }
@@ -918,7 +979,7 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     // No duplicates found, continue with your logic or form submission
                     console.log('No duplicates found.');
@@ -929,7 +990,7 @@ $(document).ready(function () {
                     // You might want to disable form submission or display an error message
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error checking duplicates:', error.responseJSON.errors);
                 // Handle the error, display an error message, etc.
                 const errorData = error.responseJSON.errors;
