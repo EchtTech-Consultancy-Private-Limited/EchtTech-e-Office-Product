@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\State;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 
@@ -24,5 +23,11 @@ class DatabaseSeeder extends Seeder
         $this->call(AdminSeeder::class);
         $this->call(ModuleSeeder::class);
         $this->call(CompanyTypeSeeder::class);
+        $this->call(DepartmentSeeder::class);
+        $this->call(DesignationSeeder::class);
+        $this->call(EmployeeSeeder::class);
+        $this->call(EmployeeEducationSeeder::class);
+        $this->call(EmployeeWorkHistorySeeder::class);
+        $this->call(EmployeeAccountDetailSeeder::class);
     }
 }
