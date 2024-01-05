@@ -134,175 +134,162 @@ stepper.on("kt.stepper.next", function (stepper) {
 
 // company setup form validations
 
+
     const app_name = $('#app_name').val();
     const app_name_error = $('#app_name_error');
 
     const db_name = $('#db_name').val();
     const db_name_error = $('#db_name_error');
 
-    const logo = $('#log');
-    const logo_error = $('#log_error');
+    const logo = $('#logo');
+    const logo_error = $('#logo_error');
 
+    // Step 1 validation
+    const validationErrors = {};
 
-    //Step 1 validation
-    if (stepper.currentStepIndex === 1){
-        if (app_name === ""){
+    if (stepper.currentStepIndex === 1) {
+        if (app_name === "") {
             app_name_error.text("Please enter app name");
-            return;
-        }else{
+            validationErrors.app_name = "Please enter app name";
+        } else {
             app_name_error.text('');
         }
-        if (db_name === ""){
+
+        if (db_name === "") {
             db_name_error.text("Please enter database name");
-            return;
-        }else{
+            validationErrors.db_name = "Please enter database name";
+        } else {
             const db_name_pattern = /^[a-z_][a-z0-9_]*$/; // Allows only lowercase letters, numbers, and underscores, and cannot start with a number
             if (!db_name.match(db_name_pattern)) {
                 db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
-                return;
+                validationErrors.db_name = "Invalid database name";
             } else {
                 db_name_error.text('');
             }
         }
-    }
 
-    // Logo validation (Step 1)
-    if (stepper.currentStepIndex === 1) {
+        // Logo validation (Step 1)
         const allowedExtensions = ['jpg', 'jpeg', 'png'];
         const maxFileSize = 1 * 1024 * 1024; // 1 MB
 
-        const logo = $('#logo');
-        const logo_error = $('#logo_error');
-
         if (!logo[0].files || logo[0].files.length === 0) {
             logo_error.text("Please select a logo file");
-            return;
+            validationErrors.logo = "Please select a logo file";
+        } else {
+            const fileName = logo.val();
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if ($.inArray(fileExtension, allowedExtensions) === -1) {
+                logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
+                validationErrors.logo = "Invalid logo file format";
+            }
+
+            if (logo[0].files[0].size > maxFileSize) {
+                logo_error.text("Maximum file size is 1 MB");
+                validationErrors.logo = "Maximum file size is 1 MB";
+            } else {
+                logo_error.text('');
+            }
         }
 
-        const fileName = logo.val();
-        const fileExtension = fileName.split('.').pop().toLowerCase();
-
-        if ($.inArray(fileExtension, allowedExtensions) === -1) {
-            logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
+        // Display all errors
+        if (Object.keys(validationErrors).length > 0) {
+            // You can access specific errors using the keys, e.g., validationErrors.app_name
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrors)[0]).focus();
             return;
         }
-
-        if (logo[0].files[0].size > maxFileSize) {
-            logo_error.text("Maximum file size is 1 MB");
-            return;
-        }
-
-        logo_error.text('');
     }
 
-    // Step 2
-    if (stepper.currentStepIndex === 2){
+    // Step 2 validation
+
+
+    if (stepper.currentStepIndex === 2) {
+        const validationErrorsStep2 = {};
+
         const company_name = $('#company_name').val();
         const company_name_error = $('#company_name_error');
-
-        if (company_name === ""){
+        if (company_name === "") {
             company_name_error.text("Please enter company name");
-            return;
-        }else{
+            validationErrorsStep2.company_name = "Please enter company name";
+        } else {
             company_name_error.text('');
         }
 
         const company_email = $("#company_email").val();
         const company_email_error = $("#company_email_error");
-        if (company_email === ""){
+        if (company_email === "") {
             company_email_error.text("Please enter company email");
-            return;
-        }else{
+            validationErrorsStep2.company_email = "Please enter company email";
+        } else {
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
             if (!emailPattern.test(company_email)) {
                 company_email_error.text("Please enter a valid email address.");
-                return;
-            }else{
-
+                validationErrorsStep2.company_email = "Invalid email address";
+            } else {
+                company_email_error.text('');
             }
         }
 
-        const registration_number = $('#registration_number').val();
-        const registration_number_error = $('#registration_number_error');
-
-        if (registration_number === ""){
-            registration_number_error.text("Please enter registration number");
-            return;
-        }else{
-            registration_number_error.text('');
-        }
-
-        const govt_tax_ein_number = $('#gov_tax_number_ein').val();
-        const govt_tax_ein_number_error = $('#gov_tax_number_ein_error');
-
-        if (govt_tax_ein_number === ""){
-            govt_tax_ein_number_error.text("Please enter government tax number/ein number");
-            return;
-        }else{
-            govt_tax_ein_number_error.text('');
-        }
-
-        const legal_trading_name = $('#legal_trading_name').val();
-        const legal_trading_name_error = $('#legal_trading_name_error');
-
-        if (legal_trading_name === ""){
-            legal_trading_name_error.text("Please enter legal/trading name");
-            return;
-        }else{
-            legal_trading_name_error.text('');
-        }
-
+        // Country validation
         const country = $('#country').val();
         const country_error = $('#country_error');
-
-        if (country === ""){
+        if (country === "") {
             country_error.text("Please select country");
-            return;
-        }else{
+            validationErrorsStep2.country = "Please Select Country";
+
+        } else {
             country_error.text('');
         }
 
+        console.log(validationErrorsStep2);
+
+// State validation
         const state = $('#state').val();
         const state_error = $('#state_error');
-
-        if (state === ""){
+        if (state === "") {
             state_error.text("Please select state");
-            return;
-        }else{
+            validationErrorsStep2.state = "Please Select state";
+
+        } else {
             state_error.text('');
         }
 
+// City validation
         const city = $('#city').val();
         const city_error = $('#city_error');
-
-        if (city === ""){
+        if (city === "") {
             city_error.text("Please select city");
-            return;
-        }else{
+            validationErrorsStep2.city = "Please Select city";
+
+        } else {
             city_error.text('');
         }
 
+// Pin code validation
         const pin_code = $('#pin_code').val();
         const pin_code_error = $('#pin_code_error');
-
         if (pin_code === "") {
             pin_code_error.text("Please enter a pin code");
-            return;
+            validationErrorsStep2.pin_code = "Please enter a pin code";
+
         } else if (!/^\d{6}$/.test(pin_code)) {
             pin_code_error.text("Please enter a valid 6-digit numeric pin code.");
-            return;
+            validationErrorsStep2.pin_code = "Please enter a valid 6-digit numeric pin code.";
+
         } else {
             // Proceed with further processing or clear any previous error messages
             pin_code_error.text("");
         }
+
 
         const address_line_1 = $('#address_line_1').val();
         const address_line_1_error = $('#address_line_1_error');
 
         if (address_line_1 === ""){
             address_line_1_error.text("Please enter address");
-            return;
+            validationErrorsStep2.address_line_1 = "Please enter address";
+
         }else{
             address_line_1_error.text('');
         }
@@ -312,7 +299,8 @@ stepper.on("kt.stepper.next", function (stepper) {
 
         if (registered_address === ""){
             registered_address_error.text("Please enter registered address");
-            return;
+            validationErrorsStep2.registered_address = "Please enter registered address";
+
         }else{
             registered_address_error.text('');
         }
@@ -322,7 +310,8 @@ stepper.on("kt.stepper.next", function (stepper) {
 
         if (corporate_office_address === ""){
             corporate_office_address_error.text("Please enter corporate address");
-            return;
+            validationErrorsStep2.corporate_office_address = "Please enter corporate address";
+
         }else{
             corporate_office_address_error.text('');
         }
@@ -331,10 +320,18 @@ stepper.on("kt.stepper.next", function (stepper) {
         const billing_address_error = $('#billing_address_error');
 
         if (billing_address === ""){
-            billing_address_error.text("Please enter corporate address");
-            return;
+            billing_address_error.text("Please enter billing address");
+            validationErrorsStep2.billing_address = "Please enter billing address";
+
         }else{
             billing_address_error.text('');
+        }
+
+        // Display all errors
+        if (Object.keys(validationErrorsStep2).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep2)[0]).focus();
+            return;
         }
     }
 
