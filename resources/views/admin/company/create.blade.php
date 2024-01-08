@@ -2,12 +2,15 @@
     <x-slot name="title">
         Add New Company
     </x-slot>
+    <x-slot name="breadcrumb">
+        Company <span class="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1"></span> Create
+    </x-slot>
     <x-common.card>
         <x-slot name="title">
             Add New Company
         </x-slot>
         <x-slot name="headerButton">
-            <a href="{{ route('admin.companies.index') }}" class="btn btn-light-primary">Companies</a>
+            <a href="{{ route('admin.companies.index') }}" class="btn btn-light-primary">Companies List</a>
         </x-slot>
         <x-slot name="body">
             <div class="stepper stepper-links d-flex flex-column" id="kt_create_account_stepper">
