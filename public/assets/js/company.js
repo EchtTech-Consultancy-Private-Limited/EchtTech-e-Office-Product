@@ -1,3 +1,303 @@
+// Debounce function to limit the frequency of function calls
+const text_info = $('#text_info');
+function debounce(func, delay) {
+    let timer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            func.apply(context, args);
+        }, delay);
+    };
+}
+
+// Function to handle the input and apply transformations and validations
+function handleInput() {
+    text_info.hide();
+    const db_name_input = $('#db_name');
+    const db_name_error = $('#db_name_error');
+
+    let db_name = db_name_input.val();
+
+    // Convert to lowercase, remove spaces, and remove special characters except underscores
+    db_name = db_name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
+
+    // Remove consecutive underscores
+    db_name = db_name.replace(/_+/g, '_');
+
+    // Remove underscore at the beginning
+    db_name = db_name.replace(/^_/, '');
+
+    db_name_input.val(db_name); // Update the input value
+
+    const db_name_pattern = /^[a-z_][a-z0-9_]*$/;
+
+    if (db_name.length < 6 || db_name.length > 20) {
+        db_name_error.text("Database name must be between 5 and 10 characters.");
+        return;
+    }
+
+    if (!db_name.match(db_name_pattern)) {
+        db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
+        return;
+    }
+
+    db_name_error.text('');
+}
+
+function handleCommonInputs(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let value = input.val();
+
+        // Capitalize the input and ensure only alpha characters are accepted
+        value = value.replace(/[^a-zA-Z ]/g, '').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+        input.val(value); // Update the input value
+
+        if (value.length < 4) {
+            error.text("Minimum length is 4 characters.");
+            return;
+        }
+
+        error.text('');
+    };
+}
+
+function handleEmailInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let email = input.val().trim();
+
+        // Basic email format validation using a regular expression
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            error.text("Please enter a valid email address.");
+            return;
+        }
+
+        input.val(email); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handlePincodeInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let pincode = input.val().trim();
+
+        // Remove non-numeric characters
+        pincode = pincode.replace(/\D/g, '');
+
+        // Limit to 6 digits
+        pincode = pincode.slice(0, 6);
+
+        // Basic pincode validation for 6-digit numeric values
+        const pincodePattern = /^\d{6}$/;
+
+        if (!pincodePattern.test(pincode)) {
+            error.text("Please enter a valid 6-digit numeric pincode.");
+            return;
+        }
+
+        input.val(pincode); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handleAddressInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let address = input.val().trim();
+
+        // Basic validation for address length
+        if (address.length < 5) {
+            error.text("Address must be at least 5 characters long.");
+            return;
+        }
+
+        // You can add additional address validation rules here based on your requirements.
+
+        input.val(address); // Update the input value
+
+        error.text('');
+    };
+}
+
+
+function handleLocationSelection(inputId, errorId, errorMessage) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        // Check if a value is selected
+        if (input.val() === '') {
+            error.text(errorMessage);
+            return;
+        }
+
+        error.text('');
+    };
+}
+
+function handleFileInput(fileInputId, errorId) {
+    return function () {
+        $('#logo_info').hide();
+        const fileInput = $(`#${fileInputId}`);
+        const error = $(`#${errorId}`);
+
+        const allowedExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+        const maxFileSize = 500 * 1024; // 500 KB in bytes
+
+        const fileName = fileInput.val();
+        if (!fileName) {
+            error.text('Please choose a file.');
+            return;
+        }
+
+        const fileExtension = fileName.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(fileExtension)) {
+            error.text('Only PNG, JPG, JPEG, and GIF files are allowed.');
+            return;
+        }
+
+        const fileSize = fileInput[0].files[0].size;
+        if (fileSize > maxFileSize) {
+            error.text('File size exceeds the maximum limit of 500 KB.');
+            return;
+        }
+
+        error.text('');
+    };
+}
+
+function handlePanCardInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let panCard = input.val().trim().toUpperCase();
+
+        // Basic PAN card format validation using a regular expression
+        const panCardPattern = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+
+        if (panCard.length !== 10 || !panCardPattern.test(panCard)) {
+            $("#pancard_text_info").hide();
+            error.text("Please enter a valid 10-character PAN card number.");
+            return;
+        }
+
+        input.val(panCard); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handleGSTNumberInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const info = $(`#${inputId}_info`);
+        const error = $(`#${errorId}`);
+
+        let gstNumber = input.val().trim().toUpperCase();
+
+        // Basic GST number format validation using a regular expression
+        const gstNumberPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+
+        if (gstNumber.length !== 15 || !gstNumberPattern.test(gstNumber)) {
+            $("#gst_text_info").hide();
+            info.hide(); // Hide info text
+            error.text("Please enter a valid 15-character GST number.");
+            return;
+        }
+
+        info.show(); // Show info text
+        input.val(gstNumber); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handleMobileNumberInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let mobileNumber = input.val().trim();
+
+        // Remove non-numeric characters
+        mobileNumber = mobileNumber.replace(/\D/g, '');
+
+        // Extract the first 10 digits
+        mobileNumber = mobileNumber.slice(0, 10);
+
+        // Basic mobile number format validation using a regular expression
+        const mobileNumberPattern = /^\d{10}$/;
+
+        if (mobileNumber === "") {
+            error.text("Please enter mobile number");
+            return;
+        }
+
+        if (!mobileNumberPattern.test(mobileNumber)) {
+            error.text("Invalid mobile number. It must be a 10-digit number.");
+            return;
+        }
+
+        input.val(mobileNumber); // Update the input value
+
+        error.text('');
+    };
+}
+
+
+
+
+
+$(document).ready(function () {
+
+    // Attach the debounced handleInput function to the onkeyup event
+    $('#db_name').on('keyup', debounce(handleInput, 300));
+    $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
+    $('#contact_person_name').on('keyup', debounce(handleCommonInputs('contact_person_name', 'contact_person_name_error'), 300));
+    $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
+    $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
+    $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
+
+    const countryErrorMessage = "Please select a country.";
+    const stateErrorMessage = "Please select a state.";
+    const cityErrorMessage = "Please select a city.";
+
+    $('#country').on('change', debounce(handleLocationSelection('country', 'country_error', countryErrorMessage),300));
+    $('#state').on('change', debounce(handleLocationSelection('state', 'state_error', stateErrorMessage),300));
+    $('#city').on('change', debounce(handleLocationSelection('city', 'city_error', cityErrorMessage),300));
+    $('#address_line_1').on('keyup', debounce(handleAddressInput('address_line_1', 'address_line_1_error'),300));
+    $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'),300));
+    $('#billing_address').on('keyup',debounce( handleAddressInput('billing_address', 'billing_address_error'),300));
+    $('#corporate_office_address').on('keyup',debounce( handleAddressInput('corporate_office_address', 'corporate_office_address_error'),300));
+    $('#logo').on('change',debounce( handleFileInput('logo', 'logo_error'),300));
+
+    // pancard
+    $('#pancard').on('keyup', debounce(handlePanCardInput('pancard', 'pancard_error'),300));
+    //GST
+    $('#gst_number').on('keyup', debounce(handleGSTNumberInput('gst_number', 'gst_number_error'),300));
+    $('#primary_mobile').on('keyup', debounce(handleMobileNumberInput('primary_mobile', 'primary_mobile_error'),300));
+    $('#primary_email').on('keyup', debounce(handleEmailInput('primary_email', 'primary_email_error'),300));
+
+});
+
 // Stepper lement
 var element = document.querySelector("#kt_create_account_stepper");
 
@@ -9,260 +309,306 @@ stepper.on("kt.stepper.next", function (stepper) {
 
 // company setup form validations
 
+
     const app_name = $('#app_name').val();
     const app_name_error = $('#app_name_error');
 
     const db_name = $('#db_name').val();
     const db_name_error = $('#db_name_error');
 
-    const logo = $('#log');
-    const logo_error = $('#log_error');
+    const logo = $('#logo');
+    const logo_error = $('#logo_error');
 
-    //Step 1 validation
-    if (stepper.currentStepIndex === 1){
-        if (app_name === ""){
+    // Step 1 validation
+    const validationErrors = {};
+
+    if (stepper.currentStepIndex === 1) {
+        if (app_name === "") {
             app_name_error.text("Please enter app name");
-            return;
-        }else{
+            validationErrors.app_name = "Please enter app name";
+        } else {
             app_name_error.text('');
         }
-        if (db_name === ""){
+
+        if (db_name === "") {
+            text_info.hide();
             db_name_error.text("Please enter database name");
-            return;
-        }else{
+            validationErrors.db_name = "Please enter database name";
+        } else {
             const db_name_pattern = /^[a-z_][a-z0-9_]*$/; // Allows only lowercase letters, numbers, and underscores, and cannot start with a number
             if (!db_name.match(db_name_pattern)) {
                 db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
-                return;
+                validationErrors.db_name = "Invalid database name";
             } else {
                 db_name_error.text('');
             }
         }
-    }
 
-    // Logo validation (Step 1)
-    if (stepper.currentStepIndex === 1) {
+        // Logo validation (Step 1)
         const allowedExtensions = ['jpg', 'jpeg', 'png'];
         const maxFileSize = 1 * 1024 * 1024; // 1 MB
 
-        const logo = $('#logo');
-        const logo_error = $('#logo_error');
-
         if (!logo[0].files || logo[0].files.length === 0) {
+            $('#logo_info').hide();
             logo_error.text("Please select a logo file");
-            return;
+            validationErrors.logo = "Please select a logo file";
+        } else {
+            const fileName = logo.val();
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if ($.inArray(fileExtension, allowedExtensions) === -1) {
+                logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
+                validationErrors.logo = "Invalid logo file format";
+            }
+
+            if (logo[0].files[0].size > maxFileSize) {
+                logo_error.text("Maximum file size is 1 MB");
+                validationErrors.logo = "Maximum file size is 1 MB";
+            } else {
+                logo_error.text('');
+            }
         }
 
-        const fileName = logo.val();
-        const fileExtension = fileName.split('.').pop().toLowerCase();
-
-        if ($.inArray(fileExtension, allowedExtensions) === -1) {
-            logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
+        // Display all errors
+        if (Object.keys(validationErrors).length > 0) {
+            // You can access specific errors using the keys, e.g., validationErrors.app_name
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrors)[0]).focus();
             return;
         }
-
-        if (logo[0].files[0].size > maxFileSize) {
-            logo_error.text("Maximum file size is 1 MB");
-            return;
-        }
-
-        logo_error.text('');
     }
 
-    // Step 2
-    if (stepper.currentStepIndex === 2){
+    // Step 2 validation
+
+
+    if (stepper.currentStepIndex === 2) {
+        const validationErrorsStep2 = {};
+
         const company_name = $('#company_name').val();
         const company_name_error = $('#company_name_error');
-
-        if (company_name === ""){
+        if (company_name === "") {
             company_name_error.text("Please enter company name");
-            return;
-        }else{
+            validationErrorsStep2.company_name = "Please enter company name";
+        } else {
             company_name_error.text('');
         }
 
         const company_email = $("#company_email").val();
         const company_email_error = $("#company_email_error");
-        if (company_email === ""){
+        if (company_email === "") {
             company_email_error.text("Please enter company email");
-            return;
-        }else{
-            company_email_error.text('');
+            validationErrorsStep2.company_email = "Please enter company email";
+        } else {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(company_email)) {
+                company_email_error.text("Please enter a valid email address.");
+                validationErrorsStep2.company_email = "Invalid email address";
+            } else {
+                company_email_error.text('');
+            }
         }
 
-        const registration_number = $('#registration_number').val();
-        const registration_number_error = $('#registration_number_error');
-
-        if (registration_number === ""){
-            registration_number_error.text("Please enter registration number");
-            return;
-        }else{
-            registration_number_error.text('');
-        }
-
-        const govt_tax_ein_number = $('#gov_tax_number_ein').val();
-        const govt_tax_ein_number_error = $('#gov_tax_number_ein_error');
-
-        if (govt_tax_ein_number === ""){
-            govt_tax_ein_number_error.text("Please enter government tax number/ein number");
-            return;
-        }else{
-            govt_tax_ein_number_error.text('');
-        }
-
-        const legal_trading_name = $('#legal_trading_name').val();
-        const legal_trading_name_error = $('#legal_trading_name_error');
-
-        if (legal_trading_name === ""){
-            legal_trading_name_error.text("Please enter legal/trading name");
-            return;
-        }else{
-            legal_trading_name_error.text('');
-        }
-
+        // Country validation
         const country = $('#country').val();
         const country_error = $('#country_error');
-
-        if (country === ""){
+        if (country === "") {
             country_error.text("Please select country");
-            return;
-        }else{
+            validationErrorsStep2.country = "Please Select Country";
+
+        } else {
             country_error.text('');
         }
 
+        console.log(validationErrorsStep2);
+
+// State validation
         const state = $('#state').val();
         const state_error = $('#state_error');
-
-        if (state === ""){
+        if (state === "") {
             state_error.text("Please select state");
-            return;
-        }else{
+            validationErrorsStep2.state = "Please Select state";
+
+        } else {
             state_error.text('');
         }
 
+// City validation
         const city = $('#city').val();
         const city_error = $('#city_error');
-
-        if (city === ""){
+        if (city === "") {
             city_error.text("Please select city");
-            return;
-        }else{
+            validationErrorsStep2.city = "Please Select city";
+
+        } else {
             city_error.text('');
         }
 
+// Pin code validation
         const pin_code = $('#pin_code').val();
         const pin_code_error = $('#pin_code_error');
-
         if (pin_code === "") {
             pin_code_error.text("Please enter a pin code");
+            validationErrorsStep2.pin_code = "Please enter a pin code";
+
         } else if (!/^\d{6}$/.test(pin_code)) {
-            pin_code_error.text("Invalid pin code. Pin code must be a 6-digit number.");
+            pin_code_error.text("Please enter a valid 6-digit numeric pin code.");
+            validationErrorsStep2.pin_code = "Please enter a valid 6-digit numeric pin code.";
+
         } else {
             // Proceed with further processing or clear any previous error messages
             pin_code_error.text("");
         }
 
+
         const address_line_1 = $('#address_line_1').val();
         const address_line_1_error = $('#address_line_1_error');
 
-        if (address_line_1 === ""){
+        if (address_line_1 === "") {
             address_line_1_error.text("Please enter address");
-            return;
-        }else{
+            validationErrorsStep2.address_line_1 = "Please enter address";
+
+        } else {
             address_line_1_error.text('');
-        }
-    }
-
-    //Step 3
-    if (stepper.currentStepIndex === 3){
-        const pancard = $('#pancard').val();
-        const pancard_error = $('#pancard_error');
-
-        if (pancard === ""){
-            pancard_error.text("Please enter pan number");
-            return;
-        }else{
-            pancard_error.text('');
-        }
-
-        const gst_number = $('#gst_number').val();
-        const gst_number_error = $('#gst_number_error');
-
-        if (gst_number === ""){
-            gst_number_error.text("Please enter gst number");
-            return;
-        }else{
-            gst_number_error.text('');
-        }
-
-        const tan_number = $('#tan_number').val();
-        const tan_number_error = $('#tan_number_error');
-
-        if (tan_number === ""){
-            tan_number_error.text("Please enter tan number");
-            return;
-        }else{
-            tan_number_error.text('');
-        }
-
-        const ministry_name = $('#ministry_name').val();
-        const ministry_name_error = $('#ministry_name_error');
-
-        if (ministry_name === ""){
-            ministry_name_error.text("Please enter ministry name");
-            return;
-        }else{
-            ministry_name_error.text('');
         }
 
         const registered_address = $('#registered_address').val();
         const registered_address_error = $('#registered_address_error');
 
-        if (registered_address === ""){
+        if (registered_address === "") {
             registered_address_error.text("Please enter registered address");
-            return;
-        }else{
+            validationErrorsStep2.registered_address = "Please enter registered address";
+
+        } else {
             registered_address_error.text('');
         }
 
         const corporate_office_address = $('#corporate_office_address').val();
         const corporate_office_address_error = $('#corporate_office_address_error');
 
-        if (corporate_office_address === ""){
+        if (corporate_office_address === "") {
             corporate_office_address_error.text("Please enter corporate address");
-            return;
-        }else{
+            validationErrorsStep2.corporate_office_address = "Please enter corporate address";
+
+        } else {
             corporate_office_address_error.text('');
         }
 
         const billing_address = $('#billing_address').val();
         const billing_address_error = $('#billing_address_error');
 
-        if (billing_address === ""){
-            billing_address_error.text("Please enter corporate address");
-            return;
-        }else{
+        if (billing_address === "") {
+            billing_address_error.text("Please enter billing address");
+            validationErrorsStep2.billing_address = "Please enter billing address";
+
+        } else {
             billing_address_error.text('');
         }
+
+        // Display all errors
+        if (Object.keys(validationErrorsStep2).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep2)[0]).focus();
+            return;
+        }
     }
 
-    if (stepper.currentStepIndex === 4){
-        const phone = $('#phone').val();
-        const phone_error = $('#phone_error');
+    //Step 3
+    if (stepper.currentStepIndex === 3) {
+        const validationErrorsStep3 = {};
 
-        if (phone === "") {
-            phone_error.text("Please enter phone number");
-            return;
-        } else if (!/^\d{10}$/.test(phone)) {
-            phone_error.text("Invalid phone number. Phone number must be a 10-digit number.");
-            return;
+        // Pan Card validation
+        const pancard = $('#pancard').val();
+        const pancard_error = $('#pancard_error');
+        if (pancard === "") {
+            $("#pancard_text_info").hide();
+            pancard_error.text("Please enter pan number");
+            validationErrorsStep3.pancard = "Please enter pan number";
         } else {
-            phone_error.text('');
+            pancard_error.text('');
+        }
+
+        // GST Number validation
+        const gst_number = $('#gst_number').val();
+        const gst_number_error = $('#gst_number_error');
+        if (gst_number === "") {
+            $("#gst_text_info").hide();
+            gst_number_error.text("Please enter gst number");
+            validationErrorsStep3.gst_number = "Please enter gst number";
+        } else {
+            gst_number_error.text('');
+        }
+
+        // TAN Number validation
+        // const tan_number = $('#tan_number').val();
+        // const tan_number_error = $('#tan_number_error');
+        // if (tan_number === "") {
+        //     tan_number_error.text("Please enter tan number");
+        //     validationErrorsStep3.tan_number = "Please enter tan number";
+        // } else {
+        //     tan_number_error.text('');
+        // }
+
+        // Display all errors for Step 3
+        if (Object.keys(validationErrorsStep3).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep3)[0]).focus();
+            return;
         }
 
     }
 
-    if (stepper.currentStepIndex === 5){
+    if (stepper.currentStepIndex === 4) {
+        const validationErrorsStep4 = {};
+
+        // Contact Person Name validation
+        const contactPersonName = $('#contact_person_name').val();
+        const contactPersonNameError = $('#contact_person_name_error');
+        if (contactPersonName === "") {
+            contactPersonNameError.text("Please enter contact person name");
+            validationErrorsStep4.contactPersonName = "Please enter contact person name";
+        } else if (!/^[A-Za-z\s]+$/.test(contactPersonName)) {
+            contactPersonNameError.text("Invalid contact person name. It should only contain letters and spaces.");
+            validationErrorsStep4.contactPersonName = "Invalid contact person name";
+        } else {
+            contactPersonNameError.text('');
+        }
+
+        // Primary Mobile Number validation
+        const primaryMobile = $('#primary_mobile').val();
+        const primaryMobileError = $('#primary_mobile_error');
+        if (primaryMobile === "") {
+            primaryMobileError.text("Please enter primary mobile number");
+            validationErrorsStep4.primaryMobile = "Please enter primary mobile number";
+        } else if (!/^\d{10}$/.test(primaryMobile)) {
+            primaryMobileError.text("Invalid primary mobile number. It must be a 10-digit number.");
+            validationErrorsStep4.primaryMobile = "Invalid primary mobile number";
+        } else {
+            primaryMobileError.text('');
+        }
+
+        // Primary Email validation
+        const primaryEmail = $('#primary_email').val();
+        const primaryEmailError = $('#primary_email_error');
+        if (primaryEmail === "") {
+            primaryEmailError.text("Please enter primary email");
+            validationErrorsStep4.primaryEmail = "Please enter primary email";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(primaryEmail)) {
+            primaryEmailError.text("Invalid primary email. Please enter a valid email address.");
+            validationErrorsStep4.primaryEmail = "Invalid primary email";
+        } else {
+            primaryEmailError.text('');
+        }
+
+
+        if (Object.keys(validationErrorsStep4).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep4)[0]).focus();
+            return;
+        }
+
+    }
+
+    if (stepper.currentStepIndex === 5) {
         var checkboxes = document.querySelectorAll('input[name="module[]"]:checked');
         if (checkboxes.length === 0) {
             Swal.fire({
@@ -411,10 +757,10 @@ $(document).ready(function () {
                     if (response.success === true) {
 
                         $('#lastStepContent').slideUp('slow');
-                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> "+response.database.name+" </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
+                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> " + response.database.name + " </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
                         setTimeout(function () {
                             saveBasicDetail(response.database.id);
-                        },1000);
+                        }, 1000);
                     } else {
                         console.error('Error saving database details:', response.error);
                         // Handle error, display error message, etc.
@@ -493,14 +839,14 @@ $(document).ready(function () {
         $("#basic_data_saved_success")
             .html("<strong>2. Basic Data Saved Successfully</strong>")
             .fadeIn(2000)
-            .css({ 'color': 'green', 'display': 'block' });
+            .css({'color': 'green', 'display': 'block'});
         setTimeout(() => {
             saveBusinessDetails(response.data.id);
         }, 1000);
 
     }
 
-    function saveBusinessDetails(companyId){
+    function saveBusinessDetails(companyId) {
         $("#business_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const pancard = $('#pancard').val();
@@ -561,14 +907,14 @@ $(document).ready(function () {
         $("#business_details_saved_success")
             .html("<strong>3. Business Details Saved Successfully</strong>")
             .fadeIn(3000)
-            .css({ 'color': 'green', 'display': 'block' });
-        setTimeout(()=>{
+            .css({'color': 'green', 'display': 'block'});
+        setTimeout(() => {
             saveContactDetails(response)
-        },1000)
+        }, 1000)
 
     }
 
-    function saveContactDetails(companyDetails){
+    function saveContactDetails(companyDetails) {
         $("#contact_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const company_id = companyDetails.businessDetail.company_id;
@@ -597,33 +943,33 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#contact_details_saved_success")
                         .html("<strong>4. Contact details saved successfully!</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         assignModules(response);
-                    },1000)
-                   setTimeout(()=>{
-                       assignLicense(response);
-                   },1000)
+                    }, 1000)
+                    setTimeout(() => {
+                        assignLicense(response);
+                    }, 1000)
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle the error response
                 console.error('Error saving data:', error);
             }
         });
     }
 
-    function assignModules(companyDetail){
+    function assignModules(companyDetail) {
         $("#modules_assigned_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const company_id = companyDetail.data.company_id;
-        var selectedModules = $("input[name='module[]']:checked").map(function(){
+        var selectedModules = $("input[name='module[]']:checked").map(function () {
             return $(this).val();
         }).get();
 
@@ -638,7 +984,7 @@ $(document).ready(function () {
             url: '/admin/save_selected_modules',
             data: {
                 modules: selectedModules,
-                company_id:company_id
+                company_id: company_id
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -648,7 +994,7 @@ $(document).ready(function () {
                     $("#modules_assigned_success")
                         .html("<strong>5. Modules assigned successfully</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
                 } else {
                     // Handle error, display error message, etc.
                     console.error('Error saving modules:', response.error);
@@ -685,26 +1031,26 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#license_assigned_success")
                         .html("<strong>6. License assigned successfully!</strong>")
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         saveUserDetails(companyDetail);
-                    },1000)
+                    }, 1000)
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 // Handle the error response
                 console.error('Error assigning license:', error);
             }
         });
     }
 
-    function saveUserDetails(companyDetail){
+    function saveUserDetails(companyDetail) {
         $("#user_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const company_id = companyDetail.data.company_id;
         const name = $("#name").val();
@@ -728,22 +1074,22 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     $("#user_details_saved_success")
                         .empty()
                         .html(`<strong>7. User details saved successfully!</strong>`)
                         .fadeIn(3000)
-                        .css({ 'color': 'green', 'display': 'block' });
+                        .css({'color': 'green', 'display': 'block'});
 
                     setTimeout(showConfirmationPopup, 2000);
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error saving user details:', error);
                 // Handle the error response, display error message, etc.
                 const errors = error.responseJSON.errors;
-                for (const key in errors){
+                for (const key in errors) {
                     if (key === 'email') {
                         $("#email_error").text(errors[key][0]);
                     }
@@ -796,7 +1142,7 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 if (response.success === true) {
                     // No duplicates found, continue with your logic or form submission
                     console.log('No duplicates found.');
@@ -807,7 +1153,7 @@ $(document).ready(function () {
                     // You might want to disable form submission or display an error message
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 console.error('Error checking duplicates:', error.responseJSON.errors);
                 // Handle the error, display an error message, etc.
                 const errorData = error.responseJSON.errors;

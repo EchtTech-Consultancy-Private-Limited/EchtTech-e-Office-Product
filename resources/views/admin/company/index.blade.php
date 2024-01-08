@@ -2,9 +2,12 @@
     <x-slot name="title">
         Company Listing
     </x-slot>
+    <x-slot name="breadcrumb">
+        Company Listing
+    </x-slot>
     <x-common.card>
         <x-slot name="title">
-            Companies Listing
+            List
         </x-slot>
         <x-slot name="headerButton">
             <a href="{{ route('admin.companies.create') }}" class="btn btn-light-primary">Add New</a>
