@@ -23,6 +23,11 @@
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('assets/js/sweetalert.js') }}"></script>
     <link href="{{ asset('assets/css/common-style.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        .image-input-wrapper {
+    background-image: url("{{ asset('assets/media/svg/avatars/blank-avatar.png') }}");
+}
+    </style>
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
 <div class="page-loader flex-column">
@@ -95,6 +100,7 @@
 <script src="{{ asset('assets/js/custom/modals/users-search.js') }}"></script>
 <script src="{{ asset('assets/js/apis/country-state-city.js') }}"></script>
 <script src="{{ asset('assets/js/custom-script.js') }}"></script>
+<script src="{{ asset('assets/js/common-validations.js') }}"></script>
 {{ $script ?? '' }}
 </body>
 </html>

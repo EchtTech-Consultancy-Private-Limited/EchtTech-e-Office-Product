@@ -33,7 +33,5 @@ function updateStatus() {
 
 //Calander datepicker basic
 $("#kt_datepicker_1").flatpickr();
-$("#kt_datepicker_12").flatpickr();
-$("#kt_datepicker_21").flatpickr();
-$("#kt_datepicker_jd").flatpickr();
-$("#kt_datepicker_ld").flatpickr();
+$("#kt_datepicker_2").flatpickr();
+

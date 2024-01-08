@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Ajax\ValidationsController;
 use App\Http\Controllers\Admin\Company\CompanyController;
 use App\Http\Controllers\Admin\Department\DepartmentController;
 use App\Http\Controllers\Admin\Designation\DesignationController;
+use App\Http\Controllers\Admin\Employee\EmployeeController;
 use App\Http\Controllers\Admin\Employee\EmploymentTypeController;
 use App\Http\Controllers\Admin\License\LicenseController;
 use App\Http\Controllers\Admin\Module\ModuleController;
@@ -57,11 +58,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         //Employee routes
         Route::get('employment-types',[EmploymentTypeController::class,"index"])->name('employment-types.index');
-
+        Route::get('employees/create',[EmployeeController::class,"create"])->name('employees.create');
+        
         // admin logout route
         Route::post('/logout', [LogOutController::class, 'logout'])->name('logout');
-
-        // Employee routes
-        Route::view('employees/create','admin.employee.create');
     });
 });

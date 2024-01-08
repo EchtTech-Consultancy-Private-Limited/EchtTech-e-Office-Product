@@ -11,78 +11,11 @@ function debounce(func, delay) {
     };
 }
 
-function handleCommonInputs(inputId, errorId) {
-    return function () {
-        const input = $(`#${inputId}`);
-        const error = $(`#${errorId}`);
-
-        let value = input.val();
-
-        // Capitalize the input and ensure only alpha characters are accepted
-        value = value.replace(/[^a-zA-Z ]/g, '').toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-
-        input.val(value); // Update the input value
-
-        if (value.length < 4) {
-            error.text("Minimum length is 4 characters.");
-            return;
-        }
-
-        error.text('');
-    };
-}
-
-function handlePincodeInput(inputId, errorId) {
-    return function () {
-        const input = $(`#${inputId}`);
-        const error = $(`#${errorId}`);
-
-        let pincode = input.val().trim();
-
-        // Remove non-numeric characters
-        pincode = pincode.replace(/\D/g, '');
-
-        // Basic pincode validation for 6-digit numeric values
-        const pincodePattern = /^\d{6}$/;
-
-        if (!pincodePattern.test(pincode)) {
-            error.text("Please enter a valid 6-digit numeric pincode.");
-            return;
-        }
-
-        input.val(pincode); // Update the input value
-
-        error.text('');
-    };
-}
-
-function handleEmailInput(inputId, errorId) {
-    return function () {
-        const input = $(`#${inputId}`);
-        const error = $(`#${errorId}`);
-
-        let email = input.val().trim();
-
-        // Basic email format validation using a regular expression
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(email)) {
-            error.text("Please enter a valid email address.");
-            return;
-        }
-
-        input.val(email); // Update the input value
-
-        error.text('');
-    };
-}
-
 $(document).ready(function () {
 
     // Attach the debounced handleInput function to the onkeyup event
-    $('#reg_name_required').on('keyup', debounce(handleCommonInputs('reg_name_required', 'employee_name_error'), 300));
-    $('#reg_email_required').on('keyup', debounce(handleEmailInput('reg_email_required', 'reg_email_error'), 300));
-    $('#pincode').on('keyup', debounce(handlePincodeInput('pincode', 'pincode_error'), 300));
+    // $('#reg_name_required').on('keyup', debounce(handleCommonInputs('reg_name_required', 'employee_name_error'), 300));
+    // $('#reg_email_required').on('keyup', debounce(handleEmailInput('reg_email_required', 'reg_email_error'), 300));
 
 });
 
@@ -411,42 +344,7 @@ stepper.on("kt.stepper.previous", function (stepper) {
     stepper.goPrevious(); // go previous step
 });
 
-new tempusDominus.TempusDominus(document.getElementById("kt_td_picker_date_only"), {
-    display: {
-        viewMode: "calendar",
-        components: {
-            decades: true,
-            year: true,
-            month: true,
-            date: true,
-            hours: false,
-            minutes: false,
-            seconds: false
-        }
-    }
-});
-
-
-// Format options for country select
-var optionFormat = function(item) {
-    if ( !item.id ) {
-        return item.text;
-    }
-
-    var span = document.createElement('span');
-    var imgUrl = item.element.getAttribute('data-kt-select2-country');
-    var template = '';
-
-    template += '<img src="' + imgUrl + '" class="rounded-circle h-20px me-2" alt="image"/>';
-    template += item.text;
-
-    span.innerHTML = template;
-
-    return $(span);
-}
-
-// Init Select2 --- more info: https://select2.org/
-$('#kt_docs_select2_country').select2({
-    templateSelection: optionFormat,
-    templateResult: optionFormat
+// calander flatpicker
+$("#dob").flatpickr({
+    maxDate: new Date()
 });

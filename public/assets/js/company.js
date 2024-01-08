@@ -137,21 +137,6 @@ function handleAddressInput(inputId, errorId) {
 }
 
 
-function handleLocationSelection(inputId, errorId, errorMessage) {
-    return function () {
-        const input = $(`#${inputId}`);
-        const error = $(`#${errorId}`);
-
-        // Check if a value is selected
-        if (input.val() === '') {
-            error.text(errorMessage);
-            return;
-        }
-
-        error.text('');
-    };
-}
-
 function handleFileInput(fileInputId, errorId) {
     return function () {
         $('#logo_info').hide();
@@ -276,13 +261,6 @@ $(document).ready(function () {
     $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
     $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
 
-    const countryErrorMessage = "Please select a country.";
-    const stateErrorMessage = "Please select a state.";
-    const cityErrorMessage = "Please select a city.";
-
-    $('#country').on('change', debounce(handleLocationSelection('country', 'country_error', countryErrorMessage),300));
-    $('#state').on('change', debounce(handleLocationSelection('state', 'state_error', stateErrorMessage),300));
-    $('#city').on('change', debounce(handleLocationSelection('city', 'city_error', cityErrorMessage),300));
     $('#address_line_1').on('keyup', debounce(handleAddressInput('address_line_1', 'address_line_1_error'),300));
     $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'),300));
     $('#billing_address').on('keyup',debounce( handleAddressInput('billing_address', 'billing_address_error'),300));
