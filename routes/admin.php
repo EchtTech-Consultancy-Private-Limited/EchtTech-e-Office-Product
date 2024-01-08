@@ -60,5 +60,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         // admin logout route
         Route::post('/logout', [LogOutController::class, 'logout'])->name('logout');
+
+        // Employee routes
+        Route::view('employees/create','admin.employee.create');
     });
 });

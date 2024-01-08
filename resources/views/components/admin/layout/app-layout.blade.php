@@ -14,6 +14,10 @@
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
 
+
+    <!-- custom kt anurag Stylesheets(used by this page) -->
+      <link href="{{ asset('assets/css/register-employee.css') }}" rel="stylesheet" type="text/css" />
+
     <!-- Global Stylesheets Bundle(used by all pages) -->
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
