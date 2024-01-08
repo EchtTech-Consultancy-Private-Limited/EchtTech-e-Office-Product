@@ -78,28 +78,6 @@
 @endpush
 <!-- Custom script only starts here -->
 @section('script')
-<script>
-jQuery('#admin_login_form').validate({
-    rules: {
-        email: {
-            required: true,
-            email:true
-        },
-        password: {
-            required: true
-        },
-    },
-    messages: {
-        email: "Email field is required",
-        password: "Password field is required",
-    }
-});
-</script>
-
-<script>
-    function onSubmit(token) {
-        document.getElementById("admin_login_form").submit();
-    }
-</script>
+<script src="{{ asset('assets/js/admin-auth.js') }}"></script>
 @endsection
 <!-- End Custom script only starts here -->

@@ -39,19 +39,7 @@
 
               <span class="error-msg" id="login_username"></span>
 						</div>
-          <div class="form-group mt-4 mb-4">
-            <div class="captcha">
-                <span>{!! captcha_img('math') !!}</span>
-                <button type="button" class="btn btn-danger reload" id="username_reload">
-                    ↻
-                </button>
-            </div>
-          </div>
 
-        <div class="form-group mb-4">
-            <input id="username_captcha" type="text" class="form-control captcha" placeholder="Enter Captcha" name="captcha">
-            <span class="error-msg" id="login_username_captcha"></span>
-        </div>
 						<div class="text-center">
 							<button type="button" value="login_with_otp" id="login_with_otp" class="btn btn-lg btn-primary w-40 mb-5">
 								<span class="indicator-label">Sign In</span>
@@ -131,19 +119,7 @@
                 <input class="form-control form-control-solid h-auto py-6 px-6 rounded-lg font-size-h6" type="password" placeholder="Enter Password" name="password" autocomplete="off" />
                 <span class="text-danger password_error"></span></p>
             </div>
-            <!-- <div class="form-group mt-4 mb-4">
-                <div class="captcha">
-                    <span>{!! captcha_img('math') !!}</span>
-                    <button type="button" class="btn btn-danger reload" id="password_reload">
-                        ↻
-                    </button>
-                </div>
-              </div>
 
-            <div class="form-group mb-4">
-                <input id="password_captcha" type="text" class="form-control captcha" placeholder="Enter Captcha" name="captcha">
-                <span class="error-msg" id="login_password_captcha"></span>
-            </div> -->
             <div class="form-group d-flex flex-wrap pb-lg-0 align-items-center">
                 <button type="button" class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-4 verify_password_btn">Login</button>
                 <a href="{{ route('auth.forget-password') }}" role="tab" class="fs-6 px-2 fw-bolder link-primary">Forgot Password</a>

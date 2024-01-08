@@ -12,9 +12,12 @@ use App\Models\ContactDetail;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserCompany;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
@@ -217,7 +220,13 @@ class CompanyController extends Controller
                 'user_id' => $user->id
             ]);
 
-            $this->__sendWelcomeMail($user);
+            $company = Company::with('databaseDetails')->find($request->company_id);
+
+           $created =  $this->createNewDatabase($company->databaseDetails->name);
+
+            if ($created){
+                $this->__sendWelcomeMail($user);
+            }
 
             return response()->json(['success' => true, 'message' => 'User assigned to company successfully.']);
         } catch (ValidationException $e) {
@@ -257,6 +266,39 @@ class CompanyController extends Controller
             Log::error('Exception in __sendWelcomeMail: ' . $e->getMessage());
             // Optionally, you can throw the exception again if you want it to propagate
             // throw $e;
+        }
+    }
+
+    private function createNewDatabase($databaseName)
+    {
+        try {
+            // Create the new database if it doesn't exist
+            DB::unprepared("CREATE DATABASE IF NOT EXISTS $databaseName");
+
+            // Get the current database name from .env
+            $currentDatabaseName = config('database.connections.mysql.database');
+
+            // Specify the database name in the SQL queries
+            $tablesToCopy = ['departments', 'designations','countries','states','cities'];
+
+            foreach ($tablesToCopy as $table) {
+                // Check if the table exists in the source database before copying
+                if (Schema::connection('mysql')->hasTable($table)) {
+                    // Create the table structure
+                    DB::unprepared("CREATE TABLE IF NOT EXISTS $databaseName.$table AS SELECT * FROM $currentDatabaseName.$table");
+
+                    // Copy the data
+                    DB::unprepared("INSERT INTO $databaseName.$table SELECT * FROM $currentDatabaseName.$table");
+                }
+            }
+
+            return "New database '$databaseName' created and tables copied successfully.";
+        } catch (QueryException $e) {
+            // Handle the exception
+            $errorCode = $e->getCode();
+            $errorMessage = $e->getMessage();
+
+            return "Error creating database '$databaseName' or copying tables: $errorMessage (Error code: $errorCode)";
         }
     }
 

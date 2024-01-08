@@ -22,9 +22,6 @@ class Company extends Model
         'app_name',
         'logo',
         'logo_path',
-        'gov_tax_number_ein',
-        'legal_trading_name',
-        'registration_number',
         'description',
         'website',
         'phone',
@@ -56,5 +53,10 @@ class Company extends Model
     public function contactDetails(): HasOne
     {
         return $this->hasOne(ContactDetail::class);
+    }
+
+    public function databaseDetails(): BelongsTo
+    {
+        return $this->belongsTo(CompanyDatabase::class,'company_database_id');
     }
 }
