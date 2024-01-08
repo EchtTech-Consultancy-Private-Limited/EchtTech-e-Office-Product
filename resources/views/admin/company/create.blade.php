@@ -55,6 +55,7 @@
                                     <label for="db_name" class="required form-label">Database Name</label>
                                     <input type="text" name="db_name" id="db_name" class="form-control form-control-solid"
                                            placeholder=""/>
+                                    <small id="text_info" class="text-muted">Database name can only contain lowercase letters, numbers, and underscores. It must start with a lowercase letter and be between 5 and 20 characters.</small>
                                     <span id="db_name_error" class="text-danger"></span>
                                 </div>
                             </div>
@@ -62,6 +63,7 @@
                                 <div class="mb-10">
                                     <label for="logo" class="required form-label">Logo</label>
                                     <input type="file" name="logo" id="logo" class="form-control form-control-solid"/>
+                                    <small id="logo_info" class="text-muted">Accepted file types: PNG, JPG, JPEG, GIF. Maximum file size: 500 KB.</small>
                                     <span class="text-danger" id="logo_error"></span>
                                 </div>
                             </div>
@@ -162,6 +164,7 @@
                                 <div class="mb-10">
                                     <label for="pancard" class="required form-label">PANCARD</label>
                                     <input type="text" name="pancard" id="pancard" class="form-control form-control-solid" placeholder="Enter PANCARD"/>
+                                    <small id="pancard_text_info" class="text-muted">Enter a valid 10-character PAN card number (e.g., ABCDE1234F).</small>
                                     <span id="pancard_error" class="text-danger"></span>
                                 </div>
                             </div>
@@ -171,6 +174,7 @@
                                 <div class="mb-10">
                                     <label for="gst_number" class="required form-label">GST Number</label>
                                     <input type="text" name="gst_number" id="gst_number" class="form-control form-control-solid" placeholder="Enter GST Number"/>
+                                    <small id="gst_text_info" class="text-muted">Enter a valid 15-character GST number (e.g., 12ABCDE3456F7G8).</small>
                                     <span id="gst_number_error" class="text-danger"></span>
                                 </div>
                             </div>
@@ -178,7 +182,7 @@
                             <!-- TAN Number -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="tan_number" class="required form-label">TAN Number</label>
+                                    <label for="tan_number" class=" form-label">TAN Number</label>
                                     <input type="text" name="tan_number" id="tan_number" class="form-control form-control-solid" placeholder="Enter TAN Number"/>
                                     <span id="tan_number_error" class="text-danger"></span>
                                 </div>
@@ -187,7 +191,7 @@
                             <!-- CIN Number -->
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
-                                    <label for="cin_number" class="required form-label">CIN Number</label>
+                                    <label for="cin_number" class=" form-label">CIN Number</label>
                                     <input type="text" name="cin_number" id="cin_number" class="form-control form-control-solid" placeholder="Enter CIN Number"/>
                                     <span id="cin_number_error" class="text-danger"></span>
                                 </div>
@@ -295,19 +299,72 @@
                     {{-- Step 4 --}}
                     <div data-kt-stepper-element="content">
                         <div class="row w-100">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="mb-10">
-                                    <label for="phone" class="required form-label">Phone</label>
-                                    <input type="text" name="phone" id="phone" class="form-control form-control-solid"
-                                           placeholder="Enter phone number"/>
-                                    <span id="phone_error" class="text-danger"></span>
+                                    <label for="contact_person_name" class="required form-label">Contact Person Name</label>
+                                    <input type="text" name="contact_person_name" id="contact_person_name" class="form-control form-control-solid"
+                                           placeholder="Enter contact person name"/>
+                                    <span id="contact_person_name_error" class="text-danger"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="primary_mobile" class="required form-label">Primary Mobile Number</label>
+                                    <input type="text" name="primary_mobile" id="primary_mobile" class="form-control form-control-solid"
+                                           placeholder="Enter primary mobile number"/>
+                                    <span id="primary_mobile_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="secondary_mobile" class="form-label">Secondary Mobile Number</label>
+                                    <input type="text" name="secondary_mobile" id="secondary_mobile" class="form-control form-control-solid"
+                                           placeholder="Enter secondary mobile number"/>
+                                    <span id="secondary_mobile_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="whatsapp_number" class="form-label">WhatsApp Number</label>
+                                    <input type="text" name="whatsapp_number" id="whatsapp_number" class="form-control form-control-solid"
+                                           placeholder="Enter WhatsApp number"/>
+                                    <span id="whatsapp_number_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="primary_email" class="required form-label">Primary Email</label>
+                                    <input type="text" name="primary_email" id="primary_email" class="form-control form-control-solid"
+                                           placeholder="Enter primary email"/>
+                                    <span id="primary_email_error" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="secondary_email" class="form-label">Secondary Email</label>
+                                    <input type="text" name="secondary_email" id="secondary_email" class="form-control form-control-solid"
+                                           placeholder="Enter secondary email"/>
+                                    <span id="secondary_email_error" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
                                 <div class="mb-10">
                                     <label for="fax" class="form-label">Fax</label>
                                     <input type="text" name="fax" id="fax" class="form-control form-control-solid"
                                            placeholder="Enter fax number"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3">
+                                <div class="mb-10">
+                                    <label for="skype_id" class="form-label">Skype ID</label>
+                                    <input type="text" name="skype_id" id="skype_id" class="form-control form-control-solid"
+                                           placeholder="Enter Skype ID"/>
+                                    <span id="skype_id_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -324,6 +381,14 @@
                                     <input type="url" name="linkedin" id="linkedin"
                                            class="form-control form-control-solid"
                                            placeholder="Enter LinkedIn profile URL"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="instagram" class="form-label">Instagram</label>
+                                    <input type="text" name="instagram" id="instagram" class="form-control form-control-solid"
+                                           placeholder="Enter Instagram handle"/>
+                                    <span id="instagram_error" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">

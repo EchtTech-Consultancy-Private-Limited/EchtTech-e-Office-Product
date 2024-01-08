@@ -1,4 +1,5 @@
 // Debounce function to limit the frequency of function calls
+const text_info = $('#text_info');
 function debounce(func, delay) {
     let timer;
     return function () {
@@ -13,6 +14,7 @@ function debounce(func, delay) {
 
 // Function to handle the input and apply transformations and validations
 function handleInput() {
+    text_info.hide();
     const db_name_input = $('#db_name');
     const db_name_error = $('#db_name_error');
 
@@ -150,13 +152,126 @@ function handleLocationSelection(inputId, errorId, errorMessage) {
     };
 }
 
+function handleFileInput(fileInputId, errorId) {
+    return function () {
+        $('#logo_info').hide();
+        const fileInput = $(`#${fileInputId}`);
+        const error = $(`#${errorId}`);
+
+        const allowedExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+        const maxFileSize = 500 * 1024; // 500 KB in bytes
+
+        const fileName = fileInput.val();
+        if (!fileName) {
+            error.text('Please choose a file.');
+            return;
+        }
+
+        const fileExtension = fileName.split('.').pop().toLowerCase();
+        if (!allowedExtensions.includes(fileExtension)) {
+            error.text('Only PNG, JPG, JPEG, and GIF files are allowed.');
+            return;
+        }
+
+        const fileSize = fileInput[0].files[0].size;
+        if (fileSize > maxFileSize) {
+            error.text('File size exceeds the maximum limit of 500 KB.');
+            return;
+        }
+
+        error.text('');
+    };
+}
+
+function handlePanCardInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let panCard = input.val().trim().toUpperCase();
+
+        // Basic PAN card format validation using a regular expression
+        const panCardPattern = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+
+        if (panCard.length !== 10 || !panCardPattern.test(panCard)) {
+            $("#pancard_text_info").hide();
+            error.text("Please enter a valid 10-character PAN card number.");
+            return;
+        }
+
+        input.val(panCard); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handleGSTNumberInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const info = $(`#${inputId}_info`);
+        const error = $(`#${errorId}`);
+
+        let gstNumber = input.val().trim().toUpperCase();
+
+        // Basic GST number format validation using a regular expression
+        const gstNumberPattern = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[0-9A-Z]{1}[Z]{1}[0-9A-Z]{1}$/;
+
+        if (gstNumber.length !== 15 || !gstNumberPattern.test(gstNumber)) {
+            $("#gst_text_info").hide();
+            info.hide(); // Hide info text
+            error.text("Please enter a valid 15-character GST number.");
+            return;
+        }
+
+        info.show(); // Show info text
+        input.val(gstNumber); // Update the input value
+
+        error.text('');
+    };
+}
+
+function handleMobileNumberInput(inputId, errorId) {
+    return function () {
+        const input = $(`#${inputId}`);
+        const error = $(`#${errorId}`);
+
+        let mobileNumber = input.val().trim();
+
+        // Remove non-numeric characters
+        mobileNumber = mobileNumber.replace(/\D/g, '');
+
+        // Extract the first 10 digits
+        mobileNumber = mobileNumber.slice(0, 10);
+
+        // Basic mobile number format validation using a regular expression
+        const mobileNumberPattern = /^\d{10}$/;
+
+        if (mobileNumber === "") {
+            error.text("Please enter mobile number");
+            return;
+        }
+
+        if (!mobileNumberPattern.test(mobileNumber)) {
+            error.text("Invalid mobile number. It must be a 10-digit number.");
+            return;
+        }
+
+        input.val(mobileNumber); // Update the input value
+
+        error.text('');
+    };
+}
+
+
+
+
 
 $(document).ready(function () {
-    const db_name_input = $('#db_name');
 
     // Attach the debounced handleInput function to the onkeyup event
-    db_name_input.on('keyup', debounce(handleInput, 300));
+    $('#db_name').on('keyup', debounce(handleInput, 300));
     $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
+    $('#contact_person_name').on('keyup', debounce(handleCommonInputs('contact_person_name', 'contact_person_name_error'), 300));
     $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
     $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
     $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
@@ -172,6 +287,15 @@ $(document).ready(function () {
     $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'),300));
     $('#billing_address').on('keyup',debounce( handleAddressInput('billing_address', 'billing_address_error'),300));
     $('#corporate_office_address').on('keyup',debounce( handleAddressInput('corporate_office_address', 'corporate_office_address_error'),300));
+    $('#logo').on('change',debounce( handleFileInput('logo', 'logo_error'),300));
+
+    // pancard
+    $('#pancard').on('keyup', debounce(handlePanCardInput('pancard', 'pancard_error'),300));
+    //GST
+    $('#gst_number').on('keyup', debounce(handleGSTNumberInput('gst_number', 'gst_number_error'),300));
+    $('#primary_mobile').on('keyup', debounce(handleMobileNumberInput('primary_mobile', 'primary_mobile_error'),300));
+    $('#primary_email').on('keyup', debounce(handleEmailInput('primary_email', 'primary_email_error'),300));
+
 });
 
 // Stepper lement
@@ -207,6 +331,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         }
 
         if (db_name === "") {
+            text_info.hide();
             db_name_error.text("Please enter database name");
             validationErrors.db_name = "Please enter database name";
         } else {
@@ -224,6 +349,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         const maxFileSize = 1 * 1024 * 1024; // 1 MB
 
         if (!logo[0].files || logo[0].files.length === 0) {
+            $('#logo_info').hide();
             logo_error.text("Please select a logo file");
             validationErrors.logo = "Please select a logo file";
         } else {
@@ -394,6 +520,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         const pancard = $('#pancard').val();
         const pancard_error = $('#pancard_error');
         if (pancard === "") {
+            $("#pancard_text_info").hide();
             pancard_error.text("Please enter pan number");
             validationErrorsStep3.pancard = "Please enter pan number";
         } else {
@@ -404,6 +531,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         const gst_number = $('#gst_number').val();
         const gst_number_error = $('#gst_number_error');
         if (gst_number === "") {
+            $("#gst_text_info").hide();
             gst_number_error.text("Please enter gst number");
             validationErrorsStep3.gst_number = "Please enter gst number";
         } else {
@@ -411,14 +539,14 @@ stepper.on("kt.stepper.next", function (stepper) {
         }
 
         // TAN Number validation
-        const tan_number = $('#tan_number').val();
-        const tan_number_error = $('#tan_number_error');
-        if (tan_number === "") {
-            tan_number_error.text("Please enter tan number");
-            validationErrorsStep3.tan_number = "Please enter tan number";
-        } else {
-            tan_number_error.text('');
-        }
+        // const tan_number = $('#tan_number').val();
+        // const tan_number_error = $('#tan_number_error');
+        // if (tan_number === "") {
+        //     tan_number_error.text("Please enter tan number");
+        //     validationErrorsStep3.tan_number = "Please enter tan number";
+        // } else {
+        //     tan_number_error.text('');
+        // }
 
         // Display all errors for Step 3
         if (Object.keys(validationErrorsStep3).length > 0) {
@@ -430,17 +558,52 @@ stepper.on("kt.stepper.next", function (stepper) {
     }
 
     if (stepper.currentStepIndex === 4) {
-        const phone = $('#phone').val();
-        const phone_error = $('#phone_error');
+        const validationErrorsStep4 = {};
 
-        if (phone === "") {
-            phone_error.text("Please enter phone number");
-            return;
-        } else if (!/^\d{10}$/.test(phone)) {
-            phone_error.text("Invalid phone number. Phone number must be a 10-digit number.");
-            return;
+        // Contact Person Name validation
+        const contactPersonName = $('#contact_person_name').val();
+        const contactPersonNameError = $('#contact_person_name_error');
+        if (contactPersonName === "") {
+            contactPersonNameError.text("Please enter contact person name");
+            validationErrorsStep4.contactPersonName = "Please enter contact person name";
+        } else if (!/^[A-Za-z\s]+$/.test(contactPersonName)) {
+            contactPersonNameError.text("Invalid contact person name. It should only contain letters and spaces.");
+            validationErrorsStep4.contactPersonName = "Invalid contact person name";
         } else {
-            phone_error.text('');
+            contactPersonNameError.text('');
+        }
+
+        // Primary Mobile Number validation
+        const primaryMobile = $('#primary_mobile').val();
+        const primaryMobileError = $('#primary_mobile_error');
+        if (primaryMobile === "") {
+            primaryMobileError.text("Please enter primary mobile number");
+            validationErrorsStep4.primaryMobile = "Please enter primary mobile number";
+        } else if (!/^\d{10}$/.test(primaryMobile)) {
+            primaryMobileError.text("Invalid primary mobile number. It must be a 10-digit number.");
+            validationErrorsStep4.primaryMobile = "Invalid primary mobile number";
+        } else {
+            primaryMobileError.text('');
+        }
+
+        // Primary Email validation
+        const primaryEmail = $('#primary_email').val();
+        const primaryEmailError = $('#primary_email_error');
+        if (primaryEmail === "") {
+            primaryEmailError.text("Please enter primary email");
+            validationErrorsStep4.primaryEmail = "Please enter primary email";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(primaryEmail)) {
+            primaryEmailError.text("Invalid primary email. Please enter a valid email address.");
+            validationErrorsStep4.primaryEmail = "Invalid primary email";
+        } else {
+            primaryEmailError.text('');
+        }
+
+
+        if (Object.keys(validationErrorsStep4).length > 0) {
+            // Scroll to the first error field
+            $('#' + Object.keys(validationErrorsStep4)[0]).focus();
+            return;
         }
 
     }
