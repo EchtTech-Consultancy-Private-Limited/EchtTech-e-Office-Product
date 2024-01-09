@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Modules\HRMS\app\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
@@ -50,14 +48,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function companyDetails(): HasOne
-    {
-        return $this->hasOne(UserCompany::class,'user_id');
-    }
-
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class,"role_id");
-    }
-
 }
+
