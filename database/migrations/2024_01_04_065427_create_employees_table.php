@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('created_by')->constrained('admins')->comment('CreatedId constrained by admin table');
+            $table->foreignId('created_by')->constrained('admins')->comment('created_by constrained by admin table');
             $table->foreignId('country_id');
             $table->foreignId('state_id');
             $table->foreignId('city_id');
-            $table->string('employee_id',100)->unique();
+            $table->string('employee_id',255)->unique();
             $table->string('name',100);
-            $table->string('email', 100)->unique();
-            $table->string('phone_number', 12)->unique();
+            $table->string('email', 255)->unique();
+            $table->string('phone_number')->unique();
             $table->enum('gender', ['male', 'female', 'both']);
-            $table->date('date_of_birth')->nullable();
-            $table->string('pincode',45)->nullable();
+            $table->date('dob')->nullable();
+            $table->string('pincode')->nullable();
             $table->text('current_address')->nullable();
             $table->text('permanent_adderss')->nullable();
             $table->string('image')->nullable();

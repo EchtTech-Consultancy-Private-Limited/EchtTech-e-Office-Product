@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained('employees');
             $table->foreignId('department_id');
             $table->foreignId('designation_id');
-            $table->string('company_name',100);           
+            $table->string('company_name',255);
             $table->date('join_date')->nullable();
             $table->date('leave_date')->nullable();
             $table->string('file')->nullable();

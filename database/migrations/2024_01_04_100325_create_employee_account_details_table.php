@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
             $table->enum('account_type', ['pf', 'bank', 'both']);
-            $table->bigInteger('account_number');
-            $table->string('bank_name', 100);
+            $table->string('account_number',255);
+            $table->string('bank_name',255);
             $table->string('ifsc_code')->nullable();
             $table->text('branch_address')->nullable();
             $table->string('passbook_file')->nullable();

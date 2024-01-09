@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('employee_education', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
-            $table->string('name',100);
-            $table->string('title',100);
+            $table->string('name',255);
+            $table->string('title',255);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('file')->nullable();
