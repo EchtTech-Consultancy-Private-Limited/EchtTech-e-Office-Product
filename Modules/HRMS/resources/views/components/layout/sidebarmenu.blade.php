@@ -65,7 +65,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.employees.create') }}">
+                            <a class="menu-link" href="{{ route('employee.create') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>

@@ -9,6 +9,7 @@ use Modules\HRMS\app\Http\Controllers\Auth\OtpController;
 use Modules\HRMS\app\Http\Controllers\Auth\ResetPasswordController;
 use Modules\HRMS\app\Http\Controllers\Auth\VerificationController;
 use Modules\HRMS\app\Http\Controllers\DashboardController;
+use Modules\HRMS\app\Http\Controllers\Employee\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 Route::middleware('auth')->group(function (){
     Route::get('dashboard',[DashboardController::class,"index"]);
 
+    //employee
+    Route::get('employee',[EmployeeController::class,"create"])->name('employee.create');
     //departments
 
     // logout

@@ -22,7 +22,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('hrms::create');
+        return view('hrms::employees.create');
     }
 
     /**
