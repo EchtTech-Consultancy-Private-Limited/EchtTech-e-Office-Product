@@ -13,11 +13,13 @@ class CountrySeeder extends Seeder
      */
     public function run(): void
     {
-        Country::create([
+        Country::updateOrCreate(
+        ['iso_code' => 'IND'],
+        [
             'name' => 'India',
-            'iso_code' => 'IND',
             'currency' => 'INR',
             'is_active' => true,
-        ]);
+        ]
+    );
     }
 }

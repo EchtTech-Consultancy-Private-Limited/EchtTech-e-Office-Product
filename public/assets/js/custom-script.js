@@ -29,3 +29,9 @@ function updateStatus() {
     statusLabel.textContent = checkbox.checked ? 'Active' : 'Inactive';
     statusLabel.style.color = checkbox.checked ? 'green' : 'red';
 }
+
+
+//Calander datepicker basic
+$("#kt_datepicker_1").flatpickr();
+$("#kt_datepicker_2").flatpickr();
+
