@@ -1,6 +1,6 @@
-@extends('layouts.master')
+@extends('admin.auth.layout.master')
 @push('form-style')
-@include('layouts.partials.form_css')
+@include('admin.auth.layout.partials.form_css')
 @endpush
 @section('style')
 @endsection
@@ -74,7 +74,7 @@
 
 <!-- JS script links only starts here -->
 @push('js-scripts')
-@include('layouts.partials.form_js')
+@include('admin.auth.layout.partials.form_js')
 @endpush
 <!-- Custom script only starts here -->
 @section('script')
