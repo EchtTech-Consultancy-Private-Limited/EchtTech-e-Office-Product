@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
 
     /**
-     * @throws GlobalException
+     * @throws GlobalExceptioncl
      */
     public function login(Request $request)
     {
