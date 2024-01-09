@@ -42,6 +42,8 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 Route::middleware('auth')->group(function (){
     Route::get('dashboard',[DashboardController::class,"index"]);
 
+    //departments
+
     // logout
     Route::post('/logout', [LogOutController::class, 'logout'])->name('auth.logout');
 });
