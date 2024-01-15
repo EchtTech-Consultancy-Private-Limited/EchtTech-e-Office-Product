@@ -14,7 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('hrms::index');
+        return view('hrms::roles.index');
     }
 
     /**

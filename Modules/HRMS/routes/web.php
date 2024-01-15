@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\CaptchaValidationController;
 use Illuminate\Support\Facades\Route;
 use Modules\HRMS\app\Http\Controllers\Auth\ForgotPasswordController;
@@ -14,6 +13,7 @@ use Modules\HRMS\app\Http\Controllers\Employee\EmployeeController;
 use Modules\HRMS\app\Http\Controllers\Masters\DepartmentsController;
 use Modules\HRMS\app\Http\Controllers\Masters\DesignationsController;
 use Modules\HRMS\app\Http\Controllers\Masters\EmploymentTypeController;
+use Modules\HRMS\app\Http\Controllers\RolePermission\RoleController;
 
 /*
 |--------------------------------------------------------------------------
