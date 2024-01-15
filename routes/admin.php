@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\Ajax\ValidationsController;
+use App\Http\Controllers\Admin\Auth\LogoutController;
 use App\Http\Controllers\Admin\Company\CompanyController;
 use App\Http\Controllers\Admin\Department\DepartmentController;
 use App\Http\Controllers\Admin\Designation\DesignationController;
@@ -11,7 +12,6 @@ use App\Http\Controllers\Admin\Employee\EmploymentTypeController;
 use App\Http\Controllers\Admin\License\LicenseController;
 use App\Http\Controllers\Admin\Module\ModuleController;
 use App\Http\Controllers\Admin\Role\RoleController;
-use App\Http\Controllers\Auth\LogOutController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -62,6 +62,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('employees/create',[EmployeeController::class,"create"])->name('employees.create');
 
         // admin logout route
-        Route::post('/logout', [LogOutController::class, 'logout'])->name('logout');
+        Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
     });
 });

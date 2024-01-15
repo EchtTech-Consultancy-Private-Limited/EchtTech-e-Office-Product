@@ -22,11 +22,11 @@ class SendSmsService
     public static function sentSms($email,$mobile_number, $smsOtp,$otpType)
     {
         try {
-            // Mail::to($email)->send(new OtpSend($smsOtp));            
+             Mail::to($email)->send(new OtpSend($smsOtp));
             Log::channel('otp_log')->info('Email: ' . $email . ', Mobile NUmber: ' . $mobile_number. ',OTP: ' . $smsOtp. ',Otp Type: ' . $otpType);
         } catch (Exception $e) {
             throw new GlobalException($e->getMessage());
         }
     }
-    
+
 }

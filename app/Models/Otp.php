@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Otp extends Model
 {
     use HasFactory;
-    protected $fillable = ['email','mobile_number', 'otp', 'otp_verify', 'expired_at', 'type'];
+    protected $fillable = ['email','mobile_number', 'otp', 'expired_at', 'type','status'];
 }
