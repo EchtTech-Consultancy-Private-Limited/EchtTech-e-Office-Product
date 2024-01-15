@@ -22,6 +22,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     });
 
     Route::middleware('auth:admin')->group(function (){
+        Route::view('profile','admin.profile.index');
         Route::get('dashboard',[AdminDashboardController::class,"index"])->name('dashboard');
         Route::resource('roles', RoleController::class);
         Route::get('get-roles',[RoleController::class,"getRoles"])->name('get-roles');
@@ -59,7 +60,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         //Employee routes
         Route::get('employment-types',[EmploymentTypeController::class,"index"])->name('employment-types.index');
         Route::get('employees/create',[EmployeeController::class,"create"])->name('employees.create');
-        
+
         // admin logout route
         Route::post('/logout', [LogOutController::class, 'logout'])->name('logout');
     });
