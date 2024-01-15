@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function (){
     Route::get('dashboard',[DashboardController::class,"index"]);
 
     //employee
-    Route::get('employee',[EmployeeController::class,"create"])->name('employee.create');
+    Route::get('employee/create',[EmployeeController::class,"create"])->name('employee.create');
     //departments
     Route::resource('departments', DepartmentsController::class);
     //designations
