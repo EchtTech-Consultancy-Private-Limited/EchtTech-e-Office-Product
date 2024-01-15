@@ -7,14 +7,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class DepartmentsController extends Controller
+class RolesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('hrms::departments.index');
+        return view('hrms::index');
     }
 
     /**
@@ -22,7 +22,7 @@ class DepartmentsController extends Controller
      */
     public function create()
     {
-        return view('hrms::departments.create');
+        return view('hrms::create');
     }
 
     /**

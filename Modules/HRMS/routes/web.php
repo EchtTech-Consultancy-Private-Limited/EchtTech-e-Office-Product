@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Role\RoleController;
 use App\Http\Controllers\CaptchaValidationController;
 use Illuminate\Support\Facades\Route;
 use Modules\HRMS\app\Http\Controllers\Auth\ForgotPasswordController;
@@ -10,6 +11,9 @@ use Modules\HRMS\app\Http\Controllers\Auth\ResetPasswordController;
 use Modules\HRMS\app\Http\Controllers\Auth\VerificationController;
 use Modules\HRMS\app\Http\Controllers\DashboardController;
 use Modules\HRMS\app\Http\Controllers\Employee\EmployeeController;
+use Modules\HRMS\app\Http\Controllers\Masters\DepartmentsController;
+use Modules\HRMS\app\Http\Controllers\Masters\DesignationsController;
+use Modules\HRMS\app\Http\Controllers\Masters\EmploymentTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +50,13 @@ Route::middleware('auth')->group(function (){
     //employee
     Route::get('employee',[EmployeeController::class,"create"])->name('employee.create');
     //departments
+    Route::resource('departments', DepartmentsController::class);
+    //designations
+    Route::resource('designations', DesignationsController::class);
+    //employment types
+    Route::resource('employment-types', EmploymentTypeController::class);
+    //roles
+    Route::resource('roles', RoleController::class);
 
     // logout
     Route::post('/logout', [LogOutController::class, 'logout'])->name('auth.logout');

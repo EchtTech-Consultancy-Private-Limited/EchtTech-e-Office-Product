@@ -14,7 +14,7 @@ class DesignationsController extends Controller
      */
     public function index()
     {
-        return view('hrms::index');
+        return view('hrms::designations.index');
     }
 
     /**
@@ -22,7 +22,7 @@ class DesignationsController extends Controller
      */
     public function create()
     {
-        return view('hrms::create');
+        return view('hrms::designations.create');
     }
 
     /**

@@ -105,7 +105,7 @@
 									</span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.departments.index') }}">
+                            <a class="menu-link" href="{{ route('departments.index') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -113,7 +113,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.departments.create') }}">
+                            <a class="menu-link" href="{{ route('departments.create') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -144,7 +144,7 @@
 									</span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.designations.index') }}">
+                            <a class="menu-link" href="{{ route('designations.index') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -152,7 +152,7 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.designations.create') }}">
+                            <a class="menu-link" href="{{ route('designations.create') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
@@ -163,7 +163,7 @@
                 </div>
 
                 <div data-kt-menu-trigger="click" class="menu-item">
-                    <a href="{{ route('admin.employment-types.index') }}">
+                    <a href="{{ route('employment-types.index') }}">
         <span class="menu-link">
             <span class="menu-icon">
                 <!--begin::Svg Icon | path: icons/duotune/abstract/abs042.svg-->
@@ -212,7 +212,7 @@
 									</span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="{{ route('admin.roles.index') }}">
+                            <a class="menu-link" href="{{ route('roles.index') }}">
 												<span class="menu-bullet">
 													<span class="bullet bullet-dot"></span>
 												</span>
