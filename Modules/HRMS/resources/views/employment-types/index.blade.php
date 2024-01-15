@@ -1,7 +1,7 @@
-<x-admin.layout.app-layout>
-    <x-slot name="title">
-        Employment Type Master
-    </x-slot>
+<x-hrms::layout.master>
+    <x-slot:title>
+        Employment Types
+    </x-slot:title>
     <x-common.card>
         <x-slot name="title">
             Employment Types
@@ -57,4 +57,4 @@
     <x-slot name="script">
         <script src="{{ asset('/assets/js/employmenttype.js') }}"></script>
     </x-slot>
-</x-admin.layout.app-layout>
+</x-hrms::layout.master>

@@ -31,7 +31,7 @@
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </div>
-                
+
 
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-0">
