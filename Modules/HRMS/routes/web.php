@@ -45,7 +45,7 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
 });
 
 Route::middleware('auth')->group(function (){
-    Route::get('dashboard',[DashboardController::class,"index"]);
+    Route::get('dashboard',[DashboardController::class,"index"])->name('dashboard');
 
     //employee
     Route::get('employee/create',[EmployeeController::class,"create"])->name('employee.create');

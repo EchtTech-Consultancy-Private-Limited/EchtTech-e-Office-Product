@@ -38,10 +38,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('save_companies_basic_details',[CompanyController::class,"saveBasicDetails"]);
         Route::post('save-business-details',[CompanyController::class,"saveBusinessDetails"]);
         Route::post('save-company-contact-details',[CompanyController::class,"saveContactDetails"]);
-
         // Module routes
         Route::post('save_selected_modules',[ModuleController::class,"assignModuleToCompany"]);
-
         // store company with user information
         Route::post('bind_user_with_company',[CompanyController::class,"assignCompanyToUser"]);
 
