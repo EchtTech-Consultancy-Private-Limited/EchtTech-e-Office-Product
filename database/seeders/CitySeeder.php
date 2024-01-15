@@ -615,6 +615,320 @@ class CitySeeder extends Seeder
             ]);
         }
 
+        // Add cities for Nagaland
+        $stateIdNagaland = State::where('name', 'Nagaland')->first()->id;
+
+        $citiesNagaland = [
+            'Kohima',
+            'Dimapur',
+            'Mokokchung',
+            'Tuensang',
+            'Wokha',
+            'Zunheboto',
+            'Phek',
+            'Mon',
+            'Kiphire',
+            'Longleng',
+        ];
+
+        foreach ($citiesNagaland as $cityName) {
+            City::create([
+                'state_id' => $stateIdNagaland,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Odisha
+        $stateIdOdisha = State::where('name', 'Odisha')->first()->id;
+
+        $citiesOdisha = [
+            'Bhubaneswar',
+            'Cuttack',
+            'Rourkela',
+            'Puri',
+            'Sambalpur',
+            'Berhampur',
+            'Balasore',
+            'Brahmapur',
+            'Bhadrak',
+            'Baripada',
+            'Jharsuguda',
+            'Jeypore',
+            'Bargarh',
+            'Rayagada',
+            'Kendujhar',
+            'Jatani',
+            'Balangir',
+            'Bhawanipatna',
+            'Paradip',
+            'Bhadrak',
+            'Jajpur',
+            'Dhenkanal',
+            'Keonjhar',
+            'Angul',
+            'Koraput',
+            'Byasanagar',
+            'Boudh',
+            'Sunabeda',
+            'Belpahar',
+            'Nabarangpur',
+            'Barbil',
+            'Titlagarh',
+            'Jhumpura',
+            'Debagarh',
+            'Kantabanji',
+            'Padampur',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesOdisha as $cityName) {
+            City::create([
+                'state_id' => $stateIdOdisha,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Rajasthan
+        $stateIdRajasthan = State::where('name', 'Rajasthan')->first()->id;
+
+        $citiesRajasthan = [
+            'Jaipur',
+            'Jodhpur',
+            'Udaipur',
+            'Ajmer',
+            'Kota',
+            'Bikaner',
+            'Alwar',
+            'Sikar',
+            'Pali',
+            'Bhilwara',
+            'Tonk',
+            'Bharatpur',
+            'Chittorgarh',
+            'Sawai Madhopur',
+            'Barmer',
+            'Sirohi',
+            'Ganganagar',
+            'Jhunjhunu',
+            'Dhaulpur',
+            'Karauli',
+            'Nagaur',
+            'Hanumangarh',
+            'Dausa',
+            'Churu',
+            'Banswara',
+            'Dungarpur',
+            'Sri Ganganagar',
+            'Bundi',
+            'Baran',
+            'Sikar',
+            'Sawai Madhopur',
+            'Nagaur',
+            'Jalore',
+            'Jhalawar',
+            'Bharatpur',
+            'Bhilwara',
+            'Tonk',
+            'Rajsamand',
+            'Pratapgarh',
+            'Dholpur',
+            'Barmer',
+            'Banswara',
+            'Dungarpur',
+            'Sirohi',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesRajasthan as $cityName) {
+            City::create([
+                'state_id' => $stateIdRajasthan,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+
+        // Add cities for Sikkim
+        $stateIdSikkim = State::where('name', 'Sikkim')->first()->id;
+
+        $citiesSikkim = [
+            'Gangtok',
+            'Namchi',
+            'Mangan',
+            'Gyalshing',
+            'Singtam',
+            'Rangpo',
+            'Soreng',
+            'Jorethang',
+            'Pakyong',
+            'Ravangla',
+            'Lachen',
+            'Lachung',
+            'Sakyong-Pentong',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesSikkim as $cityName) {
+            City::create([
+                'state_id' => $stateIdSikkim,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Tamil Nadu
+        $stateIdTamilNadu = State::where('name', 'Tamil Nadu')->first()->id;
+
+        $citiesTamilNadu = [
+            'Chennai',
+            'Coimbatore',
+            'Madurai',
+            'Tiruchirappalli',
+            'Salem',
+            'Tirunelveli',
+            'Tiruppur',
+            'Erode',
+            'Vellore',
+            'Thoothukudi',
+            'Dindigul',
+            'Thanjavur',
+            'Ranipet',
+            'Sivakasi',
+            'Karur',
+            'Ooty',
+            'Nagercoil',
+            'Hosur',
+            'Ambur',
+            'Neyveli',
+            'Kancheepuram',
+            'Kumbakonam',
+            'Rajapalayam',
+            'Virudhunagar',
+            'Pollachi',
+            'Ramanathapuram',
+            'Pudukkottai',
+            'Nagapattinam',
+            'Vaniyambadi',
+            'Arakkonam',
+            'Aruppukkottai',
+            'Namakkal',
+            'Thiruvallur',
+            'Perambalur',
+            'Thiruvarur',
+            'Krishnagiri',
+            'Sankarankovil',
+            'Mayiladuthurai',
+            'Sathyamangalam',
+            'Karaikudi',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesTamilNadu as $cityName) {
+            City::create([
+                'state_id' => $stateIdTamilNadu,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+
+        // Add cities for Telangana
+        $stateIdTelangana = State::where('name', 'Telangana')->first()->id;
+
+        $citiesTelangana = [
+            'Hyderabad',
+            'Warangal',
+            'Nizamabad',
+            'Karimnagar',
+            'Khammam',
+            'Ramagundam',
+            'Mahbubnagar',
+            'Nalgonda',
+            'Adilabad',
+            'Suryapet',
+            'Miryalaguda',
+            'Jagtial',
+            'Nirmal',
+            'Kothagudem',
+            'Siddipet',
+            'Kamareddy',
+            'Medak',
+            'Sircilla',
+            'Mancherial',
+            'Wanaparthy',
+            'Kollapur',
+            'Vikarabad',
+            'Bodhan',
+            'Palwancha',
+            'Jangaon',
+            'Koratla',
+            'Tandur',
+            'Sangareddy',
+            'Yadagirigutta',
+            'Bhongir',
+            'Kagaznagar',
+            'Mahabubabad',
+            'Kodad',
+            'Khanapur',
+            'Mandamarri',
+            'Bellampalli',
+            'Farooqnagar',
+            'Bhupalpally',
+            'Narayanpet',
+            'Metpally',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesTelangana as $cityName) {
+            City::create([
+                'state_id' => $stateIdTelangana,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Tripura
+        $stateIdTripura = State::where('name', 'Tripura')->first()->id;
+
+        $citiesTripura = [
+            'Agartala',
+            'Udaipur',
+            'Dharmanagar',
+            'Ambassa',
+            'Kailasahar',
+            'Belonia',
+            'Sabroom',
+            'Khowai',
+            'Sonamura',
+            'Teliamura',
+            'Kamalpur',
+            'Santirbazar',
+            'Jogendranagar',
+            'Amarpur',
+            'Ranirbazar',
+            'Mohanpur',
+            'Kumarghat',
+            'Melaghar',
+            'Manu',
+            'Kanchanpur',
+            'Gakulnagar',
+            'Sabual',
+            'Longtharai Valley',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesTripura as $cityName) {
+            City::create([
+                'state_id' => $stateIdTripura,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+
+
         // Add cities for Uttar Pradesh
         $stateIdUttarPradesh = State::where('name', 'Uttar Pradesh')->first()->id;
 
@@ -691,6 +1005,266 @@ class CitySeeder extends Seeder
             ]);
         }
 
+        // Add cities for Uttarakhand
+        $stateIdUttarakhand = State::where('name', 'Uttarakhand')->first()->id;
+
+        $citiesUttarakhand = [
+            'Dehradun',
+            'Haridwar',
+            'Rishikesh',
+            'Haldwani',
+            'Rudrapur',
+            'Kashipur',
+            'Roorkee',
+            'Ramnagar',
+            'Kotdwara',
+            'Mussoorie',
+            'Nainital',
+            'Pithoragarh',
+            'Almora',
+            'Bageshwar',
+            'Champawat',
+            'Tehri',
+            'Pauri',
+            'Srinagar',
+            'Uttarkashi',
+            'Joshimath',
+            'Rudraprayag',
+            'Gopeshwar',
+            'Didihat',
+            'Lansdowne',
+            'Karanprayag',
+            'Chakrata',
+            'Kedarnath',
+            'Badrinath',
+            'Gairsain',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesUttarakhand as $cityName) {
+            City::create([
+                'state_id' => $stateIdUttarakhand,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for West Bengal
+        $stateIdWestBengal = State::where('name', 'West Bengal')->first()->id;
+
+        $citiesWestBengal = [
+            'Kolkata',
+            'Howrah',
+            'Durgapur',
+            'Siliguri',
+            'Asansol',
+            'Haldia',
+            'Darjeeling',
+            'Kharagpur',
+            'Malda',
+            'Jalpaiguri',
+            'Krishnanagar',
+            'Bardhaman',
+            'Baharampur',
+            'Raiganj',
+            'Medinipur',
+            'Balurghat',
+            'Bankura',
+            'Cooch Behar',
+            'Alipurduar',
+            'Serampore',
+            'Habra',
+            'Santipur',
+            'Bangaon',
+            'Ranaghat',
+            'Krishnagar',
+            'Nabadwip',
+            'Chakdaha',
+            'Dankuni',
+            'Contai',
+            'Gangarampur',
+            'Basirhat',
+            'Katwa',
+            'Itahar',
+            'Kalyani',
+            'Jangipur',
+            'Taki',
+            'Madhyamgram',
+            'Memari',
+            'Purulia',
+            'Haldibari',
+            'Kurseong',
+            'Kalyani',
+            'Baruipur',
+            'Naihati',
+            'Chinsurah',
+            'Dum Dum',
+            'Bansberia',
+            'Bolpur',
+            'Murshidabad',
+            'Jangipur',
+            'English Bazar',
+            'Nalhati',
+            'Mathabhanga',
+            'Raghunathganj',
+            'Suri',
+            'Midnapore',
+            'Kakdwip',
+            'Jhargram',
+            'Islampur',
+            'Gobardanga',
+            'Raiganj',
+            'Rampurhat',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesWestBengal as $cityName) {
+            City::create([
+                'state_id' => $stateIdWestBengal,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Andaman and Nicobar Islands
+        $stateIdAndamanNicobar = State::where('name', 'Andaman and Nicobar Islands')->first()->id;
+
+        $citiesAndamanNicobar = [
+            'Port Blair',
+            'Car Nicobar',
+            'Mayabunder',
+            'Rangat',
+            'Diglipur',
+            'North And Middle Andaman',
+            'Little Andaman',
+            'Campbell Bay',
+            'Havelock Island',
+            'Nancowry',
+            'Wandoor',
+            'Neil Island',
+            'Great Nicobar',
+            'Long Island',
+            'Kalapathar',
+            'Lakshmanpur',
+            'Shaheed Dweep',
+            'Katchal',
+            'Viper Island',
+            'Hut Bay',
+            'Baratang Island',
+            'Kadamtala',
+            'Rutland Island',
+            'Interview Island',
+            'Dolyganj',
+            'Chetamale',
+            'Sippighat',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesAndamanNicobar as $cityName) {
+            City::create([
+                'state_id' => $stateIdAndamanNicobar,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Chandigarh
+        $stateIdChandigarh = State::where('name', 'Chandigarh')->first()->id;
+
+        $citiesChandigarh = [
+            'Chandigarh',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesChandigarh as $cityName) {
+            City::create([
+                'state_id' => $stateIdChandigarh,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add cities for Dadra and Nagar Haveli
+        $stateIdDadraNagarHaveli = State::where('name', 'Dadra and Nagar Haveli and Daman and Diu')->first()->id;
+
+        $citiesDadraNagarHaveli = [
+            'Silvassa',
+            'Dadra',
+            'Naroli',
+            'Dahanu',
+            'Dudhani',
+            'Rakholi',
+            'Dadra and Nagar Haveli',
+            'Diu',
+            'Khadoli',
+            'Kilvani',
+            'Mashat',
+            'Saili',
+            // Add more cities as needed
+        ];
+
+        foreach ($citiesDadraNagarHaveli as $cityName) {
+            City::create([
+                'state_id' => $stateIdDadraNagarHaveli,
+                'name' => $cityName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add populated areas for Lakshadweep
+        $stateIdLakshadweep = State::where('name', 'Lakshadweep')->first()->id;
+
+        $areasLakshadweep = [
+            'Kavaratti',
+            'Agatti',
+            'Amini',
+            'Andrott',
+            'Kalpeni',
+            'Minicoy',
+            'Kadamath',
+            'Bitra',
+            'Chetlat',
+            'Kiltan',
+            'Kadmat',
+            'Bangaram',
+            // Add more areas as needed
+        ];
+
+        foreach ($areasLakshadweep as $areaName) {
+            City::create([
+                'state_id' => $stateIdLakshadweep,
+                'name' => $areaName,
+                'is_active' => true,
+            ]);
+        }
+
+        // Add districts/areas for Delhi
+        $stateIdDelhi = State::where('name', 'Delhi')->first()->id;
+
+        $areasDelhi = [
+            'New Delhi',
+            'North Delhi',
+            'South Delhi',
+            'East Delhi',
+            'West Delhi',
+            'North West Delhi',
+            'North East Delhi',
+            'Central Delhi',
+            'Shahdara',
+            'South West Delhi',
+            'South East Delhi',
+        ];
+
+        foreach ($areasDelhi as $areaName) {
+            City::create([
+                'state_id' => $stateIdDelhi,
+                'name' => $areaName,
+                'is_active' => true,
+            ]);
+        }
+
+
+
         // Add cities for Punjab
         $stateIdPunjab = State::where('name', 'Punjab')->first()->id;
 
@@ -747,5 +1321,26 @@ class CitySeeder extends Seeder
                 'is_active' => true,
             ]);
         }
+
+        // Add regions for Puducherry
+        $stateIdPuducherry = State::where('name', 'Puducherry')->first()->id;
+
+        $regionsPuducherry = [
+            'Puducherry',
+            'Karaikal',
+            'Yanam',
+            'Mahe',
+        ];
+
+        foreach ($regionsPuducherry as $regionName) {
+            City::create([
+                'state_id' => $stateIdPuducherry,
+                'name' => $regionName,
+                'is_active' => true,
+            ]);
+        }
+
     }
+
+
 }

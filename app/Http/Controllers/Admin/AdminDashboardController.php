@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Nwidart\Modules\Facades\Module;
 
 class AdminDashboardController extends Controller
 {
@@ -12,7 +13,9 @@ class AdminDashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard.index');
+        $modules = Module::all();
+
+        return view('admin.dashboard.index',compact('modules'));
     }
 
     /**

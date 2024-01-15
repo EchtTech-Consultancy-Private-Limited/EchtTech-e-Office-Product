@@ -543,4 +543,7 @@
         </div>
         <!--end::Stepper-->
     </div>
+    <x-slot:script>
+        <script src="{{ asset('assets/js/employee-registration.js') }}"></script>
+    </x-slot:script>
 </x-hrms::layout.master>
