@@ -22,7 +22,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     });
 
     Route::middleware('auth:admin')->group(function (){
-        Route::view('profile','admin.profile.index');
+        //profile routes
+        Route::view('profile','admin.profile.index')->name('profile');
         Route::get('dashboard',[AdminDashboardController::class,"index"])->name('dashboard');
         Route::resource('roles', RoleController::class);
         Route::get('get-roles',[RoleController::class,"getRoles"])->name('get-roles');
