@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item">
-                    <a href="{{ route('employment-types.index') }}">
+                    <a href="">
         <span class="menu-link">
             <span class="menu-icon">
                 <!--begin::Svg Icon | path: icons/duotune/abstract/abs042.svg-->
