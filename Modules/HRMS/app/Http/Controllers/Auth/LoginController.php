@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Closure;
 
 class LoginController extends Controller
 {
@@ -18,6 +20,21 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
+        $request->validate([
+            'captcha' => ['required',function (string $attribute, mixed $value, Closure $fail) {
+                $g_response =Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify',[
+                    'secret' => config('services.recaptcha.secret_key'),
+                    'response' => $value,
+                    'remoteip' => \request()->ip()
+                ]);
+            //    check for captcha response
+            //    dd($g_response->json());
+            }],
+        ],
+        [
+            'captcha:required'=>"Kindly check the captcha code you have entered."
+        ]);
+
         $userCheck = User::where('username', $request->userName)->first();
 
         if ($request->login == 'login_with_password') {
@@ -53,7 +70,6 @@ class LoginController extends Controller
                 return response()->json(['status' => 200, 'userDetail' => $userDetail], 200);
             }
         }
-
         return response()->json(402);
     }
 }

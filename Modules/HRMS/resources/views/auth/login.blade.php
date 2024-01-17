@@ -34,13 +34,13 @@
                             <div class="text-center mb-10">
                                 <h1 class="text-dark mb-3">Sign In</h1>
                             </div>
+                            <input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">
                             <div class="fv-row mb-4">
                                 <label class="form-label required fw-bolder text-dark fs-6 mb-0">Enter Username</label>
                                 <input class="form-control form-control-solid h-auto py-4 px-6 rounded-lg" type="text"
                                        name="username" placeholder="Enter Username" autocomplete="off"/>
                                 <span class="error-msg" id="login_username"></span>
                             </div>
-
                             <div class="text-center">
                                 <div class="d-flex align-items-center flex-center ">
                                     <div>
@@ -78,6 +78,7 @@
                         <input type="hidden" name="mobile" id="mobile" value="">
                         <input type="hidden" name="userRole" id="user_role" value="">
                         <input type="hidden" name="otp_type" id="otp_type" value="">
+                        <input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">
                         <div class="mb-10 px-md-10 otp-event">
                             <div class="text-center fw-bolder text-start text-dark fs-6 mb-1 ms-1">Type your 4 digit
                                 security code
@@ -131,6 +132,7 @@
                                 <img alt="Logo" class="mh-125px"
                                      src="{{ asset('assets/media/images/reset-password.png') }}"/>
                             </div>
+                            <input type="hidden" name="g-recaptcha-response" value="" id="g-recaptcha-response">
                             <!-- <div class="text-center fw-bolder text-start text-dark fs-6 mb-1 ms-1">Enter your password to login your account</div> -->
                             <div class="form-group">
                                 <input type="hidden" name="password_email" id="password_email" value="">

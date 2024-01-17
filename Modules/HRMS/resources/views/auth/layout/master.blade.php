@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-<head>
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+<head>    
     <meta charset="utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
@@ -13,7 +12,10 @@
     <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/custom-style.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
-
+    <script>
+        const recaptchaKey = "{{ config('services.recaptcha.site_key') }}";
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{config('services.recaptcha.site_key')}}"></script>
     @stack('form-style')
     @yield('style')
 </head>

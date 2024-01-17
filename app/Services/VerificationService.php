@@ -25,7 +25,6 @@ class VerificationService
         if (!empty($user)) {
             $expireTime = $user->expired_at;
             $currentDate = Carbon::now(env('TIME_ZONE'));
-
             if ($currentDate <= $expireTime) {
                 $userArr = [
                     'status' => '1',

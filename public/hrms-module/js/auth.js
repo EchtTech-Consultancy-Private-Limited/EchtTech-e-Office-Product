@@ -94,152 +94,163 @@ $('#candidate_login_form').on('keypress', function (e) {
     return e.which !== 13;
 });
 
-$(document).on('click', '#login_with_otp', function () {
+$(document).on('click', '#login_with_otp', function (e) {
+    e.preventDefault();
+    grecaptcha.ready(function () {
+        grecaptcha.execute(recaptchaKey, {action: 'submit'}).then(function (token) {            
+            $('#g-recaptcha-response').val(token);
+            let login_with_otp = $('#login_with_otp').val();
 
-    let login_with_otp = $('#login_with_otp').val();
+            const formData = new FormData(candidate_login_form);
 
-    const formData = new FormData(candidate_login_form);
+            $('#login_username').text('');
 
-    $('#login_username').text('');
+            $('#login_username_captcha').text('');
 
-    $('#login_username_captcha').text('');
+            if (formData.get('username') === "") {
+                $('#login_username').text('Please enter a user name');
+            } else {
+                $("#pageloader").fadeIn();
 
-    if (formData.get('username') === "") {
-        $('#login_username').text('Please enter a user name');
-    } else {
-        $("#pageloader").fadeIn();
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        const data = {
-            userName: formData.get('username'),
-            // captcha: formData.get('captcha'),
-            login_with_otp: login_with_otp,
-        };
-        $.ajax({
-            type: "POST",
-            url: "/auth/login",
-            data: data,
-            success: function (response) {
-
-                $("#pageloader").fadeOut();
-
-                $("#login_with_otp").attr("disabled", false);
-
-                if (response == 402) {
-                    $(".reload").click();
-                    $(".captcha").val('');
-                    $('#login_username').text('Invalid Username Number')
-                } else {
-                    document.getElementById("login_user_name").style.display = "none";
-                    document.getElementById("otp").style.display = "block";
-                    const mobileNum = response.userDetail.mobile_number;
-                    const userEmail = response.userDetail.email;
-                    const lastTwoDigit = String(mobileNum).slice(-3);
-                    const lastFourDigit = userEmail.substring(userEmail.indexOf('@') - 4, userEmail.indexOf('@'));
-                    const numTest = '+91********' + lastTwoDigit;
-                    const emailText = '' + lastFourDigit + '......@gmail.com';
-                    $('#hidden_mobile_num').text(numTest);
-                    $('#hidden_email_num').text(emailText);
-                    $('#email').val(response.userDetail.email);
-                    $('#mobile').val(response.userDetail.mobile);
-                    $('#user_role').val(response.userDetail.userRole);
-                    $('#otp_type').val(response.userDetail.otp_type);
-                    // check OTP Expiration
-                    let timerOn = true;
-
-                    function timer(remaining) {
-                        var m = Math.floor(remaining / 60);
-                        var s = remaining % 60;
-                        m = m < 10 ? '0' + m : m;
-                        s = s < 10 ? '0' + s : s;
-                        document.getElementById('timer').innerHTML = m + ':' + s;
-                        remaining -= 1;
-
-                        if (remaining >= 0 && timerOn) {
-                            setTimeout(function () {
-                                timer(remaining);
-                            }, 1000);
-                            return;
-                        }
-
-                        if (!timerOn) {
-                            // Do validate stuff here
-                            return;
-                        }
-                        $('.resend_sms').removeClass('disabled');
-                        $(".otp_timer_expired").text("OTP expired !");
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
+                });
 
-                    timer(120);
-                }
-            }, error: function (xhr, status, error) {
-                $("#pageloader").fadeOut();
-                $(".reload").click();
-                $(".captcha").val('');
-                $('#login_username_captcha').text(xhr.responseJSON.message);
+                const data = {
+                    userName: formData.get('username'),
+                    captcha: token,
+                    login_with_otp: login_with_otp,
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/auth/login",
+                    data: data,
+                    success: function (response) {
+
+                        $("#pageloader").fadeOut();
+
+                        $("#login_with_otp").attr("disabled", false);
+
+                        if (response == 402) {
+                            $(".reload").click();
+                            $(".captcha").val('');
+                            $('#login_username').text('Invalid Username Number')
+                        } else {
+                            document.getElementById("login_user_name").style.display = "none";
+                            document.getElementById("otp").style.display = "block";
+                            const mobileNum = response.userDetail.mobile_number;
+                            const userEmail = response.userDetail.email;
+                            const lastTwoDigit = String(mobileNum).slice(-3);
+                            const lastFourDigit = userEmail.substring(userEmail.indexOf('@') - 4, userEmail.indexOf('@'));
+                            const numTest = '+91********' + lastTwoDigit;
+                            const emailText = '' + lastFourDigit + '......@gmail.com';
+                            $('#hidden_mobile_num').text(numTest);
+                            $('#hidden_email_num').text(emailText);
+                            $('#email').val(response.userDetail.email);
+                            $('#mobile').val(response.userDetail.mobile);
+                            $('#user_role').val(response.userDetail.userRole);
+                            $('#otp_type').val(response.userDetail.otp_type);
+                            // check OTP Expiration
+                            let timerOn = true;
+
+                            function timer(remaining) {
+                                var m = Math.floor(remaining / 60);
+                                var s = remaining % 60;
+                                m = m < 10 ? '0' + m : m;
+                                s = s < 10 ? '0' + s : s;
+                                document.getElementById('timer').innerHTML = m + ':' + s;
+                                remaining -= 1;
+
+                                if (remaining >= 0 && timerOn) {
+                                    setTimeout(function () {
+                                        timer(remaining);
+                                    }, 1000);
+                                    return;
+                                }
+
+                                if (!timerOn) {
+                                    // Do validate stuff here
+                                    return;
+                                }
+                                $('.resend_sms').removeClass('disabled');
+                                $(".otp_timer_expired").text("OTP expired !");
+                            }
+
+                            timer(120);
+                        }
+                    }, error: function (xhr, status, error) {
+                        $("#pageloader").fadeOut();
+                        $(".reload").click();
+                        $(".captcha").val('');
+                        $('#login_username_captcha').text(xhr.responseJSON.message);
+                    }
+                });
             }
         });
-    }
+    });
 });
 // End Login With OTP
 
 // Verify OTP
 
-jQuery(document).on('click', ".verify_otp_btn", function() {
-    // Set CSRF token in ajax setup
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+jQuery(document).on('click', ".verify_otp_btn", function(e) {
+    e.preventDefault();
+    grecaptcha.ready(function () {
+        grecaptcha.execute(recaptchaKey, {action: 'submit'}).then(function (token) {            
+            $('#g-recaptcha-response').val(token);
+            // Set CSRF token in ajax setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
 
-    // Get input values
-    const email = $("#email").val();
-    const mobile = $("#mobile").val();
-    const role = $("#user_role").val();
-    const otpInputs = [
-        $("#otp-number-input-1").val(),
-        $("#otp-number-input-2").val(),
-        $("#otp-number-input-3").val(),
-        $("#otp-number-input-4").val()
-    ];
+            // Get input values
+            const email = $("#email").val();
+            const mobile = $("#mobile").val();
+            const role = $("#user_role").val();
+            const otpInputs = [
+                $("#otp-number-input-1").val(),
+                $("#otp-number-input-2").val(),
+                $("#otp-number-input-3").val(),
+                $("#otp-number-input-4").val()
+            ];
 
-    // Combine OTP inputs into a single string
-    const combinedNumber = otpInputs.join('');
+            // Combine OTP inputs into a single string
+            const combinedNumber = otpInputs.join('');
 
-    // Clear previous error messages
-    $(".verify_otp_error").text('');
-    $("#resend").text('');
+            // Clear previous error messages
+            $(".verify_otp_error").text('');
+            $("#resend").text('');
 
-    // Validate OTP inputs
-    if (otpInputs.some(input => input === "")) {
-        $(".verify_otp_error").text("Please enter your verification code.");
-    } else {
-        // Prepare data for AJAX request
-        const data = {
-            email: email,
-            mobile: mobile,
-            verify_otp: combinedNumber,
-            otp_type:'login',
-            role:role
+            // Validate OTP inputs
+            if (otpInputs.some(input => input === "")) {
+                $(".verify_otp_error").text("Please enter your verification code.");
+            } else {
+                // Prepare data for AJAX request
+                const data = {
+                    email: email,
+                    mobile: mobile,
+                    verify_otp: combinedNumber,
+                    otp_type:'login',
+                    role:role,
+                    captcha:token,
+                };
 
-        };
-
-        $.ajax({
-            type: "POST",
-            url: "/auth/verify-otp",
-            data: data,
-            success: function(response) {
-                console.log(response);
-                handleVerificationResponse(response);
+                $.ajax({
+                    type: "POST",
+                    url: "/auth/verify-otp",
+                    data: data,
+                    success: function(response) {
+                        console.log(response);
+                        handleVerificationResponse(response);
+                    }
+                });
             }
         });
-    }
+    });
 });
 
 function handleVerificationResponse(response) {
@@ -282,68 +293,78 @@ function showElement(elementId) {
 $('#login_with_pass').on('keypress', function (e) {
     return e.which !== 13;
 });
-jQuery(document).on('click', ".verify_password_btn", function () {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-    const formData = new FormData(login_with_pass);
-    $('#login_password_captcha').text('');
-    $(".password_error").text('');
-    if (formData.get('password') == "") {
-        $('.password_error').text('Please enter your Password');
-    } else {
-        // $(".verify_password_btn").attr("disabled", true);
-        $.ajax({
-            type: "POST",
-            url: "/auth/password-login",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-
-                $(".verify_password_btn").attr("disabled", false);
-                if (response.status == 200) {
-                    Swal.fire({
-                        text: "You have successfully logged in!",
-                        icon: "success",
-                        buttonsStyling: !1,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn btn-primary"
-                        }
-                    }),
-                        window.location.href = response.redirectUrl
-                } else if (response.status == 201) {
-                    $(".reload").click();
-                    $(".captcha").val('');
-                    $(".password_error").text("Password Invalid !");
+jQuery(document).on('click', ".verify_password_btn", function (e) {
+    e.preventDefault();
+    grecaptcha.ready(function () {
+        grecaptcha.execute(recaptchaKey, {action: 'submit'}).then(function (token) {            
+            $('#g-recaptcha-response').val(token);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
-            }, error: function (xhr, status, error) {
-                $(".reload").click();
-                $(".captcha").val('');
-                $('#login_password_captcha').text(xhr.responseJSON.message);
+            });
+            const formData = new FormData(login_with_pass);
+            const data = {
+                password_email: formData.get('password_email'),
+                password_mobile_number: formData.get('password_mobile_number'),
+                login: formData.get('login'),
+                password_userRole: formData.get('password_userRole'),
+                password:formData.get('password'),
+                captcha: token,
+            };
+            $('#login_password_captcha').text('');
+            $(".password_error").text('');
+            if (formData.get('password') == "") {
+                $('.password_error').text('Please enter your Password');
+            } else {
+                // $(".verify_password_btn").attr("disabled", true);
+                $.ajax({
+                    type: "POST",
+                    url: "/auth/password-login",
+                    data: data,
+                    success: function (response) {
+
+                        $(".verify_password_btn").attr("disabled", false);
+                        if (response.status == 200) {
+                            Swal.fire({
+                                text: "You have successfully logged in!",
+                                icon: "success",
+                                buttonsStyling: !1,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn btn-primary"
+                                }
+                            }),
+                                window.location.href = response.redirectUrl
+                        } else if (response.status == 201) {
+                            $(".reload").click();
+                            $(".captcha").val('');
+                            $(".password_error").text("Password Invalid !");
+                        }
+                    }, error: function (xhr, status, error) {
+                        $(".reload").click();
+                        $(".captcha").val('');
+                        $('#login_password_captcha').text(xhr.responseJSON.message);
+                    }
+                });
             }
         });
-    }
-
+    });
 });
 // End Use password Login
 // resend OTP
 jQuery(document).on('click', ".resend_sms", function () {
     let email = $('#email').val();
-    let mobile_number = $('#mob_number').val();
+    let mobile_number = $('#mobile').val();
     let otp_type = $('#otp_type').val();
-    $('.resend_sms').addClass('disabled');
+    // $('.resend_sms').addClass('disabled');
     jQuery.ajax({
         type: 'post',
-        url: '{{ route("auth.resend-otp") }}',
+        url: "/auth/resend-otp",
         data: {
-            "_token": "{{ csrf_token() }}",
             "action": "resend_sms",
             'email': email,
-            'mobile_number': mobile_number,
+            'mobile': mobile_number,
             'otp_type': otp_type
         },
         success: function (response) {
@@ -379,7 +400,7 @@ jQuery(document).on('click', ".resend_sms", function () {
                     // Do validate stuff here
                     return;
                 }
-                $('.resend_sms').removeClass('disabled');
+                // $('.resend_sms').removeClass('disabled');
                 $(".otp_resend_expired").text("OTP expired !");
             }
 
@@ -415,13 +436,13 @@ jQuery('#reset_password_form').validate({
     }
 });
 // relode captcha new captcha
-$('.reload').click(function () {
-    $.ajax({
-        type: 'GET',
-        url: '{{ route("reloadCaptcha") }}',
-        success: function (data) {
-            $(".captcha span").html(data.captcha);
-        }
-    });
-});
+// $('.reload').click(function () {
+//     $.ajax({
+//         type: 'GET',
+//         url: '{{ route("reloadCaptcha") }}',
+//         success: function (data) {
+//             $(".captcha span").html(data.captcha);
+//         }
+//     });
+// });
 

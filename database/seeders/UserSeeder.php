@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
         ], [
             'role_id' => $adminRole->id,
             'name' => 'Admin',
+            'username' => 'Admin',
             'email' => 'admin@yopmail.com',
             'email_verified_at' => '2022-05-23 00:00:00',
             'password' => Hash::make('password'),
@@ -37,6 +38,7 @@ class UserSeeder extends Seeder
         ], [
             'role_id' => $employeeRole->id,
             'name' => 'Employee',
+            'username' => 'Employee',
             'email' => 'employee@gmail.com',
             'email_verified_at' => '2022-05-23 00:00:00',
             'password' => Hash::make('password'),

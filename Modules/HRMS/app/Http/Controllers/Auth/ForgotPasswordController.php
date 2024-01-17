@@ -36,7 +36,7 @@ class ForgotPasswordController extends Controller
      */
     public function forgetPassword()
     {
-        return view('auth.forgot_password');
+        return view('hrms::auth.forgot_password');
     }
 
     /**
@@ -47,17 +47,11 @@ class ForgotPasswordController extends Controller
      */
     public function checkForgotPassword(Request $request)
     {
-        $request->validate([
-            'captcha' => 'required|captcha',
-        ],
-        [
-            'captcha.captcha'=>"Kindly check the captcha code you have entered."
-        ]);
-        $user = User::where('mobile_number', $request->email_or_phone)->orWhere('email', $request->email_or_phone)->first();
+        $user = User::where('mobile', $request->email_or_phone)->orWhere('email', $request->email_or_phone)->first();
         if (empty($user)) {
             return redirect()->route('auth.forgetPassword')->with('error', 'Email address or Phone  not found.');
         } else {
-            return view('auth.forgot_password', compact('user'));
+            return view('hrms::auth.forgot_password', compact('user'));
         }
     }
 
