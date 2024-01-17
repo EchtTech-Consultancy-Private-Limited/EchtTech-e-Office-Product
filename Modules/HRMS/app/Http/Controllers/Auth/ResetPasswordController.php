@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Closure;
 
 class ResetPasswordController extends Controller
 {
@@ -41,7 +43,7 @@ class ResetPasswordController extends Controller
      */
     public function resetPassword($token)
     {
-        return view('auth.reset_password', ['token' => $token]);
+        return view('hrms::auth.reset_password', ['token' => $token]);
     }
 
     /**
@@ -53,11 +55,7 @@ class ResetPasswordController extends Controller
     public function submitResetPasswordForm(Request $request)
     {
         $request->validate([
-            'password' => 'required|string|min:6',
-            'captcha' => 'required|captcha',
-        ],
-        [
-            'captcha.captcha'=>"Kindly check the captcha code you have entered."
+            'password' => 'required|min:8',
         ]);
         $check = DB::table('password_resets')->where('token', $request->token)->first();
         if (!$check) {
@@ -70,11 +68,11 @@ class ResetPasswordController extends Controller
                 'token' => $request->token,
             ])
             ->first();
-        User::where('email', $check->email)->orWhere('mobile_number', $check->email)
+        User::where('email', $check->email)->orWhere('mobile', $check->email)
             ->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_resets')->where(['email' => $check->email])->delete();
-        $checkUser = User::where('mobile_number', $check->email)->orWhere('email', $check->email)->first();
+        $checkUser = User::where('mobile', $check->email)->orWhere('email', $check->email)->first();
         if (!empty($checkUser)) {
             return redirect('/')->with('success', 'Your password has been changed!');
         }

@@ -430,19 +430,8 @@ jQuery('#reset_password_form').validate({
             minlength: 8,
             equalTo: "#candidate_password_2"
         },
-        captcha: {
-            required: true
-        },
     }
 });
-// relode captcha new captcha
-// $('.reload').click(function () {
-//     $.ajax({
-//         type: 'GET',
-//         url: '{{ route("reloadCaptcha") }}',
-//         success: function (data) {
-//             $(".captcha span").html(data.captcha);
-//         }
-//     });
-// });
-
+function onReset(token) {
+    document.getElementById("reset_password_form").submit();
+}

@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- CSS Global Compulsory (Do not remove)-->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <link rel="shortcut icon" href="{{asset('assets/media/images/echttech-logo.png')}}" />
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet"
           type="text/css" />
@@ -39,6 +40,7 @@
 <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
 <script src="{{ asset('assets/js/custom/modals/create-app.js') }}"></script>
 <script src="{{ asset('assets/js/custom/modals/upgrade-plan.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js" type="text/javascript"></script>
 <!--end::Page Custom Javascript-->
 @stack('js-scripts')
 </body>

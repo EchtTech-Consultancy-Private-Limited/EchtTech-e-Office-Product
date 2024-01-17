@@ -49,7 +49,7 @@ class ForgotPasswordController extends Controller
     {
         $user = User::where('mobile', $request->email_or_phone)->orWhere('email', $request->email_or_phone)->first();
         if (empty($user)) {
-            return redirect()->route('auth.forgetPassword')->with('error', 'Email address or Phone  not found.');
+            return redirect()->route('auth.forget-password')->with('error', 'Email address or Phone  not found.');
         } else {
             return view('hrms::auth.forgot_password', compact('user'));
         }
@@ -63,21 +63,21 @@ class ForgotPasswordController extends Controller
     public function submitForgetPassword(Request $request)
     {
         if ($request->login_with_otp == 'reset_with_mobile_number') {
-            $userCheck = User::where('mobile_number', $request->mobile_number)->first();
-            if ($userCheck->mobile_number == $request->mobile_number) {
+            $userCheck = User::where('mobile', $request->mobile)->first();
+            if ($userCheck->mobile == $request->mobile) {
                 $userDetail = [
                     'email' => $userCheck->email,
-                    'mobile_number' => $userCheck->mobile_number,
+                    'mobile' => $userCheck->mobile,
                     'otp_type' => config('constants.otp_type.forgot_password'),
-                    'userRole' => $userCheck->role,
+                    'userRole' => $userCheck->role_id,
                 ];
-                $userObject = (object) $userDetail;
+                $userObject = (object) $userDetail;            
                 OtpService::sendOtp($userObject);
                 return response()->json(['status' => 200, 'userDetail' => $userDetail], 200);
             }
             return response()->json(402);
         } else {
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();            
             if (empty($user)) {
                 return response()->json(402);
             } else {

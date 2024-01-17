@@ -28,7 +28,7 @@ class OtpService
             $expirationTime = config('constants.sms_expired_time');
             $futureDate = $expireDate + ($expirationTime['second']);
             $formatDate = date('Y-m-d H:i:s', $futureDate);
-
+            
             $completed = Otp::updateOrCreate(
                 [
                     'email' => $request->email,
@@ -43,8 +43,7 @@ class OtpService
                     'expired_at' => $formatDate,
                     'type' => $request->otp_type,
                 ]
-            );
-
+            );            
             if ($completed){
                 SendSmsService::sentSms($request->email, $request->mobile, $smsOtp,$request->otp_type);
                 return true;

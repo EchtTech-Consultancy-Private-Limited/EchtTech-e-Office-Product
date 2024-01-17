@@ -1,7 +1,4 @@
-@extends('layouts.master')
-@push('form-style')
-@include('layouts.partials.form_css')
-@endpush
+@extends('hrms::auth.layout.master')
 @section('style')
 @endsection
 @section('content')
@@ -63,21 +60,6 @@
 									<label class="form-label fw-bolder text-dark fs-6">Confirm Password</label>
 									<input type="password" name="password_confirm" class="form-control form-control-lg form-control-solid" placeholder="Confirm Password" id="confirm_password">
 								</div>
-                                <div class="form-group mt-4 mb-4">
-                                    <div class="captcha">
-                                        <span>{!! captcha_img('math') !!}</span>
-                                        <button type="button" class="btn btn-danger reload" id="password_reload">
-                                            ↻
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="form-group mb-4">
-                                    <input id="reset_password_captcha" type="text" class="form-control captcha" placeholder="Enter Captcha" name="captcha">
-                                    @if ($errors->has('captcha'))
-                                    <span class="text-danger">{{ $errors->first('captcha') }}</span>
-                                    @endif
-                                </div>
 								<div class="text-center">
                                     <button type="submit" class="btn btn-primary btn-sm" id="send">Reset</button>
 								</div>
@@ -97,10 +79,10 @@
 
 <!-- JS script links only starts here -->
 @push('js-scripts')
-@include('layouts.partials.form_js')
-@include('layouts.partials.auth.auth')
+  <script src="{{ asset('hrms-module/js/auth.js') }}"></script>
 @endpush
 <!-- Custom script only starts here -->
 @section('script')
+
 @endsection
 <!-- End Custom script only starts here -->

@@ -39,7 +39,7 @@ class VerificationController extends Controller
     {
         if ($request->otp_type == 'forgot_password') {
             $message = VerificationService::otpExpireCheck($request);
-            $userCheck = User::where('mobile', $request->mobile)->first();
+            $userCheck = User::where('mobile', $request->mobile)->first();            
             $token = Str::random(64);
             DB::table('password_resets')->insert([
                 'email' => $userCheck->email,
@@ -47,7 +47,7 @@ class VerificationController extends Controller
                 'created_at' => Carbon::now(),
             ]);
             if ($message == '200') {
-                $tokenUrl = route('auth.resetPassword', $token);
+                $tokenUrl = route('auth.reset-password', $token);
                 return response()->json(['status' => 1, 'token' => $tokenUrl]);
             } elseif ($message == '201') {
                 return response()->json(['status' => 0]);

@@ -1,6 +1,4 @@
 @extends('hrms::auth.layout.master')
-@push('form-style')
-@endpush
 @section('style')
     <style>
         .error-msg {
@@ -25,12 +23,12 @@
                 <div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
                     <div class="d-flex flex-row-fluid flex-column text-center p-10 pt-lg-20">
                         <a href="{{ route('index') }}" class="py-9 mb-5">
-                            <img alt="Logo" src="{{ asset('assets/media/images/echttech-logo.png') }}" class="h-60px" />
+                            <img alt="Logo" src="{{ asset('assets/media/logos/logo-2.svg') }}" class="h-60px" />
                         </a>
-                        <h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Welcome to E-Office</h1>
-                        <!-- <p class="fw-bold fs-2" style="color: #986923;">Discover Amazing Metronic
+                        <h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Welcome to Metronic</h1>
+                        <p class="fw-bold fs-2" style="color: #986923;">Discover Amazing Metronic
                             <br />with great build tools
-                        </p> -->
+                        </p>
                     </div>
                     <div class="d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px"
                         style="background-image: url({{ asset('assets/media/illustrations/sketchy-1/13.png') }}"></div>
@@ -66,7 +64,6 @@
                                     @endif
                                     <strong id="msg" class="text-success my-2 d-none">Successfull Send</strong>
                                 </div>
-                               
                                 <div class="d-flex flex-wrap justify-content-center pb-lg-0">
                                     <button type="submit" class="btn btn-primary btn-sm" id="send">Send</button>
                                 </div>
@@ -147,7 +144,7 @@
                                                     a verification code to verify <br>your mobile number </span><br>
                                                 <b><label class="control-label my-3"><span
                                                             id="hidden_forgot_num"></span></label></b>
-                                                <input type="hidden" name="mobile_number" id="mob_number"
+                                                <input type="hidden" name="mobile" id="mob_number"
                                                     value="">
                                                 <input type="hidden" name="email" id="email" value="">
                                                 <input type="hidden" name="userRole" id="user_role" value="">
@@ -180,8 +177,7 @@
                                                         <span class="text-danger otp_timer_expired"></span></p>
                                                         <span class="text-danger verify_otp_error"></span>
                                                         <span class="text-danger" id="resend"></span>
-                                                        <a href="#" class="forgot_resend_sms disabled"><u>Resend
-                                                                OTP</u></a>
+                                                        <a href="#" class="forgot_resend_sms"><u>Resend OTP</u></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,151 +236,80 @@
             </div>
         </div>
     </div>
-@endsection
-<!-- JS script links only starts here -->
+    <!-- JS script links only starts here -->
 @push('js-scripts')
-@endpush
-<!-- Custom script only starts here -->
-@section('script')
-    <script>
-        // send reset password link on email
-        $(document).on('click', '.reset_password_email', function() {
-            $("#pageloader").fadeIn();
-            let email = $('#forgot_email').val();
-            const data = {
-                "_token": "{{ csrf_token() }}",
-                email: email,
-            };
-            $.ajax({
-                type: "POST",
-                url: "{{ route('auth.submit-forget-password') }}",
-                data: data,
-                success: function(response) {
-                    $("#pageloader").fadeOut();
-                    if (response == 402) {
-                        $('.error-msg ').text('Oops something went wrong !');
-                    } else {
-                        $("#emailModal").modal("show");
-                    }
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js" type="text/javascript">
+</script>
+<script src="{{ asset('hrms-module/js/auth.js') }}"></script>
+<script>
+    // send reset password link on email
+    $(document).on('click', '.reset_password_email', function() {
+        $("#pageloader").fadeIn();
+        let email = $('#forgot_email').val();
+        const data = {
+            "_token": "{{ csrf_token() }}",
+            email: email,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{{ route('auth.submit-forget-password') }}",
+            data: data,
+            success: function(response) {
+                $("#pageloader").fadeOut();
+                if (response == 402) {
+                    $('.error-msg ').text('Oops something went wrong !');
+                } else {
+                    $("#emailModal").modal("show");
                 }
-            });
-
+            }
         });
-        // End Send reset password link
-        // resend emailForgot password
-        $(document).on('click', '#resend_password_email', function() {
-            $("#pageloader").fadeIn();
-            let email = $('#forgot_email').val();
-            const data = {
-                "_token": "{{ csrf_token() }}",
-                email: email,
-            };
-            $.ajax({
-                type: "POST",
-                url: "{{ route('auth.submit-forget-password') }}",
-                data: data,
-                success: function(response) {
-                    $("#pageloader").fadeOut();
-                    if (response == 402) {
-                        $('.error-msg ').text('Oops something went wrong !');
-                    } else {
-                        $("#emailModal").modal("show");
-                    }
+
+    });
+    // End Send reset password link
+    // resend emailForgot password
+    $(document).on('click', '#resend_password_email', function() {
+        $("#pageloader").fadeIn();
+        let email = $('#forgot_email').val();
+        const data = {
+            "_token": "{{ csrf_token() }}",
+            email: email,
+        };
+        $.ajax({
+            type: "POST",
+            url: "{{ route('auth.submit-forget-password') }}",
+            data: data,
+            success: function(response) {
+                $("#pageloader").fadeOut();
+                if (response == 402) {
+                    $('.error-msg ').text('Oops something went wrong !');
+                } else {
+                    $("#emailModal").modal("show");
                 }
-            });
-
+            }
         });
-        // End resend emailForgot password
 
-        // Send OTP For Reset password
-        $(document).on('click', '#reset_password_mobile_number', function() {
-            $("#pageloader").fadeIn();
-            let mobile_number = $('#forgot_mobile_number').val();
-            const data = {
-                "_token": "{{ csrf_token() }}",
-                mobile_number: mobile_number,
-                login_with_otp: 'reset_with_mobile_number',
-            };
-            $.ajax({
-                type: "POST",
-                url: "{{ route('auth.submit-forget-password') }}",
-                data: data,
-                success: function(response) {
-                    $("#pageloader").fadeOut();
-                    if (response == 402) {
-                        $('#login_mobile_number').text('Oops something went wrong !')
-                    } else {
-                        // check OTP Expiration
-                        let timerOn = true;
+    });
+    // End resend emailForgot password
 
-                        function timer(remaining) {
-                            var m = Math.floor(remaining / 60);
-                            var s = remaining % 60;
-
-                            m = m < 10 ? '0' + m : m;
-                            s = s < 10 ? '0' + s : s;
-                            document.getElementById('timer').innerHTML = m + ':' + s;
-                            remaining -= 1;
-
-                            if (remaining >= 0 && timerOn) {
-                                setTimeout(function() {
-                                    timer(remaining);
-                                }, 1000);
-                                return;
-                            }
-
-                            if (!timerOn) {
-                                // Do validate stuff here
-                                return;
-                            }
-                            $(".otp_timer_expired").text("OTP expired !");
-                            $('.forgot_resend_sms').removeClass('disabled');
-                        }
-                        timer(120);
-
-                        $("#otpModal").modal("show");
-                        $('.forgot_resend_sms').addClass('disabled');
-                        var mobileNum = response.userDetail.mobile_number;
-                        var lastTwoDigit = String(mobileNum).slice(-3);
-                        var numTest = 'Send To +91********' + lastTwoDigit;
-                        $('#hidden_forgot_num').text(numTest);
-                        $('#mob_number').val(response.userDetail.mobile_number);
-                        $('#email').val(response.userDetail.email);
-                        $('#user_role').val(response.userDetail.userRole);
-                        $('#otp_type').val(response.userDetail.otp_type);
-                    }
-
-                }
-            });
-
-        });
-        // End Send OTp For Reset password
-
-        // Check OTP Vrification
-        // resend OTP
-        jQuery(document).on('click', ".forgot_resend_sms", function() {
-            $(".verify_otp_error").text('');
-            $("#pageloader").fadeIn();
-            let email = $('#email').val();
-            let mobile_number = $('#mob_number').val();
-            let otp_type = $('#otp_type').val();
-            jQuery.ajax({
-                type: 'post',
-                url: '{{ route('auth.resend-otp') }}',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "action": "resend_sms",
-                    'email': email,
-                    'mobile_number': mobile_number,
-                    'otp_type': otp_type
-                },
-                success: function(response) {
-                    $("#pageloader").fadeOut();
-                    $('.forgot_resend_sms').addClass('disabled');
-                    // console.log("response", response)
-                    $('#resend').text(response);
-                    $('#timer').css("display", "none");
-                    $(".otp_timer_expired").css("display", "none");
+    // Send OTP For Reset password
+    $(document).on('click', '#reset_password_mobile_number', function() {
+        $("#pageloader").fadeIn();
+        let mobile = $('#forgot_mobile_number').val();
+        const data = {
+            "_token": "{{ csrf_token() }}",
+            mobile: mobile,
+            login_with_otp: 'reset_with_mobile_number',
+        };
+        $.ajax({
+            type: "POST",
+            url: "{{ route('auth.submit-forget-password') }}",
+            data: data,
+            success: function(response) {
+                $("#pageloader").fadeOut();
+                if (response == 402) {
+                    $('#login_mobile_number').text('Oops something went wrong !')
+                } else {
+                    // check OTP Expiration
                     let timerOn = true;
 
                     function timer(remaining) {
@@ -393,7 +318,7 @@
 
                         m = m < 10 ? '0' + m : m;
                         s = s < 10 ? '0' + s : s;
-                        document.getElementById('forgot_resend_timer').innerHTML = m + ':' + s;
+                        document.getElementById('timer').innerHTML = m + ':' + s;
                         remaining -= 1;
 
                         if (remaining >= 0 && timerOn) {
@@ -408,54 +333,130 @@
                             return;
                         }
                         $(".otp_timer_expired").text("OTP expired !");
-                        $('.forgot_resend_sms').removeClass('disabled');
                     }
                     timer(120);
-                }
-            });
-        });
 
-        // Verify OTP
-        jQuery(document).on('click', ".verify_forgot_otp_btn", function() {
-            $("#resend").text('');
-            $("#pageloader").fadeIn();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    $("#otpModal").modal("show");
+                    var mobileNum = response.userDetail.mobile;
+                    var lastTwoDigit = String(mobileNum).slice(-3);
+                    var numTest = 'Send To +91********' + lastTwoDigit;
+                    $('#hidden_forgot_num').text(numTest);
+                    $('#mob_number').val(response.userDetail.mobile);
+                    $('#email').val(response.userDetail.email);
+                    $('#user_role').val(response.userDetail.userRole);
+                    $('#otp_type').val(response.userDetail.otp_type);
                 }
-            });
-            var verify_otp_1 = $("#verify_otp_1").val();
-            var verify_otp_2 = $("#verify_otp_2").val();
-            var verify_otp_3 = $("#verify_otp_3").val();
-            var verify_otp_4 = $("#verify_otp_4").val();
-            if (verify_otp_1 == "" || verify_otp_2 == "" || verify_otp_3 == "" || verify_otp_4 == "") {
-                $(".verify_otp_error").text("Please enter your verification code.");
-            } else {
-                var data = new FormData(verify_forgot_otp);
-                var otp_type = 'forgot_password';
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('auth.verify-otp') }}",
-                    data: data,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $("#pageloader").fadeOut();
-                        if (response.status == 1) {
-                            window.location.href = response.token
-                        } else if (response.status == 0) {
-                            $(".verify_otp_error").text("Please enter valid verification code.");
-                        } else if (response.status == 2) {
-                            $(".verify_otp_error").text("Your OTP Expired !");
-                        }
-                    }
-                });
+
             }
-
         });
 
-        // End Verify OTP
-    </script>
-    <!-- Custom script links only ends here -->
-@endsection
+    });
+    // End Send OTp For Reset password
+
+    // Check OTP Vrification
+    // resend OTP
+    jQuery(document).on('click', ".forgot_resend_sms", function() {
+        $(".verify_otp_error").text('');
+        $("#pageloader").fadeIn();
+        let email = $('#email').val();
+        let mobile = $('#mob_number').val();
+        let otp_type = $('#otp_type').val();
+        jQuery.ajax({
+            type: 'post',
+            url: '{{ route('auth.resend-otp') }}',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "action": "resend_sms",
+                'email': email,
+                'mobile': mobile,
+                'otp_type': otp_type
+            },
+            success: function(response) {
+                $("#pageloader").fadeOut();
+                // console.log("response", response)
+                $('#resend').text(response);
+                $('#timer').css("display", "none");
+                $(".otp_timer_expired").css("display", "none");
+                let timerOn = true;
+
+                function timer(remaining) {
+                    var m = Math.floor(remaining / 60);
+                    var s = remaining % 60;
+
+                    m = m < 10 ? '0' + m : m;
+                    s = s < 10 ? '0' + s : s;
+                    document.getElementById('forgot_resend_timer').innerHTML = m + ':' + s;
+                    remaining -= 1;
+
+                    if (remaining >= 0 && timerOn) {
+                        setTimeout(function() {
+                            timer(remaining);
+                        }, 1000);
+                        return;
+                    }
+
+                    if (!timerOn) {
+                        // Do validate stuff here
+                        return;
+                    }
+                    $(".otp_timer_expired").text("OTP expired !");
+                }
+                timer(120);
+            }
+        });
+    });
+
+    // Verify OTP 
+    jQuery(document).on('click', ".verify_forgot_otp_btn", function() {       
+        $("#resend").text('');        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        const otpInputs = [
+            $("#otp-number-input-1").val(),
+            $("#otp-number-input-2").val(),
+            $("#otp-number-input-3").val(),
+            $("#otp-number-input-4").val()
+        ];
+        const combinedNumber = otpInputs.join('');
+        if (otpInputs.some(input => input === "")) {
+            $(".verify_otp_error").text("Please enter your verification code.");
+        } else {
+            $("#pageloader").fadeIn();
+            var formData = new FormData(verify_forgot_otp);
+            var otp_type = 'forgot_password';
+            const data = {
+                    _token:formData.get('_token'),
+                    mobile:formData.get('mobile'),
+                    email:formData.get('email'),
+                    userRole:formData.get('userRole'),
+                    otp_type:formData.get('otp_type'),
+                    verify_otp: combinedNumber,
+                };
+            $.ajax({
+                type: "POST",
+                url: "/auth/verify-otp",
+                data: data,
+                success: function(response) {
+                    $("#pageloader").fadeOut();
+                    if (response.status == 1) {
+                        window.location.href = response.token
+                    } else if (response.status == 0) {
+                        $(".verify_otp_error").text("Please enter valid verification code.");
+                    } else if (response.status == 2) {
+                        $(".verify_otp_error").text("Your OTP Expired !");
+                    }
+                }
+            });
+        }
+
+    });
+
+    // End Verify OTP
+</script>
+@endpush
 <!-- End Custom script only starts here -->
+@endsection
+

@@ -37,7 +37,7 @@ class ForgetPassword extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.forgot_password',
+            view: 'hrms::emails.forgot_password',
         );
     }
 

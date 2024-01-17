@@ -37,9 +37,10 @@ Route::group(['prefix' => 'auth', 'as' => 'auth.'], function () {
     Route::post('/login',[LoginController::class,"login"])->name('login');
     Route::post('/password-login',[LoginController::class,"login"])->name('login-password-user');
     Route::get('/forget-password',[ForgotPasswordController::class,"forgetPassword"])->name('forget-password');
-    Route::post('/forget-password',[ForgotPasswordController::class,"forgetPassword"])->name('forget-password');
+    Route::any('check-forgot-password', [ForgotPasswordController::class, 'checkForgotPassword'])->name('checkForgotPassword');
     Route::post('submit-forget-password', [ForgotPasswordController::class, 'submitForgetPassword'])->name('submit-forget-password');
     Route::get('reset-password/{token}', [ResetPasswordController::class, 'resetPassword'])->name('reset-password');
+    Route::post('password-reset', [ResetPasswordController::class, 'submitResetPasswordForm'])->name('passwordResetSubmit');
     Route::post('/verify-otp',[VerificationController::class,"verifyOtp"])->name('verify-otp');
     Route::post('/resend-otp',[OtpController::class,"resendOtp"])->name('resend-otp');
 });
