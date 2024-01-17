@@ -15,10 +15,10 @@
         <x-slot name="body">
             <div class="stepper stepper-links d-flex flex-column" id="kt_create_account_stepper">
                 <div class="stepper-nav">
-                    <div class="stepper-item current" data-kt-stepper-element="nav">
+                    {{--<div class="stepper-item current" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Database Configuration</h3>
-                    </div>
-                    <div class="stepper-item" data-kt-stepper-element="nav">
+                    </div>--}}
+                    <div class="stepper-item current" data-kt-stepper-element="nav">
                         <h3 class="stepper-title">Company Details</h3>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
@@ -43,7 +43,7 @@
                 <hr/>
                 <form class="mt-7" novalidate="novalidate" id="kt_create_account_form" method="post">
                     {{-- Step 1 --}}
-                    <div class="current" data-kt-stepper-element="content">
+                   {{-- <div class="current" data-kt-stepper-element="content">
                         <div class="row w-100">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
@@ -71,9 +71,9 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--}}
                     {{-- Step 2 --}}
-                    <div data-kt-stepper-element="content">
+                    <div class="current" data-kt-stepper-element="content">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="mb-10">
@@ -154,6 +154,14 @@
                                     <label for="description" class="form-label">About Company</label>
                                     <textarea name="description" id="description"
                                               class="form-control form-control-solid" placeholder="Enter company description..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="mb-10">
+                                    <label for="logo" class="required form-label">Logo</label>
+                                    <input type="file" name="logo" id="logo" class="form-control form-control-solid"/>
+                                    <small id="logo_info" class="text-muted">Accepted file types: PNG, JPG, JPEG, GIF. Maximum file size: 500 KB.</small>
+                                    <span class="text-danger" id="logo_error"></span>
                                 </div>
                             </div>
                         </div>

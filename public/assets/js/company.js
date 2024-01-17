@@ -254,8 +254,8 @@ function handleMobileNumberInput(inputId, errorId) {
 $(document).ready(function () {
 
     // Attach the debounced handleInput function to the onkeyup event
-    $('#db_name').on('keyup', debounce(handleInput, 300));
-    $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
+    // $('#db_name').on('keyup', debounce(handleInput, 300));
+    // $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
     $('#contact_person_name').on('keyup', debounce(handleCommonInputs('contact_person_name', 'contact_person_name_error'), 300));
     $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
     $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
@@ -288,19 +288,20 @@ stepper.on("kt.stepper.next", function (stepper) {
 // company setup form validations
 
 
-    const app_name = $('#app_name').val();
-    const app_name_error = $('#app_name_error');
+    /*const app_name = $('#app_name').val();
+    const app_name_error = $('#app_name_error');*/
 
-    const db_name = $('#db_name').val();
-    const db_name_error = $('#db_name_error');
+   /* const db_name = $('#db_name').val();
+    const db_name_error = $('#db_name_error');*/
 
     const logo = $('#logo');
     const logo_error = $('#logo_error');
 
     // Step 1 validation
-    const validationErrors = {};
+   /* const validationErrors = {};
 
     if (stepper.currentStepIndex === 1) {
+
         if (app_name === "") {
             app_name_error.text("Please enter app name");
             validationErrors.app_name = "Please enter app name";
@@ -355,11 +356,11 @@ stepper.on("kt.stepper.next", function (stepper) {
             return;
         }
     }
-
+*/
     // Step 2 validation
 
 
-    if (stepper.currentStepIndex === 2) {
+    if (stepper.currentStepIndex === 1) {
         const validationErrorsStep2 = {};
 
         const company_name = $('#company_name').val();
@@ -482,6 +483,31 @@ stepper.on("kt.stepper.next", function (stepper) {
             billing_address_error.text('');
         }
 
+        // Logo validation (Step 1)
+        const allowedExtensions = ['jpg', 'jpeg', 'png'];
+        const maxFileSize = 1 * 1024 * 1024; // 1 MB
+
+        if (!logo[0].files || logo[0].files.length === 0) {
+            $('#logo_info').hide();
+            logo_error.text("Please select a logo file");
+            validationErrors.logo = "Please select a logo file";
+        } else {
+            const fileName = logo.val();
+            const fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if ($.inArray(fileExtension, allowedExtensions) === -1) {
+                logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
+                validationErrors.logo = "Invalid logo file format";
+            }
+
+            if (logo[0].files[0].size > maxFileSize) {
+                logo_error.text("Maximum file size is 1 MB");
+                validationErrors.logo = "Maximum file size is 1 MB";
+            } else {
+                logo_error.text('');
+            }
+        }
+
         // Display all errors
         if (Object.keys(validationErrorsStep2).length > 0) {
             // Scroll to the first error field
@@ -491,7 +517,7 @@ stepper.on("kt.stepper.next", function (stepper) {
     }
 
     //Step 3
-    if (stepper.currentStepIndex === 3) {
+    if (stepper.currentStepIndex === 2) {
         const validationErrorsStep3 = {};
 
         // Pan Card validation
@@ -535,7 +561,7 @@ stepper.on("kt.stepper.next", function (stepper) {
 
     }
 
-    if (stepper.currentStepIndex === 4) {
+    if (stepper.currentStepIndex === 3) {
         const validationErrorsStep4 = {};
 
         // Contact Person Name validation
@@ -586,7 +612,7 @@ stepper.on("kt.stepper.next", function (stepper) {
 
     }
 
-    if (stepper.currentStepIndex === 5) {
+    if (stepper.currentStepIndex === 4) {
         var checkboxes = document.querySelectorAll('input[name="module[]"]:checked');
         if (checkboxes.length === 0) {
             Swal.fire({
@@ -601,7 +627,7 @@ stepper.on("kt.stepper.next", function (stepper) {
         }
     }
 
-    if (stepper.currentStepIndex === 6) {
+    if (stepper.currentStepIndex === 5) {
         const license_key = $("#license_key").val();
         const license_key_error = $("#license_key_error");
         if (license_key === "") {
@@ -703,6 +729,7 @@ function addFileInput() {
 $(document).ready(function () {
     $("#createAccountSaveAllDataBtn").click(function (e) {
         e.preventDefault();
+
         $("#db_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const email = $("#email").val();
         const emailError = $("#email_error");
@@ -716,9 +743,9 @@ $(document).ready(function () {
         }
 
         checkEmailAndUserNameDuplicate();
-
+        saveBasicDetail();
         // Database Details
-        const dbName = $("#db_name").val();
+       /* const dbName = $("#db_name").val();
 
 
         if (dbName) {
@@ -752,7 +779,9 @@ $(document).ready(function () {
                     // Handle error, display error message, etc.
                 }
             });
-        }
+        }*/
+
+
     });
 
     function isValidEmail(email) {
@@ -760,10 +789,10 @@ $(document).ready(function () {
         return emailRegex.test(email);
     }
 
-    function saveBasicDetail(databaseId) {
+    function saveBasicDetail(databaseId=null) {
         $("#basic_data_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
-        const app_name = $('#app_name').val();
+        // const app_name = $('#app_name').val();
         const company_name = $('#company_name').val();
         const company_email = $('#company_email').val();
         const govt_tax_ein_number = $('#gov_tax_number_ein').val();
@@ -779,7 +808,7 @@ $(document).ready(function () {
         const logo = $('#logo')[0].files[0];
 
         const formData = new FormData();
-        formData.append('app_name', app_name);
+        // formData.append('app_name', app_name);
         formData.append('company_name', company_name);
         formData.append('company_email', company_email);
         formData.append('govt_tax_ein_number', govt_tax_ein_number);
@@ -793,7 +822,7 @@ $(document).ready(function () {
         formData.append('address_line_2', address_line_2);
         formData.append('description', description);
         formData.append('logo', logo);
-        formData.append('database', databaseId);
+        // formData.append('database', databaseId);
 
         $.ajax({
             url: '/admin/save_companies_basic_details',
