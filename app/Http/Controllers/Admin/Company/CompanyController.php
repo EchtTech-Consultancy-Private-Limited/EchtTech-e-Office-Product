@@ -147,7 +147,7 @@ class CompanyController extends Controller
             'phone' => $request->phone,
             'address_line_1' => $request->address_line_1,
             'address_line_2' => $request->address_line_2,
-            'pincode' => $request->pincode,
+            'pincode' => $request->pin_code,
         ]);
 
         return response()->json(['success' => true, 'data' => $company]);
@@ -213,16 +213,16 @@ class CompanyController extends Controller
             ]);
 
             // Create a record in the UserCompany table
-            $companyUser = UserCompany::create([
+           UserCompany::create([
                 'company_id' => $request->company_id,
                 'user_id' => $user->id
             ]);
 
             $company = Company::with('databaseDetails')->find($request->company_id);
 
-           $created =  $this->createNewDatabase($company->databaseDetails->name);
 
-            if ($created){
+
+            if ($company){
                 $this->__sendWelcomeMail($user);
             }
 

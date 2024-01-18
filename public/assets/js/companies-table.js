@@ -83,7 +83,8 @@ $(document).ready(function () {
                 '<td><img src="' + company.logo_path + '" class="lozad rounded w-40px h-40px" alt="Company Logo"></td>' +
                 '<td>' + company.company_name + '</td>' +
                 '<td>' + company.company_email + '</td>' +
-                '<td>' + company.contact_details.phone + '</td>' +
+                '<td>' + company.phone + '</td>' +
+                '<td>' + company.pincode + '</td>' +
                 '<td>' + formattedDate + '</td>' +
                 '</tr>';
 

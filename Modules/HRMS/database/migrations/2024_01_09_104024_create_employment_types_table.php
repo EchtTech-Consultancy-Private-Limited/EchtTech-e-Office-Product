@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employment_types', function (Blueprint $table) {
+        Schema::create('hrms_employment_types', function (Blueprint $table) {
             $table->id();
-            
+
             $table->timestamps();
         });
     }

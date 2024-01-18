@@ -48,6 +48,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
         // validations routes
         Route::post('check_email_and_user_name',[ValidationsController::class,"check_email_and_username"]);
+        Route::post('check_company_phone_email',[ValidationsController::class,"check_company_phone_duplicate"]);
 
         //Department routes
         Route::resource('departments', DepartmentController::class);

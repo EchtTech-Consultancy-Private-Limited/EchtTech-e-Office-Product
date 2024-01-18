@@ -1,13 +1,13 @@
 <x-admin.layout.app-layout>
     <x-slot name="title">
-        Add New Company
+        Create Company
     </x-slot>
     <x-slot name="breadcrumb">
         Company <span class="h-20px border-1 border-gray-200 border-start ms-3 mx-2 me-1"></span> Create
     </x-slot>
     <x-common.card>
         <x-slot name="title">
-            Add New Company
+            Create Company
         </x-slot>
         <x-slot name="headerButton">
             <a href="{{ route('admin.companies.index') }}" class="btn btn-light-primary">Companies List</a>
@@ -19,25 +19,25 @@
                         <h3 class="stepper-title">Database Configuration</h3>
                     </div>--}}
                     <div class="stepper-item current" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Company Details</h3>
+                        <h4 class="stepper-title">Company Details</h4>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Certifications Details</h3>
+                        <h4 class="stepper-title">Certifications Details</h4>
                     </div>
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Contact Details</h3>
-                    </div>
-
-                    <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Features</h3>
+                        <h4 class="stepper-title">Contact Details</h4>
                     </div>
 
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">License</h3>
+                        <h4 class="stepper-title">Features</h4>
                     </div>
 
                     <div class="stepper-item" data-kt-stepper-element="nav">
-                        <h3 class="stepper-title">Finalize</h3>
+                        <h4 class="stepper-title">License</h4>
+                    </div>
+
+                    <div class="stepper-item" data-kt-stepper-element="nav">
+                        <h4 class="stepper-title">Finalize</h4>
                     </div>
                 </div>
                 <hr/>
@@ -483,9 +483,8 @@
 
                            <div class="row w-100">
                                <div class="col-lg-12 col-md-12 col-sm-12" id="lastStepSavedContentAndProgressSection">
-                                   <div id="db_saved_success"></div>
-                                   <div id="basic_data_saved_success"></div>
-                                   <div id="business_details_saved_success"></div>
+                                   <div id="company_data_saved_success"></div>
+                                   <div id="certification_details_saved_success"></div>
                                    <div id="contact_details_saved_success"></div>
                                    <div id="modules_assigned_success"></div>
                                    <div id="license_assigned_success"></div>

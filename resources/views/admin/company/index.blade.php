@@ -35,6 +35,7 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
+                    <th>Pin Code</th>
                     <th>Created Date</th>
                     <th>Action</th>
                 </tr>

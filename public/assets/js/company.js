@@ -1,5 +1,6 @@
 // Debounce function to limit the frequency of function calls
 const text_info = $('#text_info');
+
 function debounce(func, delay) {
     let timer;
     return function () {
@@ -13,39 +14,6 @@ function debounce(func, delay) {
 }
 
 // Function to handle the input and apply transformations and validations
-function handleInput() {
-    text_info.hide();
-    const db_name_input = $('#db_name');
-    const db_name_error = $('#db_name_error');
-
-    let db_name = db_name_input.val();
-
-    // Convert to lowercase, remove spaces, and remove special characters except underscores
-    db_name = db_name.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9_]/g, '');
-
-    // Remove consecutive underscores
-    db_name = db_name.replace(/_+/g, '_');
-
-    // Remove underscore at the beginning
-    db_name = db_name.replace(/^_/, '');
-
-    db_name_input.val(db_name); // Update the input value
-
-    const db_name_pattern = /^[a-z_][a-z0-9_]*$/;
-
-    if (db_name.length < 6 || db_name.length > 20) {
-        db_name_error.text("Database name must be between 5 and 10 characters.");
-        return;
-    }
-
-    if (!db_name.match(db_name_pattern)) {
-        db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
-        return;
-    }
-
-    db_name_error.text('');
-}
-
 function handleCommonInputs(inputId, errorId) {
     return function () {
         const input = $(`#${inputId}`);
@@ -86,6 +54,42 @@ function handleEmailInput(inputId, errorId) {
 
         error.text('');
     };
+}
+
+function companyEmailDuplicate(inputId, errorId) {
+    // Get the email value from the input field
+    var email = $('#' + inputId).val();
+
+    // Make an Ajax request to check for duplicacy
+    $.ajax({
+        url: '/admin/check_company_phone_email',
+        type: 'POST', // Assuming you need to send a POST request
+        data: { email: email },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+            // Check the response from the server
+            if (response.duplicate) {
+                // Email is a duplicate, show error message
+                $('#' + errorId).text('Email already exists');
+            } else {
+                // Email is not a duplicate, clear error message
+                $('#' + errorId).text('');
+            }
+        },
+        error: function(error) {
+            // Handle any errors that occurred during the Ajax request
+            console.error('Error checking email duplicate');
+            console.log(error)
+            const errorData = error.responseJSON.errors;
+            for (const key in errorData) {
+                if (key === 'company_email') {
+                    $("#company_email").text(errorData[key][0]);
+                }
+            }
+        }
+    });
 }
 
 function handlePincodeInput(inputId, errorId) {
@@ -247,32 +251,28 @@ function handleMobileNumberInput(inputId, errorId) {
     };
 }
 
-
-
-
-
 $(document).ready(function () {
-
-    // Attach the debounced handleInput function to the onkeyup event
-    // $('#db_name').on('keyup', debounce(handleInput, 300));
-    // $('#app_name').on('keyup', debounce(handleCommonInputs('app_name', 'app_name_error'), 300));
     $('#contact_person_name').on('keyup', debounce(handleCommonInputs('contact_person_name', 'contact_person_name_error'), 300));
     $('#company_name').on('keyup', debounce(handleCommonInputs('company_name', 'company_name_error'), 300));
-    $('#company_email').on('keyup', debounce(handleEmailInput('company_email', 'company_email_error'), 300));
+    $('#company_email').on('keyup', debounce(function() {
+        handleEmailInput('company_email', 'company_email_error');
+        companyEmailDuplicate('company_email', 'company_email_error');
+    }, 300));
+
     $('#pin_code').on('keyup', debounce(handlePincodeInput('pin_code', 'pin_code_error'), 300));
 
-    $('#address_line_1').on('keyup', debounce(handleAddressInput('address_line_1', 'address_line_1_error'),300));
-    $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'),300));
-    $('#billing_address').on('keyup',debounce( handleAddressInput('billing_address', 'billing_address_error'),300));
-    $('#corporate_office_address').on('keyup',debounce( handleAddressInput('corporate_office_address', 'corporate_office_address_error'),300));
-    $('#logo').on('change',debounce( handleFileInput('logo', 'logo_error'),300));
+    $('#address_line_1').on('keyup', debounce(handleAddressInput('address_line_1', 'address_line_1_error'), 300));
+    $('#registered_address').on('keyup', debounce(handleAddressInput('registered_address', 'registered_address_error'), 300));
+    $('#billing_address').on('keyup', debounce(handleAddressInput('billing_address', 'billing_address_error'), 300));
+    $('#corporate_office_address').on('keyup', debounce(handleAddressInput('corporate_office_address', 'corporate_office_address_error'), 300));
+    $('#logo').on('change', debounce(handleFileInput('logo', 'logo_error'), 300));
 
     // pancard
-    $('#pancard').on('keyup', debounce(handlePanCardInput('pancard', 'pancard_error'),300));
+    $('#pancard').on('keyup', debounce(handlePanCardInput('pancard', 'pancard_error'), 300));
     //GST
-    $('#gst_number').on('keyup', debounce(handleGSTNumberInput('gst_number', 'gst_number_error'),300));
-    $('#primary_mobile').on('keyup', debounce(handleMobileNumberInput('primary_mobile', 'primary_mobile_error'),300));
-    $('#primary_email').on('keyup', debounce(handleEmailInput('primary_email', 'primary_email_error'),300));
+    $('#gst_number').on('keyup', debounce(handleGSTNumberInput('gst_number', 'gst_number_error'), 300));
+    $('#primary_mobile').on('keyup', debounce(handleMobileNumberInput('primary_mobile', 'primary_mobile_error'), 300));
+    $('#primary_email').on('keyup', debounce(handleEmailInput('primary_email', 'primary_email_error'), 300));
 
 });
 
@@ -288,76 +288,10 @@ stepper.on("kt.stepper.next", function (stepper) {
 // company setup form validations
 
 
-    /*const app_name = $('#app_name').val();
-    const app_name_error = $('#app_name_error');*/
-
-   /* const db_name = $('#db_name').val();
-    const db_name_error = $('#db_name_error');*/
-
     const logo = $('#logo');
     const logo_error = $('#logo_error');
 
     // Step 1 validation
-   /* const validationErrors = {};
-
-    if (stepper.currentStepIndex === 1) {
-
-        if (app_name === "") {
-            app_name_error.text("Please enter app name");
-            validationErrors.app_name = "Please enter app name";
-        } else {
-            app_name_error.text('');
-        }
-
-        if (db_name === "") {
-            text_info.hide();
-            db_name_error.text("Please enter database name");
-            validationErrors.db_name = "Please enter database name";
-        } else {
-            const db_name_pattern = /^[a-z_][a-z0-9_]*$/; // Allows only lowercase letters, numbers, and underscores, and cannot start with a number
-            if (!db_name.match(db_name_pattern)) {
-                db_name_error.text("Database name can only contain lowercase letters, numbers, and underscores. It cannot start with a number.");
-                validationErrors.db_name = "Invalid database name";
-            } else {
-                db_name_error.text('');
-            }
-        }
-
-        // Logo validation (Step 1)
-        const allowedExtensions = ['jpg', 'jpeg', 'png'];
-        const maxFileSize = 1 * 1024 * 1024; // 1 MB
-
-        if (!logo[0].files || logo[0].files.length === 0) {
-            $('#logo_info').hide();
-            logo_error.text("Please select a logo file");
-            validationErrors.logo = "Please select a logo file";
-        } else {
-            const fileName = logo.val();
-            const fileExtension = fileName.split('.').pop().toLowerCase();
-
-            if ($.inArray(fileExtension, allowedExtensions) === -1) {
-                logo_error.text("Please select a valid logo file (JPEG, PNG, JPG)");
-                validationErrors.logo = "Invalid logo file format";
-            }
-
-            if (logo[0].files[0].size > maxFileSize) {
-                logo_error.text("Maximum file size is 1 MB");
-                validationErrors.logo = "Maximum file size is 1 MB";
-            } else {
-                logo_error.text('');
-            }
-        }
-
-        // Display all errors
-        if (Object.keys(validationErrors).length > 0) {
-            // You can access specific errors using the keys, e.g., validationErrors.app_name
-            // Scroll to the first error field
-            $('#' + Object.keys(validationErrors)[0]).focus();
-            return;
-        }
-    }
-*/
-    // Step 2 validation
 
 
     if (stepper.currentStepIndex === 1) {
@@ -729,8 +663,6 @@ function addFileInput() {
 $(document).ready(function () {
     $("#createAccountSaveAllDataBtn").click(function (e) {
         e.preventDefault();
-
-        $("#db_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
         const email = $("#email").val();
         const emailError = $("#email_error");
 
@@ -741,47 +673,7 @@ $(document).ready(function () {
             emailError.text("Please enter a valid email address.");
             return;
         }
-
         checkEmailAndUserNameDuplicate();
-        saveBasicDetail();
-        // Database Details
-       /* const dbName = $("#db_name").val();
-
-
-        if (dbName) {
-            $.ajax({
-                type: 'POST',
-                url: '/admin/save_db_details',
-                data: {
-                    "dbName": dbName
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    if (response.success === true) {
-
-                        $('#lastStepContent').slideUp('slow');
-                        $("#db_saved_success").html("<strong>1. Database" + "<span class='text-dark'> " + response.database.name + " </span>" + " created successfully</strong>").fadeIn(1000).css('color', 'green');
-                        setTimeout(function () {
-                            saveBasicDetail(response.database.id);
-                        }, 1000);
-                    } else {
-                        console.error('Error saving database details:', response.error);
-                        // Handle error, display error message, etc.
-                    }
-                },
-                error: function (xhr, status, error) {
-                    // Hide loading spinner on error
-                    $("#loadingSpinner").hide();
-
-                    console.error('Error saving database details:', error);
-                    // Handle error, display error message, etc.
-                }
-            });
-        }*/
-
-
     });
 
     function isValidEmail(email) {
@@ -789,8 +681,63 @@ $(document).ready(function () {
         return emailRegex.test(email);
     }
 
-    function saveBasicDetail(databaseId=null) {
-        $("#basic_data_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+    function checkEmailAndUserNameDuplicate() {
+        try {
+            const email = $("#email").val();
+            const username = $("#username").val();
+
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('username', username);
+
+            $.ajax({
+                url: '/admin/check_email_and_user_name',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success === true) {
+                        // No duplicates found, continue with your logic or form submission
+                        console.log('No duplicates found.');
+                        $('#lastStepContent').hide();
+                        saveBasicDetail();
+                        // You might want to enable form submission or display a success message
+                    } else {
+                        // Duplicates found, handle accordingly
+                        console.log('Duplicates found.');
+                        // You might want to disable form submission or display an error message
+                        throw new Error('Duplicates found.');
+                    }
+                },
+                error: function (error) {
+                    console.error('Error checking duplicates:', error.responseJSON.errors);
+                    // Handle the error, display an error message, etc.
+                    const errorData = error.responseJSON.errors;
+                    for (const key in errorData) {
+                        if (key === 'email') {
+                            $("#email_error").text(errorData[key][0]);
+                        } else if (key === 'username') {
+                            $("#username_error").text(errorData[key][0]);
+                        }
+                    }
+
+                    // Throw an exception to stop further execution
+                    throw new Error('Error checking duplicates.');
+                }
+            });
+        } catch (error) {
+            // Handle synchronous errors (unlikely in this case)
+            console.error('Synchronous error:', error.message);
+        }
+    }
+
+
+    function saveBasicDetail(databaseId = null) {
+        $("#company_data_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         // const app_name = $('#app_name').val();
         const company_name = $('#company_name').val();
@@ -802,6 +749,7 @@ $(document).ready(function () {
         const state = $('#state').val();
         const city = $('#city').val();
         const pin_code = $('#pin_code').val();
+        const primary_mobile = $('#primary_mobile').val();
         const address_line_1 = $('#address_line_1').val();
         const address_line_2 = $('#address_line_2').val();
         const description = $('#description').val();
@@ -818,6 +766,7 @@ $(document).ready(function () {
         formData.append('state', state);
         formData.append('city', city);
         formData.append('pin_code', pin_code);
+        formData.append('phone', primary_mobile);
         formData.append('address_line_1', address_line_1);
         formData.append('address_line_2', address_line_2);
         formData.append('description', description);
@@ -843,18 +792,18 @@ $(document).ready(function () {
 
     function handleSaveBasicDetailSuccess(response) {
         console.log(response);
-        $("#basic_data_saved_success")
-            .html("<strong>2. Basic Data Saved Successfully</strong>")
+        $("#company_data_saved_success")
+            .html("<strong>1. Company Detail Saved Successfully</strong>")
             .fadeIn(2000)
             .css({'color': 'green', 'display': 'block'});
         setTimeout(() => {
-            saveBusinessDetails(response.data.id);
+            saveCertificationDetails(response.data.id);
         }, 1000);
 
     }
 
-    function saveBusinessDetails(companyId) {
-        $("#business_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
+    function saveCertificationDetails(companyId) {
+        $("#certification_details_saved_success").html("<svg style='height: 30px;' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='25' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='85' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate></rect><rect fill='#1646BE' stroke='#1646BE' stroke-width='9' width='30' height='30' x='145' y='85'><animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate></rect></svg>");
 
         const pancard = $('#pancard').val();
         const gst_number = $('#gst_number').val();
@@ -899,7 +848,7 @@ $(document).ready(function () {
             },
             contentType: false,
             processData: false,
-            success: handleSaveBusinessDetailsSuccess,
+            success: handleSaveCertificationDetailsSuccess,
             error: function (error) {
                 console.error('Error saving business details:', error);
                 // Handle error, display error message, etc.
@@ -907,12 +856,12 @@ $(document).ready(function () {
         });
     }
 
-    function handleSaveBusinessDetailsSuccess(response) {
+    function handleSaveCertificationDetailsSuccess(response) {
 
         // Display success message with fade animation, strong text, and green color
 
-        $("#business_details_saved_success")
-            .html("<strong>3. Business Details Saved Successfully</strong>")
+        $("#certification_details_saved_success")
+            .html("<strong>2. Business Details Saved Successfully</strong>")
             .fadeIn(3000)
             .css({'color': 'green', 'display': 'block'});
         setTimeout(() => {
@@ -953,7 +902,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success === true) {
                     $("#contact_details_saved_success")
-                        .html("<strong>4. Contact details saved successfully!</strong>")
+                        .html("<strong>3. Contact details saved successfully!</strong>")
                         .fadeIn(3000)
                         .css({'color': 'green', 'display': 'block'});
 
@@ -999,7 +948,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success === true) {
                     $("#modules_assigned_success")
-                        .html("<strong>5. Modules assigned successfully</strong>")
+                        .html("<strong>4. Modules assigned successfully</strong>")
                         .fadeIn(3000)
                         .css({'color': 'green', 'display': 'block'});
                 } else {
@@ -1041,7 +990,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success === true) {
                     $("#license_assigned_success")
-                        .html("<strong>6. License assigned successfully!</strong>")
+                        .html("<strong>5. License assigned successfully!</strong>")
                         .fadeIn(3000)
                         .css({'color': 'green', 'display': 'block'});
 
@@ -1085,7 +1034,7 @@ $(document).ready(function () {
                 if (response.success === true) {
                     $("#user_details_saved_success")
                         .empty()
-                        .html(`<strong>7. User details saved successfully!</strong>`)
+                        .html(`<strong>6. User details saved successfully!</strong>`)
                         .fadeIn(3000)
                         .css({'color': 'green', 'display': 'block'});
 
@@ -1113,9 +1062,8 @@ $(document).ready(function () {
             icon: 'success',
             title: 'Operations Completed',
             html: '<table style="text-align: left; width: 100%;">' +
-                '<tr><td><strong>Database:</strong></td><td class="text-success">Created</td></tr>' +
-                '<tr><td><strong>Basic Details:</strong></td><td class="text-success">Saved</td></tr>' +
-                '<tr><td><strong>Business Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Company Details:</strong></td><td class="text-success">Saved</td></tr>' +
+                '<tr><td><strong>Certification Details:</strong></td><td class="text-success">Saved</td></tr>' +
                 '<tr><td><strong>Contact Details:</strong></td><td class="text-success">Saved</td></tr>' +
                 '<tr><td><strong>Modules:</strong></td><td class="text-success">Assigned</td></tr>' +
                 '<tr><td><strong>License:</strong></td><td class="text-success">Assigned</td></tr>' +
@@ -1132,47 +1080,6 @@ $(document).ready(function () {
         });
     }
 
-    function checkEmailAndUserNameDuplicate() {
-        const email = $("#email").val();
-        const username = $("#username").val();
 
-        const formData = new FormData();
-        formData.append('email', email);
-        formData.append('username', username);
-
-        $.ajax({
-            url: '/admin/check_email_and_user_name',
-            type: 'POST',
-            data: formData,
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                if (response.success === true) {
-                    // No duplicates found, continue with your logic or form submission
-                    console.log('No duplicates found.');
-                    // You might want to enable form submission or display a success message
-                } else {
-                    // Duplicates found, handle accordingly
-                    console.log('Duplicates found.');
-                    // You might want to disable form submission or display an error message
-                }
-            },
-            error: function (error) {
-                console.error('Error checking duplicates:', error.responseJSON.errors);
-                // Handle the error, display an error message, etc.
-                const errorData = error.responseJSON.errors;
-                for (const key in errorData) {
-                    if (key === 'email') {
-                        $("#email_error").text(errorData[key][0]);
-                    } else if (key === 'username') {
-                        $("#username_error").text(errorData[key][0]);
-                    }
-                }
-            }
-        });
-    }
 
 });
