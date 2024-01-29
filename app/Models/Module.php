@@ -9,5 +9,5 @@ class Module extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['module_name','title','is_active'];
+    protected $fillable = ['module_name','title','description','is_active'];
 }

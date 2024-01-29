@@ -3,11 +3,29 @@
 namespace App\Http\Controllers\Admin\Module;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Module\StoreModule;
+use App\Http\Resources\Admin\Modules\ModuleResource;
 use App\Models\CompanyModule;
+use App\Models\Module;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
 {
+    public function index(Request $request){
+        $modules = Module::latest()->paginate(10);
+        if ($request->expectsJson()) {
+            return ModuleResource::collection($modules);
+        }
+
+        return view('admin.modules.index',compact('modules'));
+    }
+
+    public function store(StoreModule $request){
+
+        $module = Module::create($request->validated());
+
+        return new ModuleResource($module);
+    }
     public function assignModuleToCompany(Request $request)
     {
         try {

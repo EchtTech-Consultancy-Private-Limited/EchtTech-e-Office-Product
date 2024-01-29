@@ -18,10 +18,9 @@ class ValidationsController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function check_company_phone_duplicate(Request $request) {
+    public function check_company_phone_email_duplicate(Request $request) {
         $request->validate([
-            'phone' => ['required', 'phone', Rule::unique('companies', 'phone')],
-            'company_email' => ['required', 'company_email', Rule::unique('companies', 'company_email')],
+            'email' => ['required', 'email', Rule::unique('companies', 'company_email')],
         ]);
 
         return response()->json(['success' => true]);

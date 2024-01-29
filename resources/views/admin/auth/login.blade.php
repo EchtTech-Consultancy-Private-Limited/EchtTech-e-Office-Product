@@ -5,68 +5,50 @@
 @section('style')
 @endsection
 @section('content')
-<div class="d-flex flex-column flex-root">
-    <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-        <div class="d-flex flex-column flex-lg-row-auto w-xl-600px positon-xl-relative" style="background-color: #F2C98A">
-            <div class="d-flex flex-column position-xl-fixed top-0 bottom-0 w-xl-600px scroll-y">
-                <div class="d-flex flex-row-fluid flex-column text-center p-10 pt-lg-20">
-                    <a href="{{ route('index') }}" class="py-9 mb-5">
-                        <img alt="Logo" src="{{asset('assets/media/images/echttech-logo.png')}}" class="h-60px" />
-                    </a>
-                    <h1 class="fw-bolder fs-2qx pb-5 pb-md-10" style="color: #986923;">Welcome to E-Office</h1>
-                    <!-- <p class="fw-bold fs-2" style="color: #986923;">Discover Amazing Metronic
-                        <br />with great build tools
-                    </p> -->
-                </div>
-                <div class="d-flex flex-row-auto bgi-no-repeat bgi-position-x-center bgi-size-contain bgi-position-y-bottom min-h-100px min-h-lg-350px" style="background-image: url({{asset('assets/media/illustrations/sketchy-1/13.png')}}"></div>
+<div>
+    <div><a class="logo" href="">
+            <img class="img-fluid for-light" src="{{ asset('assets/images/echttech-logo.png') }}" alt="looginpage">
+            <img class="img-fluid for-dark" src="{{ asset('assets/assets/images/logo/logo_dark.png') }}" alt="looginpage"></a></div>
+    <div class="login-main">
+            <form action="{{ route('admin.login.form') }}" method="POST" class="theme-form" id="admin_login_form">
+                @csrf
+            <h4>Sign in to account</h4>
+            <p>Enter your email & password to login</p>
+            <div class="form-group">
+                <label class="col-form-label" for="email">Email Address</label>
+                <input class="form-control" id="email" type="email" name="email" placeholder="Email" value="{{ old('email') }}" autocomplete="off">
+                @if ($errors->has('email'))
+                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                @endif
             </div>
-        </div>
-        <div class="d-flex flex-column flex-lg-row-fluid py-10">
-        <div class="d-flex flex-center flex-column flex-column-fluid">
-						<div class="w-lg-550px p-10 p-lg-15 mx-auto">
-                            <form action="{{ route('admin.login.form') }}" method="POST" class="mt-4 mb-5" id="admin_login_form">
-                                @csrf
-								<div class="text-center mb-10">
-									<h1 class="text-dark mb-3">Sign In to E-Office</h1>
-								</div>
-								<div class="mb-10 fv-row" data-kt-password-meter="true">
-									<div class="mb-1">
-                                            <div class="fv-row mb-10">
-                                            <label class="form-label fs-6 fw-bolder text-dark">Email<em class="text-danger">*</em></label>
-                                            <input class="form-control form-control-lg form-control-solid" type="text" name="email" placeholder="Email" value="{{ old('email') }}" autocomplete="off"/>
-                                            @if ($errors->has('email'))
-                                                <span class="text-danger">{{ $errors->first('email') }}</span>
-                                            @endif
-                                        </div>
-										<label class="form-label fw-bolder text-dark fs-6">Password<em class="text-danger">*</em></label>
-										<div class="position-relative mb-3">
-                                            <input type="password" name="password" class="form-control form-control-lg form-control-solid" placeholder="Password" id="candidate_password_2" value="{{ old('password') }}" autocomplete="off">
-                                            @if ($errors->has('password'))
-                                                <span class="text-danger">{{ $errors->first('password') }}</span>
-                                            @endif
-										</div>
-									</div>
-								</div>
-                            <div class="mt-4 mb-4">
-                                @if ($errors->has('g-recaptcha-response'))
-                                    <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
-                                @endif
-                            </div>
-								<div class="text-center">
-                                    <button class="g-recaptcha btn btn-primary"
-                                            data-sitekey="{{ config('services.recaptcha.site_key') }}"
-                                            data-callback='onSubmit'
-                                            data-action='login' id="send">Login</button>
-								</div>
-							</form>
-						</div>
-					</div>
-            <div class="d-flex flex-center flex-wrap fs-6 p-5 pb-0">
-                <div class="d-flex flex-center fw-bold fs-6">
-                    <a href="#" class="text-muted text-hover-primary px-2" target="_blank">© 2024 E-Office, All rights reserved.</a>
+            <div class="form-group">
+                <label class="col-form-label" for="password">Password</label>
+                <div class="form-input position-relative">
+                    <input class="form-control" type="password" id="password" name="password" required="" placeholder="*********">
+                    <div class="show-hide"><span class="show">                         </span></div>
+                </div>
+                @if ($errors->has('password'))
+                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                @endif
+            </div>
+            <div class="form-group mb-0">
+                <div class="checkbox p-0">
+                    <input id="checkbox1" type="checkbox">
+                    <label class="text-muted" for="checkbox1">Remember password</label>
+                </div>
+                <div>
+                    @if ($errors->has('g-recaptcha-response'))
+                        <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+                    @endif
+                </div>
+                <div class="text-end mt-3">
+                    <button class="g-recaptcha btn btn-primary"
+                            data-sitekey="{{ config('services.recaptcha.site_key') }}"
+                            data-callback='onSubmit'
+                            data-action='login' id="send">Login</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 @endsection

@@ -13,7 +13,7 @@
                     <a class="menu-link" href="{{ route('admin.dashboard') }}" title="" data-bs-toggle="tooltip"
                        data-bs-trigger="hover"
                        data-bs-dismiss="click" data-bs-placement="right"
-                       data-bs-original-title="Build your layout and export HTML for server side integration">
+                       data-bs-original-title="Admin Dashboard">
 										<span class="menu-icon">
 											<!--begin::Svg Icon | path: icons/duotune/general/gen019.svg-->
 											<span class="svg-icon svg-icon-2">
@@ -72,6 +72,35 @@
                 <div class="menu-item">
                     <div class="menu-content pt-8 pb-0">
                         <span class="menu-section text-muted text-uppercase fs-8 ls-1">Master</span>
+                    </div>
+                </div>
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+									<span class="menu-link">
+										<span class="menu-icon">
+											<!--begin::Svg Icon | path: icons/duotune/abstract/abs042.svg-->
+											<i class="bi bi-layout-three-columns fs-2"></i>
+                                            <!--end::Svg Icon-->
+										</span>
+										<span class="menu-title">Modules</span>
+										<span class="menu-arrow"></span>
+									</span>
+                    <div class="menu-sub menu-sub-accordion menu-active-bg">
+                        <div class="menu-item">
+                            <a class="menu-link" href="{{ route('admin.modules.index') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                <span class="menu-title">List</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a class="menu-link" href="{{ route('admin.modules.create') }}">
+												<span class="menu-bullet">
+													<span class="bullet bullet-dot"></span>
+												</span>
+                                <span class="menu-title">Add New</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">

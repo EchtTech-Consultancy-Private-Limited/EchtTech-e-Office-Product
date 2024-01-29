@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Country;
 use App\Models\State;
 use Illuminate\Http\Request;
 
@@ -35,6 +36,19 @@ class AjaxOperationsController extends Controller
             }
         }catch (\Exception $e){
             return response()->json(['success' => false, 'message' => 'Error retrieving cities'], 500);
+        }
+    }
+
+    public function getCountries(){
+        try {
+           $countries = Country::all();
+            if ($countries->isNotEmpty()) {
+                return response()->json(['success' => true, 'data' => $countries], 200);
+            }else{
+                return response()->json(['success' => false, 'message' => 'No countries found!'], 404);
+            }
+        }catch (\Exception $e){
+            return response()->json(['success' => false, 'message' => 'Error retrieving countries'], 500);
         }
     }
 }

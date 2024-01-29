@@ -14,18 +14,21 @@ use App\Http\Controllers\Admin\Module\ModuleController;
 use App\Http\Controllers\Admin\Role\RoleController;
 use Illuminate\Support\Facades\Route;
 
-//Admin Routes
 
+Route::view('/', 'admin.auth.login')->name('admin.login.form.index');
+
+//Admin Routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::middleware('guest:admin')->group(function () {
         Route::view('login', 'admin.auth.login')->name('login.form');
-        Route::post('login', [AdminLoginController::class, "login"])->name('login');
+        Route::post('login', [AdminLoginController::class, "loginWeb"])->name('login');
     });
 
-    Route::middleware('auth:admin')->group(function (){
+    Route::middleware('admin.auth')->group(function (){
         //profile routes
         Route::view('profile','admin.profile.index')->name('profile');
-        Route::get('dashboard',[AdminDashboardController::class,"index"])->name('dashboard');
+        Route::get('/',[AdminDashboardController::class,"index"])->name('dashboard');
+        Route::get('dashboard',[AdminDashboardController::class,"index"]);
         Route::resource('roles', RoleController::class);
         Route::get('get-roles',[RoleController::class,"getRoles"])->name('get-roles');
 
@@ -42,13 +45,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('save-business-details',[CompanyController::class,"saveBusinessDetails"]);
         Route::post('save-company-contact-details',[CompanyController::class,"saveContactDetails"]);
         // Module routes
+        Route::get('modules',[ModuleController::class,"index"])->name('modules.index');
+        Route::view('modules/create','admin.modules.create')->name('modules.create');
         Route::post('save_selected_modules',[ModuleController::class,"assignModuleToCompany"]);
         // store company with user information
         Route::post('bind_user_with_company',[CompanyController::class,"assignCompanyToUser"]);
 
         // validations routes
         Route::post('check_email_and_user_name',[ValidationsController::class,"check_email_and_username"]);
-        Route::post('check_company_phone_email',[ValidationsController::class,"check_company_phone_duplicate"]);
+        Route::post('check_company_phone_email',[ValidationsController::class,"check_company_phone_email_duplicate"]);
 
         //Department routes
         Route::resource('departments', DepartmentController::class);
@@ -57,10 +62,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         //Designation routes
         Route::resource('designations', DesignationController::class);
         Route::get('designation-list', [DesignationController::class,"designationList"]);
-
-        //Employee routes
-        Route::get('employment-types',[EmploymentTypeController::class,"index"])->name('employment-types.index');
-        Route::get('employees/create',[EmployeeController::class,"create"])->name('employees.create');
 
         // admin logout route
         Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');

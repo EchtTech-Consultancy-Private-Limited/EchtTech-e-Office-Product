@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('city_id');
             $table->string('company_name');
             $table->string('company_email');
+            $table->string('phone')->nullable();
             $table->string('app_name')->nullable();
             $table->string('logo')->nullable();
             $table->string('logo_path')->nullable();
@@ -26,7 +27,6 @@ return new class extends Migration
             $table->string('registration_number')->unique();
             $table->text('description')->nullable();
             $table->string('website')->nullable();
-            $table->string('phone')->nullable();
             $table->string('address_line_1')->nullable();
             $table->string('address_line_2')->nullable();
             $table->string('pincode')->nullable();
