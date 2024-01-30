@@ -13,6 +13,8 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = [
+        'created_by',
+        'company_type_id',
         'country_id',
         'state_id',
         'city_id',
@@ -22,12 +24,16 @@ class Company extends Model
         'logo_path',
         'description',
         'website',
-        'phone',
+        'company_phone',
         'address_line_1',
         'address_line_2',
         'full_address',
-        'pincode',
+        'pincode','registration_number','gov_tax_number_ein','status'
     ];
+
+    public function createdBy(){
+        return $this->belongsTo(User::class,'created_by');
+    }
     public function certificates(): HasMany
     {
         return $this->hasMany(CompanyCertificate::class);
@@ -53,8 +59,13 @@ class Company extends Model
         return $this->hasOne(ContactDetail::class);
     }
 
-    public function databaseDetails(): BelongsTo
+    public function modules(): HasMany
     {
-        return $this->belongsTo(CompanyDatabase::class,'company_database_id');
+        return $this->hasMany(CompanyModule::class);
+    }
+
+    public function license(): HasOne
+    {
+        return $this->hasOne(CompanyLicense::class);
     }
 }

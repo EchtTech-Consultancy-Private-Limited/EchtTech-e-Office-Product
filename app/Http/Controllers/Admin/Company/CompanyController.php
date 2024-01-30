@@ -3,17 +3,23 @@
 namespace App\Http\Controllers\Admin\Company;
 
 use App\Helpers\EmailHelper;
+use App\Helpers\LicenseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Company\CompanyStore;
+use App\Http\Resources\Admin\Company\CompanyResource;
 use App\Models\BusinessDetail;
 use App\Models\Company;
 use App\Models\CompanyDatabase;
+use App\Models\CompanyLicense;
+use App\Models\CompanyModule;
 use App\Models\ContactDetail;
+use App\Models\Module;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserCompany;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -30,8 +36,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
-        return view('admin.company.index',compact('companies'));
+        $companies = Company::where('status','active')->latest()->paginate(10);
+        return CompanyResource::collection($companies);
     }
 
     /**
@@ -45,9 +51,67 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(CompanyStore $request)
     {
+        try {
+            // Start a database transaction
+            DB::beginTransaction();
 
+            // Validating the request using the CompanyStore form request
+            $validatedData = $request->validated();
+
+            $validatedData['pincode'] = $validatedData['pin_code'];
+
+            $validatedData['status'] = $request->status ?? 'disabled';
+            $validatedData['created_by'] = Auth::id();
+
+            $validatedData['company_type_id'] = $request->company_type_id;
+            $modules = $request->modules;
+
+            $license = LicenseHelper::generate();
+
+            // Create a new company instance within the transaction
+            $company = Company::create($validatedData);
+
+            foreach ($modules as $module) {
+                $moduleId = Module::where('module_name', $module)->first()->id ?? '';
+                if ($moduleId) {
+                    CompanyModule::create([
+                        'company_id' => $company->id,
+                        'module_id' => $moduleId
+                    ]);
+                } else {
+                    // Rollback the transaction and return a response
+                    DB::rollBack();
+                    return response()->json(['error' => true, 'message' => 'Module not found. Please create a new module']);
+                }
+            }
+
+            // Assign license
+            CompanyLicense::create([
+                'created_by' => Auth::id(),
+                'company_id' => $company->id,
+                'license_key' => $license['license_key'],
+                'started_at' => $license['valid_from'],
+                'expired_at' => $license['expire_date'],
+                'is_expired' => 0,
+                'status' => 'active',
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            // Save the company instance after the transaction is committed
+            $company->save();
+
+            return new CompanyResource($company);
+
+        } catch (\Exception $e) {
+            // Handle exceptions and rollback the transaction
+            DB::rollBack();
+            return response()->json(['error' => true, 'message' => $e->getMessage()]);
+        }
     }
 
     /**

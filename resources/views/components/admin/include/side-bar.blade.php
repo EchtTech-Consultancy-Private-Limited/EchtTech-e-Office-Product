@@ -81,22 +81,34 @@
                     </li>
                     <li class="sidebar-main-title">
                         <div>
-                            <h6 class="lan-8">Applications</h6>
+                            <h6>Masters</h6>
                         </div>
                     </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
-                        <label class="badge badge-light-secondary">New</label><a class="sidebar-link sidebar-title"
-                                                                                 href="#">
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title link-nav" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/assets/svg/icon-sprite.svg#stroke-home') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/assets/svg/icon-sprite.svg#fill-home') }}"></use>
+                            </svg>
+                            <span>Modules</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list">
+                        <i class="fa fa-thumb-tack"> </i>
+{{--                        <label class="badge badge-light-secondary">New</label>--}}
+                        <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/assets/svg/icon-sprite.svg#stroke-project') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/assets/svg/icon-sprite.svg#fill-project') }}"></use>
                             </svg>
-                            <span>Project           </span></a>
+                            <span>Settings           </span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="projects.html">Project List</a></li>
-                            <li><a href="projectcreate.html">Create new</a></li>
+                            <li><a href="projects.html">License Pricing</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a

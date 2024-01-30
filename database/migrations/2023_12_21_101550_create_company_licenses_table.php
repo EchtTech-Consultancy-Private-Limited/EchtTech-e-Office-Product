@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('company_licenses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('created_by')->constrained('users');
             $table->foreignId('company_id');
-            $table->foreignId('license_id');
             $table->string('license_key',255);
             $table->date('started_at');
             $table->date('expired_at');

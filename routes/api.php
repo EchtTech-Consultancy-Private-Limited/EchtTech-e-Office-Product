@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::post('modules/create', [ModuleController::class,'store'])->name('api.admin.module.store');
 
     // companies routes
-    Route::get('companies', [CompanyController::class,"index"]);
+    Route::resource('companies', CompanyController::class);
 
     // Admin profile routes
     Route::get('/user', function (Request $request) {
