@@ -3,13 +3,11 @@
 namespace App\Helpers;
 
 use App\Models\License;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class LicenseHelper
 {
-    public static function generate()
+    public static function generate(): array
     {
         $licenseKey = self::generateLicenseKey();
         $validFrom = now()->format('Y-m-d'); // Valid from today

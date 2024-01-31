@@ -46,6 +46,7 @@ class CompanyResource extends JsonResource
                 'is_expired' => $this->license?->is_expired,
                 'status' => $this->license?->status,
             ],
+            'owner_details' => $this->ownerDetails ?? [],
             'status' => $this->status ?? '',
         ];
     }

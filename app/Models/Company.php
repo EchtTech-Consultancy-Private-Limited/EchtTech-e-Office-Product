@@ -14,6 +14,7 @@ class Company extends Model
 
     protected $fillable = [
         'created_by',
+        'owner_id',
         'company_type_id',
         'country_id',
         'state_id',
@@ -31,8 +32,14 @@ class Company extends Model
         'pincode','registration_number','gov_tax_number_ein','status'
     ];
 
-    public function createdBy(){
+    public function createdBy(): BelongsTo
+    {
         return $this->belongsTo(User::class,'created_by');
+    }
+
+    public function ownerDetails(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'owner_id');
     }
     public function certificates(): HasMany
     {

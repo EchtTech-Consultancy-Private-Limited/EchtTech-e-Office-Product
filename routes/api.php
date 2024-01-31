@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\Company\CompanyController;
 use App\Http\Controllers\Admin\Module\ModuleController;
+use App\Http\Controllers\Admin\Settings\LicensePricingSettingController;
 use App\Http\Controllers\AjaxOperationsController;
 use App\Http\Controllers\Eoffice\Auth\LoginController;
 use Illuminate\Http\Request;
@@ -27,6 +28,9 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 
     // companies routes
     Route::resource('companies', CompanyController::class);
+
+    // settings routes
+    Route::resource('settings/license', LicensePricingSettingController::class);
 
     // Admin profile routes
     Route::get('/user', function (Request $request) {

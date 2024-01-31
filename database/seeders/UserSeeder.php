@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
             'role_id' => $employeeRole->id,
             'name' => 'Employee',
             'email' => 'employee@gmail.com',
+            'username' => 'employee',
             'email_verified_at' => '2022-05-23 00:00:00',
             'password' => Hash::make('password'),
             'is_active' => 1,

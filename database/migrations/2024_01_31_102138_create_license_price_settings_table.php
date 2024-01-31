@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_companies', function (Blueprint $table) {
+        Schema::create('license_price_settings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id');
-            $table->foreignId('user_id');
+            $table->string('per_user_price');
+            $table->string('per_quarter_price');
+            $table->string('months')->default(3);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_companies');
+        Schema::dropIfExists('license_price_settings');
     }
 };
